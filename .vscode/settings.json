@@ -3,7 +3,10 @@
         "BUNGIE",
         "Setup",
         "browserslist",
+        "camelcase",
+        "devtools",
         "firefox",
+        "redux",
         "rushton"
     ]
 }

@@ -1,13 +1,26 @@
-import React from "react";
-import Login from "./components/login/Login";
+import React, { FC } from "react";
+import Login from "./components/authenticate/Login";
+import NavBar from "./components/navbar/NavBar";
 import styles from "./App.module.scss";
+import authenticate from "./components/authenticate/authenticate";
+import { connect } from "react-redux";
+import { AppStore } from "./appReducer";
 
-const App: React.FC = () => {
+interface StateProps {
+    isLoggedIn: boolean;
+}
+
+const App: FC<StateProps> = ({ isLoggedIn }: StateProps) => {
     return (
         <div className={styles.App}>
-            <Login />
+            <NavBar />
+            {isLoggedIn ? "Logged in!" : <Login />}
         </div>
     );
 };
 
-export default App;
+const mapStateToProps = (state: AppStore): StateProps => ({
+    isLoggedIn: Boolean(state.oAuthToken)
+});
+
+export default connect(mapStateToProps)(authenticate(App));
