@@ -4,6 +4,7 @@
         "Setup",
         "browserslist",
         "camelcase",
+        "codegen",
         "devtools",
         "firefox",
         "redux",
