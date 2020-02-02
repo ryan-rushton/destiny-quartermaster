@@ -1,6 +1,6 @@
 import { parse } from "query-string";
+
 import { getValidToken } from "./authToken";
-import { getMembershipDataForCurrentUser } from "../../lib/bungie_api/user";
 
 const getCodeFromQueryParam = (): string | null => {
     const { location } = window;
@@ -22,8 +22,6 @@ const authenticate = <T,>(WrappedComponent: T): T => {
     getValidToken().then(token => {
         if (token && authCode) {
             window.location.replace(window.location.pathname);
-        } else if (token) {
-            getMembershipDataForCurrentUser(token.accessToken).then(data => console.log(data));
         }
     });
 

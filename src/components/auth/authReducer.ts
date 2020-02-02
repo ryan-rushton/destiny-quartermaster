@@ -1,31 +1,27 @@
+import { createAction } from "@reduxjs/toolkit";
+
 import { getTokenFromLocalStorage } from "./authStorage";
 import { AuthToken } from "./authTypes";
+import { Action } from "../../types";
 
 const SAVE_OAUTH_TOKEN = "SAVE_TOKEN";
 
-export type OAuthToken = AuthToken | null;
+type OAuthType = AuthToken | null;
+type SaveOAuthAction = Action<OAuthType>;
 
-interface SaveOAuthAction {
-    type: typeof SAVE_OAUTH_TOKEN;
-    oAuthToken: OAuthToken;
-}
-
-export const saveOauthToken = (oAuthToken: OAuthToken): SaveOAuthAction => {
-    return {
-        type: SAVE_OAUTH_TOKEN,
-        oAuthToken
-    };
-};
+export const saveOauthToken = createAction<OAuthType>(SAVE_OAUTH_TOKEN);
 
 /**
  * The reducer for the auth state
  */
-export const oAuthToken = (state: OAuthToken, action: SaveOAuthAction): OAuthToken => {
-    if (!state) {
-        return getTokenFromLocalStorage() || null;
-    } else if (action.type === SAVE_OAUTH_TOKEN) {
-        return action.oAuthToken || null;
+const authReducer = (state: AuthToken | null, action: SaveOAuthAction): AuthToken | null => {
+    const { payload, type } = action;
+    switch (type) {
+        case SAVE_OAUTH_TOKEN:
+            return payload;
+        default:
+            return state || getTokenFromLocalStorage() || null;
     }
-
-    return state || null;
 };
+
+export default authReducer;

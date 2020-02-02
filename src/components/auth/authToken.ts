@@ -5,9 +5,9 @@ import {
     putTokenInLocalStorage
 } from "./authStorage";
 import { AuthToken } from "./authTypes";
-import { mapAuthToken } from "./mappers";
+import { mapAuthToken } from "./authMappers";
 import { refreshOAuthToken, getOAuthToken } from "../../lib/bungie_api/auth";
-import { dispatch } from "../../appReducer";
+import { dispatch } from "../../index";
 import { saveOauthToken } from "./authReducer";
 /**
  * Checks whether the auth token has run out of life, either in regards to token life or reauth life.
@@ -15,32 +15,24 @@ import { saveOauthToken } from "./authReducer";
  * @param tokenTime The time param on the token in seconds
  * @param startOfAuth The start of the auth process
  */
-export const isTokenValid = (
-    tokenTime: number,
-    savedTokenTime = getTokenTimeFromLocalStorage(),
-    startOfAuth = Date.now()
-): boolean => {
-    if (savedTokenTime) {
-        const timeAlive = (startOfAuth - savedTokenTime) / 1000;
-        return tokenTime - timeAlive > 60;
-    }
-
-    return true;
+const isTokenValid = (tokenTime: number, savedTokenTime: number, startOfAuth: number): boolean => {
+    const timeAlive = (startOfAuth - savedTokenTime) / 1000;
+    return tokenTime - timeAlive > 120;
 };
 
-export const saveToken = (startAuth: number, token?: AuthToken): void => {
-    if (token) {
-        putTokenInLocalStorage(token, startAuth);
-        dispatch(saveOauthToken(token));
-    }
+const saveToken = (startAuth: number, token: AuthToken): void => {
+    putTokenInLocalStorage(token, startAuth);
+    dispatch(saveOauthToken(token));
 };
 
-export const renewToken = async (
+const renewToken = async (
     token: AuthToken,
-    startAuth = Date.now()
+    savedTime: number,
+    startAuth: number
 ): Promise<AuthToken | undefined> => {
-    const canReAuth = token && isTokenValid(token.refreshExpiresIn, startAuth);
+    const canReAuth = token && isTokenValid(token.refreshExpiresIn, savedTime, startAuth);
     deleteAuthTokenFromLocalStorage();
+
     if (token && canReAuth) {
         const newToken = mapAuthToken(await refreshOAuthToken(token.refreshToken));
         saveToken(startAuth, newToken);
@@ -59,15 +51,15 @@ export const getValidToken = async (
 ): Promise<AuthToken | undefined> => {
     const savedToken = getTokenFromLocalStorage();
     const savedTime = getTokenTimeFromLocalStorage();
+    const startAuth = Date.now();
 
     if (savedToken && savedTime) {
-        if (isTokenValid(savedToken.expiresIn, savedTime)) {
+        if (isTokenValid(savedToken.expiresIn, savedTime, startAuth)) {
             return savedToken;
         } else {
-            return await renewToken(savedToken);
+            return await renewToken(savedToken, savedTime, startAuth);
         }
     } else if (codeFromQueryParam) {
-        const startAuth = Date.now();
         const newToken = await getOAuthToken(codeFromQueryParam);
         const mappedToken = mapAuthToken(newToken);
         saveToken(startAuth, mappedToken);

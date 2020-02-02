@@ -1,16 +1,13 @@
-import { OAuthToken, oAuthToken } from "./components/auth/authReducer";
-import { combineReducers, createStore, applyMiddleware } from "redux";
-import thunkMiddleware from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { combineReducers } from "redux";
 
-export interface AppStore {
-    oAuthToken: OAuthToken;
-}
+import authReducer from "./components/auth/authReducer";
+import userMembershipReducer from "./components/user/userReducer";
 
 const appReducer = combineReducers({
-    oAuthToken
+    oAuthToken: authReducer,
+    userMembership: userMembershipReducer
 });
 
-export const store = createStore(appReducer, composeWithDevTools(applyMiddleware(thunkMiddleware)));
+export type AppStore = ReturnType<typeof appReducer>;
 
-export const { dispatch } = store;
+export default appReducer;

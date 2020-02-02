@@ -5,6 +5,8 @@ module.exports = {
     ],
     rules: {
         "import/named": "off",
-        "import/namespace": "off"
+        "import/namespace": "off",
+        "import/order": ["warn", { "newlines-between": "always", groups: ["builtin", "external"] }],
+        "import/newline-after-import": "warn"
     }
 };
