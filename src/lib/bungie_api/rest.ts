@@ -1,13 +1,8 @@
 import { JsonObject } from "./types";
-const withTimeout = (promise: Promise<Response>): Promise<Response> =>
-    Promise.race<any>([
-        promise,
-        new Promise<Error>((_, reject) => setTimeout(() => reject(new Error("timeout")), 10000))
-    ]);
 
 const handleResponse = async (response: Response): Promise<JsonObject> => {
-    const { ok, status, statusText, url } = response;
-    if (!ok) {
+    if (!response.ok) {
+        const { status, statusText, url } = response;
         throw new Error(`Call to ${url} failed with status ${status}: ${statusText}`);
     }
 
@@ -18,13 +13,11 @@ export const get = async (
     requestInfo: RequestInfo,
     requestInit?: RequestInit
 ): Promise<JsonObject> =>
-    await withTimeout(fetch(requestInfo, { method: "GET", ...requestInit })).then(handleResponse);
+    await fetch(requestInfo, { method: "GET", ...requestInit }).then(handleResponse);
 
 export const post = async (
     requestInfo: RequestInfo,
     body: BodyInit,
     requestInit?: RequestInit
 ): Promise<JsonObject> =>
-    await withTimeout(fetch(requestInfo, { method: "POST", ...requestInit, body })).then(
-        handleResponse
-    );
+    await fetch(requestInfo, { method: "POST", ...requestInit, body }).then(handleResponse);

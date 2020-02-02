@@ -1,4 +1,4 @@
-import { getTokenFromLocalStorage } from "./authenticateUtils";
+import { getTokenFromLocalStorage } from "./authStorage";
 import { AuthToken } from "./authTypes";
 
 const SAVE_OAUTH_TOKEN = "SAVE_TOKEN";

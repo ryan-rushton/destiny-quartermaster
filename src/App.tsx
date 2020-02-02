@@ -1,8 +1,8 @@
 import React, { FC } from "react";
-import Login from "./components/authenticate/Login";
+import Login from "./components/auth/Login";
 import NavBar from "./components/navbar/NavBar";
 import styles from "./App.module.scss";
-import authenticate from "./components/authenticate/authenticate";
+import authenticate from "./components/auth/authComponentWrapper";
 import { connect } from "react-redux";
 import { AppStore } from "./appReducer";
 

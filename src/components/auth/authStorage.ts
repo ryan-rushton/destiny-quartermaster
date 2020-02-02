@@ -33,21 +33,3 @@ export const deleteAuthTokenFromLocalStorage = (): void => {
     localStorage.removeItem(AUTH_TOKEN);
     localStorage.removeItem(AUTH_TIME);
 };
-
-/**
- * Checks whether the auth token has run out of life, either in regards to token life or reauth life.
- *
- * @param tokenTime The time param on the token in seconds
- * @param startOfAuth The start of the auth process
- */
-export const hasTokenExpired = (tokenTime: number, startOfAuth = Date.now()): boolean => {
-    const tokenWasSavedAt = getTokenTimeFromLocalStorage();
-    console.log(tokenWasSavedAt);
-
-    if (tokenWasSavedAt) {
-        const timeAlive = (startOfAuth - tokenWasSavedAt) / 1000;
-        return tokenTime - timeAlive <= 60;
-    }
-
-    return true;
-};

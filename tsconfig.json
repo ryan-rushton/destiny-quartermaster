@@ -17,5 +17,5 @@
         "jsx": "react",
         "downlevelIteration": true
     },
-    "include": ["src", "generated-api"]
+    "include": ["src"]
 }

@@ -1,4 +1,4 @@
-import { OAuthToken, oAuthToken } from "./components/authenticate/authReducer";
+import { OAuthToken, oAuthToken } from "./components/auth/authReducer";
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";

@@ -1,3 +1,0 @@
-[submodule "bungie-api"]
-	path = bungie-api
-	url = https://github.com/Bungie-net/api.git
