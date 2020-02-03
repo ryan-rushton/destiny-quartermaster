@@ -8,6 +8,7 @@ export enum GamePlatform {
 }
 
 export interface UserMembership {
+    id: string;
     accounts: Account[];
 }
 

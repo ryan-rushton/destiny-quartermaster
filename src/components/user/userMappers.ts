@@ -22,7 +22,7 @@ const mapGamePlatformEnum = (bungieMembershipTypeEnum: BungieMembershipType): Ga
 
 const mapAccount = (destinyMembership: GroupUserInfoCard): Account => {
     return {
-        membershipId: destinyMembership.membershipId,
+        id: destinyMembership.membershipId,
         displayName: destinyMembership.LastSeenDisplayName,
         gamePlatform: mapGamePlatformEnum(destinyMembership.membershipType),
         gamePlatformIconPath: destinyMembership.iconPath,
@@ -30,7 +30,8 @@ const mapAccount = (destinyMembership: GroupUserInfoCard): Account => {
     };
 };
 
-export const mapUserMembership = ({ destinyMemberships }: UserMembershipData): UserMembership => {
+export const mapUserMembership = (userMembershipData: UserMembershipData): UserMembership => {
+    const { bungieNetUser, destinyMemberships } = userMembershipData;
     const accounts: Account[] = [];
     const nonCrossSaveAccounts = destinyMemberships.filter(
         mem => mem.applicableMembershipTypes.length === 1
@@ -58,5 +59,5 @@ export const mapUserMembership = ({ destinyMemberships }: UserMembershipData): U
         accounts.push(crossSaveAccount);
     }
 
-    return { accounts };
+    return { id: bungieNetUser.membershipId, accounts };
 };

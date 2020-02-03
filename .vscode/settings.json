@@ -1,14 +1,4 @@
 {
-    "cSpell.words": [
-        "BUNGIE",
-        "Setup",
-        "browserslist",
-        "camelcase",
-        "codegen",
-        "devtools",
-        "firefox",
-        "redux",
-        "rushton"
-    ],
+    "cSpell.words": ["BUNGIE", "Setup", "devtools", "groupv", "redux", "rushton"],
     "eslint.enable": true
 }
