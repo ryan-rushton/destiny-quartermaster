@@ -7,7 +7,7 @@ import styles from "./App.module.scss";
 import authenticate from "./components/auth/authComponentWrapper";
 import { AppStore } from "./appReducer";
 import { fetchUserMembershipData } from "./components/user/userReducer";
-import { AppDispatch } from ".";
+import { AppDispatch } from "./appStore";
 
 interface DispatchProps {
     dispatch: AppDispatch;

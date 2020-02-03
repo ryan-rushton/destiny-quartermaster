@@ -1,4 +1,4 @@
-import { JsonObject } from "./types";
+export type JsonObject = Record<string, any>;
 
 const handleResponse = async (response: Response): Promise<JsonObject> => {
     if (!response.ok) {

@@ -1,14 +1,11 @@
-import { JsonObject } from "./types";
+import { UserMembershipData } from "bungie-api-ts/user";
+
 import { bungieApiGet } from "./bungieApi";
-import { JsonAuthToken } from "./auth";
 
-interface UserMembershipData {
-    destinyMemberships: any;
-    bungieNetUser: any;
-}
-
-export const getMembershipDataForCurrentUser = async (accessToken: string): Promise<JsonObject> => {
-    const bungieResponse = await bungieApiGet<JsonAuthToken>(
+export const getMembershipDataForCurrentUser = async (
+    accessToken: string
+): Promise<UserMembershipData> => {
+    const bungieResponse = await bungieApiGet<UserMembershipData>(
         "/User/GetMembershipsForCurrentUser/",
         accessToken
     );

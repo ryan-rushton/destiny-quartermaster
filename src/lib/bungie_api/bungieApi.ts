@@ -1,19 +1,14 @@
-import { isNumber, isString, isObject } from "./types";
+import { ServerResponse } from "bungie-api-ts/common";
+
 import { get } from "./rest";
 
 const BUNGIE_URL = "https://www.bungie.net/Platform";
 
-interface BungieResponse<T> {
-    Response: T;
-    ErrorCode: number;
-    ThrottleSeconds: number;
-    ErrorStatus: string;
-    Message: string;
-    MessageData: Record<string, string>;
-    DetailedErrorTrace?: string;
-}
+const isString = (val): boolean => typeof val === "string";
+const isNumber = (val): boolean => typeof val === "number";
+const isObject = (val): boolean => typeof val === "object";
 
-const isBungieResponse = <T>(val): val is BungieResponse<T> => {
+const isServerResponse = <T>(val): val is ServerResponse<T> => {
     if (val) {
         return (
             val.Response &&
@@ -31,7 +26,7 @@ const isBungieResponse = <T>(val): val is BungieResponse<T> => {
 export const bungieApiGet = async <T>(
     relativeUrl: string,
     accessToken: string
-): Promise<BungieResponse<T>> => {
+): Promise<ServerResponse<T>> => {
     const response = await get(`${BUNGIE_URL}${relativeUrl}`, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -39,7 +34,7 @@ export const bungieApiGet = async <T>(
         }
     });
 
-    if (!isBungieResponse<T>(response)) {
+    if (!isServerResponse<T>(response)) {
         throw Error(`Invalid bungie response from ${relativeUrl}`);
     }
 

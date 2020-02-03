@@ -5,7 +5,7 @@ import { getMembershipDataForCurrentUser } from "../../lib/bungie_api/user";
 import { mapUserMembership } from "./userMappers";
 import { UserMembership } from "./userTypes";
 import { Action } from "../../types";
-import { AppDispatch } from "../../index";
+import { AppDispatch } from "../../appStore";
 
 const RECEIVE_USER_MEMBERSHIP = "RECEIVE_USER_MEMBERSHIP";
 

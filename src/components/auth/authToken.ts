@@ -7,15 +7,21 @@ import {
 import { AuthToken } from "./authTypes";
 import { mapAuthToken } from "./authMappers";
 import { refreshOAuthToken, getOAuthToken } from "../../lib/bungie_api/auth";
-import { dispatch } from "../../index";
+import { dispatch } from "../../appStore";
 import { saveOauthToken } from "./authReducer";
+
 /**
  * Checks whether the auth token has run out of life, either in regards to token life or reauth life.
  *
  * @param tokenTime The time param on the token in seconds
+ * @param savedTokenTime The time the token was put into storage
  * @param startOfAuth The start of the auth process
  */
-const isTokenValid = (tokenTime: number, savedTokenTime: number, startOfAuth: number): boolean => {
+export const isTokenValid = (
+    tokenTime: number,
+    savedTokenTime: number,
+    startOfAuth: number
+): boolean => {
     const timeAlive = (startOfAuth - savedTokenTime) / 1000;
     return tokenTime - timeAlive > 120;
 };
