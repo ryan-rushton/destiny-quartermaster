@@ -14,14 +14,14 @@ type ReceiveUserMembershipAction = Action<UserMembership>;
 const receiveUserMembership = createAction<UserMembership>(RECEIVE_USER_MEMBERSHIP);
 
 export const fetchUserMembershipData = () => {
-    return (dispatch: AppDispatch): Promise<ReceiveUserMembershipAction | void> =>
-        getValidToken().then(token => {
-            if (token) {
-                getMembershipDataForCurrentUser(token.accessToken)
-                    .then(mapUserMembership)
-                    .then(userMembership => dispatch(receiveUserMembership(userMembership)));
-            }
-        });
+    return async (dispatch: AppDispatch): Promise<ReceiveUserMembershipAction | void> => {
+        const token = await dispatch(getValidToken());
+        if (token) {
+            return getMembershipDataForCurrentUser(token.accessToken)
+                .then(mapUserMembership)
+                .then(userMembership => dispatch(receiveUserMembership(userMembership)));
+        }
+    };
 };
 
 type UserState = UserMembership | null;

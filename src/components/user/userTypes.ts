@@ -13,7 +13,7 @@ export interface UserMembership {
 }
 
 export interface Account {
-    membershipId: string;
+    id: string;
     displayName: string;
     gamePlatform: GamePlatform;
     gamePlatformIconPath: string;

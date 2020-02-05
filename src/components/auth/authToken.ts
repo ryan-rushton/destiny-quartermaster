@@ -1,3 +1,4 @@
+import { AppDispatch } from "./../../appStore";
 import {
     getTokenTimeFromLocalStorage,
     getTokenFromLocalStorage,
@@ -6,8 +7,7 @@ import {
 } from "./authStorage";
 import { AuthToken } from "./authTypes";
 import { mapAuthToken } from "./authMappers";
-import { refreshOAuthToken, getOAuthToken } from "../../lib/bungie_api/auth";
-import { dispatch } from "../../appStore";
+import { refreshOAuthToken } from "../../lib/bungie_api/auth";
 import { saveOauthToken } from "./authReducer";
 
 /**
@@ -26,12 +26,13 @@ export const isTokenValid = (
     return tokenTime - timeAlive > 120;
 };
 
-const saveToken = (startAuth: number, token: AuthToken): void => {
+export const saveToken = (startAuth: number, token: AuthToken) => (dispatch: AppDispatch): void => {
     putTokenInLocalStorage(token, startAuth);
     dispatch(saveOauthToken(token));
 };
 
 const renewToken = async (
+    dispatch: AppDispatch,
     token: AuthToken,
     savedTime: number,
     startAuth: number
@@ -41,7 +42,7 @@ const renewToken = async (
 
     if (token && canReAuth) {
         const newToken = mapAuthToken(await refreshOAuthToken(token.refreshToken));
-        saveToken(startAuth, newToken);
+        dispatch(saveToken(startAuth, newToken));
         return newToken;
     }
 };
@@ -52,8 +53,8 @@ const renewToken = async (
  *
  * @param codeFromQueryParam the code query parameter from the url which is present after authorisation.
  */
-export const getValidToken = async (
-    codeFromQueryParam?: string
+export const getValidToken = () => async (
+    dispatch: AppDispatch
 ): Promise<AuthToken | undefined> => {
     const savedToken = getTokenFromLocalStorage();
     const savedTime = getTokenTimeFromLocalStorage();
@@ -63,12 +64,10 @@ export const getValidToken = async (
         if (isTokenValid(savedToken.expiresIn, savedTime, startAuth)) {
             return savedToken;
         } else {
-            return await renewToken(savedToken, savedTime, startAuth);
+            return await renewToken(dispatch, savedToken, savedTime, startAuth);
         }
-    } else if (codeFromQueryParam) {
-        const newToken = await getOAuthToken(codeFromQueryParam);
-        const mappedToken = mapAuthToken(newToken);
-        saveToken(startAuth, mappedToken);
-        return mappedToken;
+    } else {
+        deleteAuthTokenFromLocalStorage();
+        dispatch(saveOauthToken(null));
     }
 };
