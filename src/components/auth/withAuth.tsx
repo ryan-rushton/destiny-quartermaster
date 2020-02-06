@@ -6,7 +6,7 @@ import { AppStore } from "../../appReducer";
 
 const withAuth = <T,>(WrappedComponent: ComponentType<T>): FC<T> => {
     const Authenticate: FC<T> = props => {
-        const isLoggedIn = useSelector((state: AppStore) => Boolean(state.oAuthToken));
+        const isLoggedIn = useSelector((state: AppStore) => Boolean(state.authToken));
         const history = useHistory();
 
         if (!isLoggedIn) {

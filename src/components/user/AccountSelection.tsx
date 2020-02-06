@@ -4,8 +4,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppStore } from "../../appReducer";
 import withAuth from "../auth/withAuth";
 import { fetchUserMembershipData } from "./userReducer";
+import AccountSelectionButton from "./components/AccountSelectionButton";
+import styles from "./AccountSelection.module.scss";
 
-const UserSelection: FC = () => {
+const AccountSelection: FC = () => {
     const dispatch = useDispatch();
     const userMembership = useSelector((store: AppStore) => store.userMembership);
 
@@ -14,11 +16,12 @@ const UserSelection: FC = () => {
     }
 
     return (
-        <>
-            <div>Account Selection</div>
-            <div>{JSON.stringify(userMembership)}</div>
-        </>
+        <div className={styles.accountSelection}>
+            {userMembership?.accounts.map(account => (
+                <AccountSelectionButton key={account.id} account={account} />
+            ))}
+        </div>
     );
 };
 
-export default withAuth(UserSelection);
+export default withAuth(AccountSelection);

@@ -1,4 +1,10 @@
 .navBar {
     background-color: rgb(49, 46, 46);
+    display: flex;
     height: 40px;
+}
+
+.appName {
+    color: whitesmoke;
+    margin: auto;
 }

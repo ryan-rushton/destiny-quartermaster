@@ -44,6 +44,7 @@ module.exports = {
         }
     },
     rules: {
+        "import/named": "off",
         "import/newline-after-import": "warn",
         "import/order": ["warn", { "newlines-between": "always", groups: ["builtin", "external"] }],
         "prettier/prettier": "error",

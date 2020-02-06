@@ -1,4 +1,4 @@
-import { combineReducers } from "redux";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 import authReducer from "./components/auth/authReducer";
 import userMembershipReducer from "./components/user/userReducer";
@@ -9,10 +9,16 @@ import userMembershipReducer from "./components/user/userReducer";
  */
 
 const appReducer = combineReducers({
-    authReducer,
-    userMembershipReducer
+    authToken: authReducer,
+    userMembership: userMembershipReducer
 });
 
 export type AppStore = ReturnType<typeof appReducer>;
 
-export default appReducer;
+const store = configureStore({
+    reducer: appReducer
+});
+
+export type AppDispatch = typeof store.dispatch;
+
+export default store;

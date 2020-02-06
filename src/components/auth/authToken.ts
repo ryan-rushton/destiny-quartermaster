@@ -1,4 +1,4 @@
-import { AppDispatch } from "./../../appStore";
+import { AppDispatch } from "./../../appReducer";
 import {
     getTokenTimeFromLocalStorage,
     getTokenFromLocalStorage,
@@ -8,7 +8,7 @@ import {
 import { AuthToken } from "./authTypes";
 import { mapAuthToken } from "./authMappers";
 import { refreshOAuthToken } from "../../lib/bungie_api/auth";
-import { saveOauthToken } from "./authReducer";
+import { saveAuthToken } from "./authReducer";
 
 /**
  * Checks whether the auth token has run out of life, either in regards to token life or reauth life.
@@ -28,7 +28,7 @@ export const isTokenValid = (
 
 export const saveToken = (startAuth: number, token: AuthToken) => (dispatch: AppDispatch): void => {
     putTokenInLocalStorage(token, startAuth);
-    dispatch(saveOauthToken(token));
+    dispatch(saveAuthToken(token));
 };
 
 const renewToken = async (
@@ -68,6 +68,6 @@ export const getValidToken = () => async (
         }
     } else {
         deleteAuthTokenFromLocalStorage();
-        dispatch(saveOauthToken(null));
+        dispatch(saveAuthToken(null));
     }
 };
