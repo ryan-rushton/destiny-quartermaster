@@ -9,8 +9,8 @@ import userMembershipReducer from "./components/user/userReducer";
  */
 
 const appReducer = combineReducers({
-    oAuthToken: authReducer,
-    userMembership: userMembershipReducer
+    authReducer,
+    userMembershipReducer
 });
 
 export type AppStore = ReturnType<typeof appReducer>;
