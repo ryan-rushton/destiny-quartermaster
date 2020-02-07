@@ -17,9 +17,11 @@ const AccountSelection: FC = () => {
 
     return (
         <div className={styles.accountSelection}>
-            {userMembership?.accounts.map(account => (
-                <AccountSelectionButton key={account.id} account={account} />
-            ))}
+            <div className={styles.buttons}>
+                {userMembership?.accounts.map(account => (
+                    <AccountSelectionButton key={account.id} account={account} />
+                ))}
+            </div>
         </div>
     );
 };

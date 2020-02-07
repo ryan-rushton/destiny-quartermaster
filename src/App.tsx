@@ -9,19 +9,21 @@ import LoggingIn from "./components/login/LoggingIn";
 
 const App: FC = () => {
     return (
-        <div className={styles.App}>
+        <div className={styles.app}>
             <NavBar />
-            <Switch>
-                <Route exact path="/">
-                    <AccountSelection />
-                </Route>
-                <Route path="/login">
-                    <Login />
-                </Route>
-                <Route path="/redirect">
-                    <LoggingIn />
-                </Route>
-            </Switch>
+            <div className={styles.body}>
+                <Switch>
+                    <Route exact path="/">
+                        <AccountSelection />
+                    </Route>
+                    <Route path="/login">
+                        <Login />
+                    </Route>
+                    <Route path="/redirect">
+                        <LoggingIn />
+                    </Route>
+                </Switch>
+            </div>
         </div>
     );
 };

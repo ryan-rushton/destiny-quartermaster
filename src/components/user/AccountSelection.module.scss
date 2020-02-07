@@ -1,3 +1,9 @@
 .accountSelection {
-    margin-top: 10vh;
+    display: grid;
+    grid-template-rows: auto;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
 }

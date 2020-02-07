@@ -1,4 +1,4 @@
-.App {
+.app {
     background: rgb(255, 255, 255);
     background: radial-gradient(
         circle,
@@ -6,7 +6,15 @@
         rgba(241, 241, 241, 1) 55%,
         rgba(239, 239, 239, 1) 87%
     );
+    display: grid;
+    grid-template-columns: 5vw auto 5vw;
+    grid-template-rows: 40px auto;
     height: 100vh;
     text-align: center;
     width: 100vw;
+}
+
+.body {
+    grid-column: 2;
+    grid-row: 2;
 }
