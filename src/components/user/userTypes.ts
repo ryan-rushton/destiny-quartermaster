@@ -18,6 +18,8 @@ export interface Account {
     gamePlatform: GamePlatform;
     gamePlatformIconPath: string;
     isPublic: boolean;
+    isOverridden: boolean;
+    isCrossSavePrimary(): this is CrossSavePrimaryAccount;
 }
 
 export interface CrossSavePrimaryAccount extends Account {

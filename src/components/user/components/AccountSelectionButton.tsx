@@ -31,11 +31,17 @@ interface Props {
 const AccountSelectionButton: FC<Props> = ({ account }) => {
     const { id, displayName, gamePlatform } = account;
     return (
-        <div key={id} className={styles.button}>
-            {`${displayName} / `}
-            <FontAwesomeIcon icon={getIcon(gamePlatform)} />
-            {}
-        </div>
+        <>
+            <div key={id} className={styles.button}>
+                {`${displayName} / `}
+                <FontAwesomeIcon icon={getIcon(gamePlatform)} />
+                {}
+            </div>
+            {account.isCrossSavePrimary() &&
+                account.overriddenAccounts.map(overriden => (
+                    <AccountSelectionButton key={overriden.id} account={overriden} />
+                ))}
+        </>
     );
 };
 

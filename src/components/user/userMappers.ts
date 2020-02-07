@@ -20,13 +20,19 @@ const mapGamePlatformEnum = (bungieMembershipTypeEnum: BungieMembershipType): Ga
     }
 };
 
-const mapAccount = (destinyMembership: GroupUserInfoCard): Account => {
+const mapAccount = (
+    destinyMembership: GroupUserInfoCard,
+    isOverridden: boolean,
+    isCrossSavePrimary: boolean
+): Account => {
     return {
         id: destinyMembership.membershipId,
         displayName: destinyMembership.LastSeenDisplayName,
         gamePlatform: mapGamePlatformEnum(destinyMembership.membershipType),
         gamePlatformIconPath: destinyMembership.iconPath,
-        isPublic: destinyMembership.isPublic
+        isPublic: destinyMembership.isPublic,
+        isOverridden,
+        isCrossSavePrimary: () => isCrossSavePrimary
     };
 };
 
@@ -44,16 +50,16 @@ export const mapUserMembership = (userMembershipData: UserMembershipData): UserM
     );
 
     for (const bungieAccount of nonCrossSaveAccounts) {
-        accounts.push(mapAccount(bungieAccount));
+        accounts.push(mapAccount(bungieAccount, false, false));
     }
 
     for (const bungieAccount of crossSavePrimaryAccounts) {
-        const crossSaveAccount = mapAccount(bungieAccount) as CrossSavePrimaryAccount;
+        const crossSaveAccount = mapAccount(bungieAccount, true, true) as CrossSavePrimaryAccount;
         const relatedAccounts = overriddenAccounts
             .filter(overridden =>
                 bungieAccount.applicableMembershipTypes.includes(overridden.membershipType)
             )
-            .map(mapAccount);
+            .map(acc => mapAccount(acc, true, false));
 
         crossSaveAccount.overriddenAccounts = relatedAccounts;
         accounts.push(crossSaveAccount);

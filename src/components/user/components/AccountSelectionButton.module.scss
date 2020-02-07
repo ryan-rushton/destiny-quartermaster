@@ -1,8 +1,11 @@
 .button {
-    background-color: gray;
+    background-color: #c2c2c2;
     border-radius: 2px;
-    color: whitesmoke;
+    display: inline-block;
     padding: 10px 20px;
     margin: auto;
-    width: 50%;
+
+    &:hover {
+        background-color: #d2d2d2;
+    }
 }
