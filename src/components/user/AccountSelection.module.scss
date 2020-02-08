@@ -1,6 +1,8 @@
 .accountSelection {
     display: grid;
+    grid-template-columns: max-content;
     grid-template-rows: auto;
+    justify-content: center;
 }
 
 .buttons {

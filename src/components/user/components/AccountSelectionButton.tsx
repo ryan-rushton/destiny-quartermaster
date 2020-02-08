@@ -3,9 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faXbox, faPlaystation, faSteam, faWindows } from "@fortawesome/free-brands-svg-icons";
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
-import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
-import { Account, GamePlatform } from "../userTypes";
+import { Account, GamePlatform, isCrossSavePrimary } from "../userTypes";
 import styles from "./AccountSelectionButton.module.scss";
 
 const getIcon = (gamePlatform: GamePlatform): IconDefinition => {
@@ -26,20 +25,34 @@ const getIcon = (gamePlatform: GamePlatform): IconDefinition => {
 
 interface Props {
     account: Account;
+    profileIsLoading: boolean;
+    getProfile(id: string, membershipType: number): void;
 }
 
-const AccountSelectionButton: FC<Props> = ({ account }) => {
-    const { id, displayName, gamePlatform } = account;
+const AccountSelectionButton: FC<Props> = ({ account, profileIsLoading, getProfile }) => {
+    const { id, displayName, gamePlatform, membershipType } = account;
     return (
         <>
-            <div key={id} className={styles.button}>
+            <button
+                key={id}
+                className={styles.button}
+                disabled={profileIsLoading}
+                onClick={(): void => getProfile(id, membershipType)}
+            >
                 {`${displayName} / `}
                 <FontAwesomeIcon icon={getIcon(gamePlatform)} />
-                {}
-            </div>
-            {account.isCrossSavePrimary() &&
-                account.overriddenAccounts.map(overriden => (
-                    <AccountSelectionButton key={overriden.id} account={overriden} />
+            </button>
+            {isCrossSavePrimary(account) &&
+                account.overriddenAccounts.map(overridden => (
+                    <button
+                        key={overridden.id}
+                        className={styles.button}
+                        disabled={profileIsLoading}
+                        onClick={(): void => getProfile(id, membershipType)}
+                    >
+                        {`${overridden.displayName} / `}
+                        <FontAwesomeIcon icon={getIcon(overridden.gamePlatform)} />
+                    </button>
                 ))}
         </>
     );

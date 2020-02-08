@@ -8,20 +8,25 @@ export enum GamePlatform {
 }
 
 export interface UserMembership {
-    id: string;
     accounts: Account[];
+    id: string;
 }
 
 export interface Account {
-    id: string;
+    crossSavePrimary: boolean;
     displayName: string;
     gamePlatform: GamePlatform;
     gamePlatformIconPath: string;
-    isPublic: boolean;
+    id: string;
     isOverridden: boolean;
-    isCrossSavePrimary(): this is CrossSavePrimaryAccount;
+    isPublic: boolean;
+    membershipType: number;
 }
 
 export interface CrossSavePrimaryAccount extends Account {
     overriddenAccounts: Account[];
 }
+
+export const isCrossSavePrimary = (account: Account): account is CrossSavePrimaryAccount => {
+    return account.crossSavePrimary;
+};

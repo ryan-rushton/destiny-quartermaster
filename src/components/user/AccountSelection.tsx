@@ -3,15 +3,22 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { AppStore } from "../../appReducer";
 import withAuth from "../auth/withAuth";
-import { fetchUserMembershipData } from "./userReducer";
+import { fetchUserMembershipData, fetchProfileData } from "./userReducer";
 import AccountSelectionButton from "./components/AccountSelectionButton";
 import styles from "./AccountSelection.module.scss";
+import { fetchManifest } from "../config/configReducer";
 
 const AccountSelection: FC = () => {
     const dispatch = useDispatch();
-    const userMembership = useSelector((store: AppStore) => store.userMembership);
+    const userMembership = useSelector((store: AppStore) => store.user.userMembership);
+    const profileData = useSelector((store: AppStore) => store.user.profile);
+
+    const getProfile = (id: string, membershipType: number): void => {
+        dispatch(fetchProfileData(id, membershipType));
+    };
 
     if (!userMembership) {
+        dispatch(fetchManifest());
         dispatch(fetchUserMembershipData());
     }
 
@@ -19,7 +26,12 @@ const AccountSelection: FC = () => {
         <div className={styles.accountSelection}>
             <div className={styles.buttons}>
                 {userMembership?.accounts.map(account => (
-                    <AccountSelectionButton key={account.id} account={account} />
+                    <AccountSelectionButton
+                        key={account.id}
+                        account={account}
+                        profileIsLoading={profileData.isLoading}
+                        getProfile={getProfile}
+                    />
                 ))}
             </div>
         </div>

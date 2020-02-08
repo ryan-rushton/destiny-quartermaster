@@ -1,7 +1,9 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { useSelector, TypedUseSelectorHook } from "react-redux";
 
 import authReducer from "./components/auth/authReducer";
-import userMembershipReducer from "./components/user/userReducer";
+import configReducer from "./components/config/configReducer";
+import userReducer from "./components/user/userReducer";
 
 /**
  * This gets its own file (rather than in appReducer) as there were issues with circular imports.
@@ -10,10 +12,13 @@ import userMembershipReducer from "./components/user/userReducer";
 
 const appReducer = combineReducers({
     authToken: authReducer,
-    userMembership: userMembershipReducer
+    config: configReducer,
+    user: userReducer
 });
 
 export type AppStore = ReturnType<typeof appReducer>;
+
+export const useTypedSelector: TypedUseSelectorHook<AppStore> = useSelector;
 
 const store = configureStore({
     reducer: appReducer

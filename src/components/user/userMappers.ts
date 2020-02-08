@@ -23,16 +23,17 @@ const mapGamePlatformEnum = (bungieMembershipTypeEnum: BungieMembershipType): Ga
 const mapAccount = (
     destinyMembership: GroupUserInfoCard,
     isOverridden: boolean,
-    isCrossSavePrimary: boolean
+    crossSavePrimary: boolean
 ): Account => {
     return {
-        id: destinyMembership.membershipId,
+        crossSavePrimary,
         displayName: destinyMembership.LastSeenDisplayName,
         gamePlatform: mapGamePlatformEnum(destinyMembership.membershipType),
         gamePlatformIconPath: destinyMembership.iconPath,
-        isPublic: destinyMembership.isPublic,
+        id: destinyMembership.membershipId,
         isOverridden,
-        isCrossSavePrimary: () => isCrossSavePrimary
+        isPublic: destinyMembership.isPublic,
+        membershipType: destinyMembership.membershipType
     };
 };
 

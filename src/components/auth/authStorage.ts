@@ -4,6 +4,7 @@ const AUTH_TOKEN = "AUTH_TOKEN";
 const AUTH_TIME = "AUTH_TIME";
 
 export const putTokenInLocalStorage = (token: AuthToken, timeAcquired: number): void => {
+    const { localStorage } = window;
     localStorage.setItem(AUTH_TOKEN, JSON.stringify(token));
     localStorage.setItem(AUTH_TIME, JSON.stringify(timeAcquired));
 };

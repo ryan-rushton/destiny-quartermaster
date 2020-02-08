@@ -1,4 +1,17 @@
 {
-    "cSpell.words": ["BUNGIE", "Setup", "devtools", "groupv", "redux", "rushton"],
+    "cSpell.words": [
+        "BUNGIE",
+        "Playstation",
+        "Setup",
+        "devtools",
+        "fontawesome",
+        "fortawesome",
+        "groupv",
+        "overridden",
+        "redux",
+        "reduxjs",
+        "rushton",
+        "toolkit"
+    ],
     "eslint.enable": true
 }
