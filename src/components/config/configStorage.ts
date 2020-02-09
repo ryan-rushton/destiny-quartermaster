@@ -1,8 +1,11 @@
+import _ from "lodash";
 import Dexie from "dexie";
 
 import { JsonObject } from "./../../lib/bungie_api/rest";
+import { DefinitionManifests } from "./configTypes";
 
 const MANIFEST_VERSION = "MANIFEST_VERSION";
+const DB_NAME = "Quartermaster";
 
 export const putManifestVersionInLocalStorage = (version: string): void => {
     const { localStorage } = window;
@@ -14,11 +17,17 @@ export const getManifestVersionInLocalStorage = (): string | null => {
     return localStorage.getItem(MANIFEST_VERSION);
 };
 
+export const isManifestDBPresent = () => {
+    const db = new Dexie("Quartermaster");
+    return _.difference(DefinitionManifests, db.tables).length === 0;
+};
+
 export const getDefinitionManifestFromIndexDB = async (
     manifestName: string,
     hashes: number[]
 ): Promise<JsonObject[]> => {
     const db = new Dexie("Quartermaster");
+
     const result = await db
         .table(manifestName)
         .where("id")
@@ -28,7 +37,7 @@ export const getDefinitionManifestFromIndexDB = async (
     return result.map((dbObject: ManifestEntry) => dbObject.data);
 };
 
-export const saveDefinitionManifestToIndexedDB = (
+export const freshSaveOfAllDefinitionManifests = (
     manifestResponseWrappers: ManifestResponseWrapper[]
 ): boolean => {
     if (!window.indexedDB) {
@@ -36,14 +45,17 @@ export const saveDefinitionManifestToIndexedDB = (
         return false;
     }
 
+    if (manifestResponseWrappers.length !== DefinitionManifests.length) {
+        console.error("Not all definition manifests are present please reload");
+    }
+
     try {
-        const dbName = "Quartermaster";
-        Dexie.delete(dbName).then(() => {
-            const db = new Dexie(dbName);
+        Dexie.delete(DB_NAME).then(() => {
+            const db = new Dexie(DB_NAME);
             const schema: Record<string, string> = {};
 
             for (const manifestWrapper of manifestResponseWrappers) {
-                schema[manifestWrapper.name] = "++id, &hash, data";
+                schema[manifestWrapper.name] = "&hash, data";
             }
 
             db.version(1).stores(schema);

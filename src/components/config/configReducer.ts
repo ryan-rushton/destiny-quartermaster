@@ -8,7 +8,8 @@ import { getCommonJsonAsset } from "../../lib/bungie_api/common";
 import {
     getManifestVersionInLocalStorage,
     putManifestVersionInLocalStorage,
-    saveDefinitionManifestToIndexedDB,
+    freshSaveOfAllDefinitionManifests,
+    isManifestDBPresent,
     ManifestResponseWrapper
 } from "./configStorage";
 
@@ -48,7 +49,7 @@ const fetchDefinitionManifestsIfRequired = (
     const localisedDefs = manifest.jsonWorldComponentContentPaths[locale];
     const manifestVersion = getManifestVersionInLocalStorage();
 
-    if (manifestVersion !== manifest.version || manifest.version) {
+    if (manifestVersion !== manifest.version || !isManifestDBPresent()) {
         putManifestVersionInLocalStorage(manifest.version);
 
         const promises: Promise<ManifestResponseWrapper>[] = [];
@@ -60,7 +61,7 @@ const fetchDefinitionManifestsIfRequired = (
                 }))
             );
         }
-        Promise.all(promises).then(results => saveDefinitionManifestToIndexedDB(results));
+        Promise.all(promises).then(results => freshSaveOfAllDefinitionManifests(results));
     }
 
     return manifest;
