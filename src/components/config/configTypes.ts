@@ -9,7 +9,6 @@ export const DefinitionManifests = [
     "DestinyItemTierTypeDefinition",
     "DestinyPlugSetDefinition",
     "DestinyRaceDefinition",
-    "DestinyRewardSourceDefinition",
     "DestinySandboxPerkDefinition",
     "DestinySocketTypeDefinition",
     "DestinyStatDefinition",
