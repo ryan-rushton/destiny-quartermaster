@@ -3,9 +3,9 @@ import { Switch, Route, withRouter } from "react-router-dom";
 
 import Login from "./components/login/Login";
 import NavBar from "./components/navbar/NavBar";
-import AccountSelection from "./components/user/AccountSelection";
 import styles from "./App.module.scss";
 import LoggingIn from "./components/login/LoggingIn";
+import CharacterSelect from "./components/characterSelect/CharacterSelect";
 
 const App: FC = () => {
     return (
@@ -14,7 +14,7 @@ const App: FC = () => {
             <div className={styles.body}>
                 <Switch>
                     <Route exact path="/">
-                        <AccountSelection />
+                        <CharacterSelect />
                     </Route>
                     <Route path="/login">
                         <Login />

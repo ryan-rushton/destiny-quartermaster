@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction, CaseReducer } from "@reduxjs/toolkit";
+import { DestinyProfileResponse } from "bungie-api-ts/destiny2";
 
 import { getProfile } from "./../../lib/bungie_api/destiny2";
 import { getValidToken } from "../auth/authToken";
@@ -6,15 +7,18 @@ import { getMembershipDataForCurrentUser } from "../../lib/bungie_api/user";
 import { mapUserMembership } from "./userMappers";
 import { UserMembership } from "./userTypes";
 import { AppDispatch } from "../../appReducer";
+import { mapCharactersFromProfileData } from "../characters/characterReducer";
 
+type ProfileState = DestinyProfileResponse | null;
 type SaveUserMembershipAction = PayloadAction<UserMembership>;
-type SaveProfileAction = PayloadAction<any>;
+type SaveProfileAction = PayloadAction<DestinyProfileResponse>;
+type LoadingProfileAction = PayloadAction<boolean>;
 
 interface UserState {
     userMembership: UserMembership | null;
     profile: {
         isLoading: boolean;
-        data: any;
+        data: ProfileState;
     };
 }
 
@@ -28,7 +32,7 @@ const saveProfileReducer: CaseReducer<UserState, SaveProfileAction> = (state, ac
     profile: { data: action.payload, isLoading: false }
 });
 
-const loadingProfileReducer: CaseReducer<UserState, SaveProfileAction> = (state, action) => ({
+const loadingProfileReducer: CaseReducer<UserState, LoadingProfileAction> = (state, action) => ({
     ...state,
     profile: { ...state.profile, isLoading: action.payload }
 });
@@ -37,7 +41,7 @@ const initialState: UserState = {
     userMembership: null as UserMembership | null,
     profile: {
         isLoading: false,
-        data: null as any
+        data: null as ProfileState
     }
 };
 
@@ -61,21 +65,20 @@ export const fetchUserMembershipData = () => {
     return async (dispatch: AppDispatch): Promise<SaveUserMembershipAction | void> => {
         const token = await dispatch(getValidToken());
         if (token) {
-            return getMembershipDataForCurrentUser(token.accessToken)
-                .then(mapUserMembership)
-                .then(userMembership => dispatch(saveUserMembership(userMembership)));
+            const userMembership = await getMembershipDataForCurrentUser(token.accessToken);
+            dispatch(saveUserMembership(mapUserMembership(userMembership)));
         }
     };
 };
 
 export const fetchProfileData = (id: string, membershipType: number) => {
-    return async (dispatch: AppDispatch): Promise<SaveProfileAction | void> => {
+    return async (dispatch: AppDispatch): Promise<void> => {
         dispatch(loadingProfile(true));
         const token = await dispatch(getValidToken());
         if (token) {
-            return getProfile(id, membershipType, token.accessToken).then(data =>
-                dispatch(saveProfile(data))
-            );
+            const profile = await getProfile(id, membershipType, token.accessToken);
+            dispatch(mapCharactersFromProfileData(profile.characters));
+            dispatch(saveProfile(profile));
         } else {
             dispatch(loadingProfile(false));
         }

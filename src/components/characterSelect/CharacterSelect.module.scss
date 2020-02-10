@@ -1,0 +1,41 @@
+.characterSelect {
+    display: flex;
+    flex-direction: column;
+}
+
+.emblemButton {
+    color: white;
+    cursor: pointer;
+    margin: auto;
+    position: relative;
+}
+
+.emblem {
+    width: 100%;
+}
+
+.demographics {
+    left: 20%;
+    position: absolute;
+    text-align: left;
+    top: 7%;
+}
+
+.classText {
+    font-size: 2em;
+    margin-bottom: 10%;
+}
+
+.genderText {
+    left: 1px;
+    opacity: 0.75;
+}
+
+.lightText {
+    color: aqua;
+    font-size: 2.5em;
+    opacity: 80%;
+    position: absolute;
+    right: 2%;
+    top: 0;
+}

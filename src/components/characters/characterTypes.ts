@@ -5,5 +5,6 @@ export interface Character {
     race: string;
     gender: string;
     level: number;
+    emblemPath: string;
     emblemBackgroundPath: string;
 }

@@ -6,6 +6,15 @@ import { DefinitionManifests } from "./configTypes";
 
 const MANIFEST_VERSION = "MANIFEST_VERSION";
 const DB_NAME = "Quartermaster";
+const DB = new Dexie(DB_NAME);
+
+const schema: Record<string, string> = {};
+
+for (const tableName of DefinitionManifests) {
+    schema[tableName] = "&hash, data";
+}
+
+DB.version(1).stores(schema);
 
 export const putManifestVersionInLocalStorage = (version: string): void => {
     const { localStorage } = window;
@@ -17,32 +26,34 @@ export const getManifestVersionInLocalStorage = (): string | null => {
     return localStorage.getItem(MANIFEST_VERSION);
 };
 
-export const isManifestDBPresent = () => {
-    const db = new Dexie("Quartermaster");
-    return _.difference(DefinitionManifests, db.tables).length === 0;
+export const isManifestDBPresent = (): boolean => {
+    const tableDiff = _.difference(
+        DefinitionManifests,
+        DB.tables.map(table => table.name)
+    );
+    return tableDiff.length === 0;
 };
 
 export const getDefinitionManifestFromIndexDB = async (
     manifestName: string,
     hashes: number[]
-): Promise<JsonObject[]> => {
-    const db = new Dexie("Quartermaster");
-
-    const result = await db
-        .table(manifestName)
-        .where("id")
+): Promise<JsonObject> => {
+    const result: ManifestEntry[] = await DB.table(manifestName)
+        .where("hash")
         .anyOf(hashes)
         .toArray();
 
-    return result.map((dbObject: ManifestEntry) => dbObject.data);
+    return _.chain(result)
+        .keyBy(item => item.hash)
+        .mapValues(item => item.data)
+        .value();
 };
 
-export const freshSaveOfAllDefinitionManifests = (
+export const freshSaveOfAllDefinitionManifests = async (
     manifestResponseWrappers: ManifestResponseWrapper[]
-): boolean => {
+): Promise<void> => {
     if (!window.indexedDB) {
         console.error("This browser does not support indexedDB your manifests will not be cached.");
-        return false;
     }
 
     if (manifestResponseWrappers.length !== DefinitionManifests.length) {
@@ -50,30 +61,17 @@ export const freshSaveOfAllDefinitionManifests = (
     }
 
     try {
-        Dexie.delete(DB_NAME).then(() => {
-            const db = new Dexie(DB_NAME);
-            const schema: Record<string, string> = {};
+        for (const manifestWrapper of manifestResponseWrappers) {
+            DB.table(manifestWrapper.name).clear();
+            const entries: ManifestEntry[] = Object.values(manifestWrapper.data).map(data => ({
+                hash: data.hash,
+                data
+            }));
 
-            for (const manifestWrapper of manifestResponseWrappers) {
-                schema[manifestWrapper.name] = "&hash, data";
-            }
-
-            db.version(1).stores(schema);
-
-            for (const manifestWrapper of manifestResponseWrappers) {
-                const entries: ManifestEntry[] = Object.values(manifestWrapper.data).map(data => ({
-                    hash: data.hash,
-                    data
-                }));
-
-                db.table(manifestWrapper.name).bulkAdd(entries);
-            }
-        });
-
-        return true;
+            await DB.table(manifestWrapper.name).bulkAdd(entries);
+        }
     } catch (error) {
         console.error(`Failed to save manifest to DB: ${error}`);
-        return false;
     }
 };
 
