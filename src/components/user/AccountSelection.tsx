@@ -11,7 +11,7 @@ import { fetchManifest } from "../config/configReducer";
 const AccountSelection: FC = () => {
     const dispatch = useDispatch();
     const userMembership = useSelector((store: AppStore) => store.user.userMembership);
-    const profileData = useSelector((store: AppStore) => store.user.profile);
+    const isLoading = useSelector((store: AppStore) => store.loading);
 
     const getProfile = (id: string, membershipType: number): void => {
         dispatch(fetchProfileData(id, membershipType));
@@ -29,7 +29,7 @@ const AccountSelection: FC = () => {
                     <AccountSelectionButton
                         key={account.id}
                         account={account}
-                        profileIsLoading={profileData.isLoading}
+                        profileIsLoading={isLoading}
                         getProfile={getProfile}
                     />
                 ))}

@@ -39,7 +39,7 @@ const AccountSelectionButton: FC<Props> = ({ account, profileIsLoading, getProfi
                 disabled={profileIsLoading}
                 onClick={(): void => getProfile(id, membershipType)}
             >
-                {`${displayName} / `}
+                {`${displayName} `}
                 <FontAwesomeIcon icon={getIcon(gamePlatform)} />
             </button>
             {isCrossSavePrimary(account) &&
@@ -50,7 +50,7 @@ const AccountSelectionButton: FC<Props> = ({ account, profileIsLoading, getProfi
                         disabled={profileIsLoading}
                         onClick={(): void => getProfile(id, membershipType)}
                     >
-                        {`${overridden.displayName} / `}
+                        {`${overridden.displayName} `}
                         <FontAwesomeIcon icon={getIcon(overridden.gamePlatform)} />
                     </button>
                 ))}

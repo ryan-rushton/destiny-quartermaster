@@ -1,0 +1,25 @@
+// breakpoints for media queries
+$small-screen: 350px; //phones iphone is a little larger at 375
+$medium-screen: 768px; //ipad width
+$large-screen: 1024px; //ipad-pro width (going to treat it as a tablet
+
+// The largest one will always win out
+@mixin styles-for($media) {
+    @if $media == phones {
+        @media only screen and (max-width: $small-screen) {
+            @content;
+        }
+    } @else if $media == tablets {
+        @media only screen and (min-width: $medium-screen + 1) {
+            @content;
+        }
+    } @else if $media == desktops {
+        @media only screen and (min-width: $break-large + 1) {
+            @content;
+        }
+    }
+}
+
+// colours
+$qm-grey: #c2c2c2;
+$qm-grey-2: #d2d2d2;

@@ -1,3 +1,5 @@
+@import "../../styleVariables.scss";
+
 .characterSelect {
     display: flex;
     flex-direction: column;
@@ -22,20 +24,33 @@
 }
 
 .classText {
-    font-size: 2em;
+    font-size: 1.35em;
     margin-bottom: 10%;
+
+    @include styles-for(tablets) {
+        font-size: 1.9em;
+    }
 }
 
 .genderText {
+    font-size: 0.85em;
     left: 1px;
     opacity: 0.75;
+
+    @include styles-for(tablets) {
+        font-size: 1.15em;
+    }
 }
 
 .lightText {
     color: aqua;
-    font-size: 2.5em;
+    font-size: 1.8em;
     opacity: 80%;
     position: absolute;
     right: 2%;
-    top: 0;
+    top: 2%;
+
+    @include styles-for(tablets) {
+        font-size: 2.7em;
+    }
 }

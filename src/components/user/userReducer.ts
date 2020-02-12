@@ -8,6 +8,7 @@ import { mapUserMembership } from "./userMappers";
 import { UserMembership } from "./userTypes";
 import { AppDispatch } from "../../appReducer";
 import { mapCharactersFromProfileData } from "../characters/characterReducer";
+import { setLoading } from "../loadingReducer";
 
 type ProfileState = DestinyProfileResponse | null;
 type SaveUserMembershipAction = PayloadAction<UserMembership>;
@@ -16,10 +17,7 @@ type LoadingProfileAction = PayloadAction<boolean>;
 
 interface UserState {
     userMembership: UserMembership | null;
-    profile: {
-        isLoading: boolean;
-        data: ProfileState;
-    };
+    profile: ProfileState;
 }
 
 const saveUserMembershipReducer: CaseReducer<UserState, SaveUserMembershipAction> = (
@@ -29,20 +27,12 @@ const saveUserMembershipReducer: CaseReducer<UserState, SaveUserMembershipAction
 
 const saveProfileReducer: CaseReducer<UserState, SaveProfileAction> = (state, action) => ({
     ...state,
-    profile: { data: action.payload, isLoading: false }
-});
-
-const loadingProfileReducer: CaseReducer<UserState, LoadingProfileAction> = (state, action) => ({
-    ...state,
-    profile: { ...state.profile, isLoading: action.payload }
+    profile: action.payload
 });
 
 const initialState: UserState = {
     userMembership: null as UserMembership | null,
-    profile: {
-        isLoading: false,
-        data: null as ProfileState
-    }
+    profile: null as ProfileState
 };
 
 const { actions, reducer } = createSlice({
@@ -50,12 +40,11 @@ const { actions, reducer } = createSlice({
     initialState,
     reducers: {
         saveUserMembership: saveUserMembershipReducer,
-        saveProfile: saveProfileReducer,
-        loadingProfile: loadingProfileReducer
+        saveProfile: saveProfileReducer
     }
 });
 
-export const { saveUserMembership, saveProfile, loadingProfile } = actions;
+export const { saveUserMembership, saveProfile } = actions;
 
 /*
  * Complex actions
@@ -73,14 +62,16 @@ export const fetchUserMembershipData = () => {
 
 export const fetchProfileData = (id: string, membershipType: number) => {
     return async (dispatch: AppDispatch): Promise<void> => {
-        dispatch(loadingProfile(true));
         const token = await dispatch(getValidToken());
+        dispatch(setLoading(true));
         if (token) {
             const profile = await getProfile(id, membershipType, token.accessToken);
-            dispatch(mapCharactersFromProfileData(profile.characters));
-            dispatch(saveProfile(profile));
+            Promise.all([
+                dispatch(mapCharactersFromProfileData(profile.characters)),
+                dispatch(saveProfile(profile))
+            ]).finally(() => dispatch(setLoading(false)));
         } else {
-            dispatch(loadingProfile(false));
+            dispatch(setLoading(false));
         }
     };
 };

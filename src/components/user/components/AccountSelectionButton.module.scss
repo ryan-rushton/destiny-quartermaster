@@ -1,12 +1,14 @@
+@import "../../../styleVariables.scss";
+
 .button {
-    background-color: #c2c2c2;
+    background-color: $qm-grey;
     border-radius: 2px;
     cursor: pointer;
-    font-size: inherit;
+    font-size: 20px;
     margin-bottom: 2px;
     padding: 10px 20px;
 
     &:hover {
-        background-color: #d2d2d2;
+        background-color: $qm-grey-2;
     }
 }
