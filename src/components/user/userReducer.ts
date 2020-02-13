@@ -6,9 +6,10 @@ import { getValidToken } from "../auth/authToken";
 import { getMembershipDataForCurrentUser } from "../../lib/bungie_api/user";
 import { mapUserMembership } from "./userMappers";
 import { UserMembership } from "./userTypes";
-import { AppDispatch } from "../../appReducer";
+import { StoreDispatch } from "../../rootReducer";
 import { mapCharactersFromProfileData } from "../characters/characterReducer";
-import { setLoading } from "../loadingReducer";
+import { setLoading } from "../../appReducer";
+import { mapInventoryFromInventoryData } from "../inventory/inventoryReducer";
 
 type ProfileState = DestinyProfileResponse | null;
 type SaveUserMembershipAction = PayloadAction<UserMembership>;
@@ -51,7 +52,7 @@ export const { saveUserMembership, saveProfile } = actions;
  */
 
 export const fetchUserMembershipData = () => {
-    return async (dispatch: AppDispatch): Promise<SaveUserMembershipAction | void> => {
+    return async (dispatch: StoreDispatch): Promise<SaveUserMembershipAction | void> => {
         const token = await dispatch(getValidToken());
         if (token) {
             const userMembership = await getMembershipDataForCurrentUser(token.accessToken);
@@ -61,13 +62,20 @@ export const fetchUserMembershipData = () => {
 };
 
 export const fetchProfileData = (id: string, membershipType: number) => {
-    return async (dispatch: AppDispatch): Promise<void> => {
+    return async (dispatch: StoreDispatch): Promise<void> => {
         const token = await dispatch(getValidToken());
         dispatch(setLoading(true));
         if (token) {
             const profile = await getProfile(id, membershipType, token.accessToken);
             Promise.all([
                 dispatch(mapCharactersFromProfileData(profile.characters)),
+                dispatch(
+                    mapInventoryFromInventoryData(
+                        profile.profileInventory,
+                        profile.characterEquipment,
+                        profile.characterInventories
+                    )
+                ),
                 dispatch(saveProfile(profile))
             ]).finally(() => dispatch(setLoading(false)));
         } else {

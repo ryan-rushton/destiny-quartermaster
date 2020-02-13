@@ -1,25 +1,37 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, CaseReducer } from "@reduxjs/toolkit";
 
-import authReducer from "./components/auth/authReducer";
-import configReducer from "./components/config/configReducer";
-import characterReducer from "./components/characters/characterReducer";
-import loadingReducer from "./components/loadingReducer";
-import userReducer from "./components/user/userReducer";
+type SelectedCharacterState = number | null;
+type SetLoadingAction = PayloadAction<boolean>;
+type SetSelectedCharacter = PayloadAction<number | null>;
 
-const appReducer = combineReducers({
-    authToken: authReducer,
-    characters: characterReducer,
-    config: configReducer,
-    loading: loadingReducer,
-    user: userReducer
+interface AppState {
+    loading: boolean;
+    selectedCharacter: SelectedCharacterState;
+}
+
+const initialState: AppState = {
+    loading: false,
+    selectedCharacter: null as SelectedCharacterState
+};
+
+const setLoadingReducer: CaseReducer<AppState, SetLoadingAction> = (state, action) => ({
+    ...state,
+    loading: action.payload
+});
+const setSelectedCharacterReducer: CaseReducer<AppState, SetSelectedCharacter> = (
+    state,
+    action
+) => ({ ...state, selectedCharacter: action.payload });
+
+const { actions, reducer } = createSlice({
+    name: "app",
+    initialState,
+    reducers: {
+        setLoading: setLoadingReducer,
+        setSelectedCharacter: setSelectedCharacterReducer
+    }
 });
 
-export type AppStore = ReturnType<typeof appReducer>;
+export const { setLoading } = actions;
 
-const store = configureStore({
-    reducer: appReducer
-});
-
-export type AppDispatch = typeof store.dispatch;
-
-export default store;
+export default reducer;

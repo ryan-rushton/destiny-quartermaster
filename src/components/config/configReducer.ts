@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice, CaseReducer } from "@reduxjs/toolkit";
 
 import { getManifest, DestinyManifestComplete } from "../../lib/bungie_api/destiny2";
-import { AppDispatch } from "../../appReducer";
+import { StoreDispatch } from "../../rootReducer";
 import { getValidToken } from "../auth/authToken";
 import { DefinitionManifests } from "./configTypes";
 import { getCommonJsonAsset } from "../../lib/bungie_api/common";
@@ -9,7 +9,6 @@ import {
     getManifestVersionInLocalStorage,
     putManifestVersionInLocalStorage,
     freshSaveOfAllDefinitionManifests,
-    isManifestDBPresent,
     ManifestResponseWrapper
 } from "./configStorage";
 
@@ -49,7 +48,7 @@ const fetchDefinitionManifestsIfRequired = (
     const localisedDefs = manifest.jsonWorldComponentContentPaths[locale];
     const manifestVersion = getManifestVersionInLocalStorage();
 
-    if (manifestVersion !== manifest.version || !isManifestDBPresent()) {
+    if (manifestVersion !== manifest.version) {
         putManifestVersionInLocalStorage(manifest.version);
 
         const promises: Promise<ManifestResponseWrapper>[] = [];
@@ -68,7 +67,7 @@ const fetchDefinitionManifestsIfRequired = (
 };
 
 export const fetchManifest = () => {
-    return async (dispatch: AppDispatch): Promise<SaveManifestAction | void> => {
+    return async (dispatch: StoreDispatch): Promise<SaveManifestAction | void> => {
         const token = await dispatch(getValidToken());
         if (token) {
             return getManifest(token.accessToken)

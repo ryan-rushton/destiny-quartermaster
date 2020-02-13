@@ -1,4 +1,4 @@
-import { AppDispatch } from "./../../appReducer";
+import { StoreDispatch } from "../../rootReducer";
 import {
     getTokenTimeFromLocalStorage,
     getTokenFromLocalStorage,
@@ -26,19 +26,23 @@ export const isTokenValid = (
     return tokenTime - timeAlive > 120;
 };
 
-export const saveToken = (startAuth: number, token: AuthToken) => (dispatch: AppDispatch): void => {
+export const saveToken = (startAuth: number, token: AuthToken) => (
+    dispatch: StoreDispatch
+): void => {
     putTokenInLocalStorage(token, startAuth);
     dispatch(saveAuthToken(token));
 };
 
 const renewToken = async (
-    dispatch: AppDispatch,
+    dispatch: StoreDispatch,
     token: AuthToken,
     savedTime: number,
     startAuth: number
 ): Promise<AuthToken | undefined> => {
     const canReAuth = token && isTokenValid(token.refreshExpiresIn, savedTime, startAuth);
     deleteAuthTokenFromLocalStorage();
+
+    console.info(`Refresh token expires at ${new Date(token.refreshExpiresIn * 1000 + savedTime)}`);
 
     if (token && canReAuth) {
         const newToken = mapAuthToken(await refreshOAuthToken(token.refreshToken));
@@ -54,13 +58,14 @@ const renewToken = async (
  * @param codeFromQueryParam the code query parameter from the url which is present after authorisation.
  */
 export const getValidToken = () => async (
-    dispatch: AppDispatch
+    dispatch: StoreDispatch
 ): Promise<AuthToken | undefined> => {
     const savedToken = getTokenFromLocalStorage();
     const savedTime = getTokenTimeFromLocalStorage();
     const startAuth = Date.now();
 
     if (savedToken && savedTime) {
+        console.info(`Auth token expires at ${new Date(savedToken.expiresIn * 1000 + savedTime)}`);
         if (isTokenValid(savedToken.expiresIn, savedTime, startAuth)) {
             return savedToken;
         } else {

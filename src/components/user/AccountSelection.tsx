@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { AppStore } from "../../appReducer";
+import { RootStore } from "../../rootReducer";
 import withAuth from "../auth/withAuth";
 import { fetchUserMembershipData, fetchProfileData } from "./userReducer";
 import AccountSelectionButton from "./components/AccountSelectionButton";
@@ -10,8 +10,8 @@ import { fetchManifest } from "../config/configReducer";
 
 const AccountSelection: FC = () => {
     const dispatch = useDispatch();
-    const userMembership = useSelector((store: AppStore) => store.user.userMembership);
-    const isLoading = useSelector((store: AppStore) => store.loading);
+    const userMembership = useSelector((store: RootStore) => store.user.userMembership);
+    const isLoading = useSelector((store: RootStore) => store.app.loading);
 
     const getProfile = (id: string, membershipType: number): void => {
         dispatch(fetchProfileData(id, membershipType));

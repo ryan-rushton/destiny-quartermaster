@@ -2,7 +2,7 @@ import { PayloadAction, createSlice, CaseReducer } from "@reduxjs/toolkit";
 import { DictionaryComponentResponse, DestinyCharacterComponent } from "bungie-api-ts/destiny2";
 
 import { Character } from "./characterTypes";
-import { AppDispatch } from "../../appReducer";
+import { StoreDispatch } from "../../rootReducer";
 import { mapCharacters } from "./characterMappers";
 
 type CharacterState = Character | null;
@@ -40,7 +40,7 @@ export const { saveCharacters } = actions;
 export const mapCharactersFromProfileData = (
     characterResponse: DictionaryComponentResponse<DestinyCharacterComponent>
 ) => {
-    return async (dispatch: AppDispatch): Promise<SaveCharactersAction | void> => {
+    return async (dispatch: StoreDispatch): Promise<SaveCharactersAction | void> => {
         if (characterResponse.data) {
             const characters = await mapCharacters(Object.values(characterResponse.data));
             return dispatch(saveCharacters(characters));

@@ -1,12 +1,12 @@
 import React, { FC } from "react";
 import { useSelector } from "react-redux";
 
-import { AppStore } from "../../appReducer";
+import { RootStore } from "../../rootReducer";
 import styles from "./CharacterSelect.module.scss";
 import AccountSelection from "../user/AccountSelection";
 
 const CharacterSelect: FC = () => {
-    const characters = useSelector((state: AppStore) => state.characters);
+    const characters = useSelector((state: RootStore) => state.characters);
 
     return (
         <>

@@ -24,7 +24,7 @@ export const getProfile = async (
     accessToken: string
 ): Promise<DestinyProfileResponse> => {
     const bungieResponse = await bungieApiGet<DestinyProfileResponse>(
-        `/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,102,200,201205,300,302,304,305,307,308,310`,
+        `/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,102,200,201,205,300,302,304,305,307,308,310`,
         accessToken
     );
 

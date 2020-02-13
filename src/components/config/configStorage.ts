@@ -26,14 +26,6 @@ export const getManifestVersionInLocalStorage = (): string | null => {
     return localStorage.getItem(MANIFEST_VERSION);
 };
 
-export const isManifestDBPresent = (): boolean => {
-    const tableDiff = _.difference(
-        DefinitionManifests,
-        DB.tables.map(table => table.name)
-    );
-    return tableDiff.length === 0;
-};
-
 export const getDefinitionManifestFromIndexDB = async (
     manifestName: string,
     hashes: number[]

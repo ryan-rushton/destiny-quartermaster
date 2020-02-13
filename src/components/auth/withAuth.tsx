@@ -2,11 +2,11 @@ import React, { FC, ComponentType } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import { AppStore } from "../../appReducer";
+import { RootStore } from "../../rootReducer";
 
 const withAuth = <T,>(WrappedComponent: ComponentType<T>): FC<T> => {
     const Authenticate: FC<T> = props => {
-        const isLoggedIn = useSelector((state: AppStore) => Boolean(state.authToken));
+        const isLoggedIn = useSelector((state: RootStore) => Boolean(state.authToken));
         const history = useHistory();
 
         if (!isLoggedIn) {

@@ -8,11 +8,12 @@
 .emblemButton {
     color: white;
     cursor: pointer;
-    margin: auto;
+    margin: 2px auto;
     position: relative;
 }
 
 .emblem {
+    display: block;
     width: 100%;
 }
 

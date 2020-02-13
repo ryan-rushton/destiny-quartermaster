@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getOAuthToken } from "../../lib/bungie_api/auth";
 import { saveToken } from "../auth/authToken";
 import { mapAuthToken } from "../auth/authMappers";
-import { AppStore, AppDispatch } from "../../appReducer";
+import { RootStore, StoreDispatch } from "../../rootReducer";
 
 const getCodeFromQueryParam = (): string | undefined => {
     const { location } = window;
@@ -16,8 +16,8 @@ const getCodeFromQueryParam = (): string | undefined => {
 };
 
 const LoggingIn: FC = () => {
-    const isLoggedIn = useSelector((state: AppStore) => Boolean(state.authToken));
-    const dispatch: AppDispatch = useDispatch();
+    const isLoggedIn = useSelector((state: RootStore) => Boolean(state.authToken));
+    const dispatch: StoreDispatch = useDispatch();
 
     if (isLoggedIn) {
         return <Redirect to="/" />;
