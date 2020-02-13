@@ -3,28 +3,28 @@ import { PayloadAction, createSlice, CaseReducer } from "@reduxjs/toolkit";
 import { getManifest, DestinyManifestComplete } from "../../lib/bungie_api/destiny2";
 import { StoreDispatch } from "../../rootReducer";
 import { getValidToken } from "../auth/authToken";
-import { DefinitionManifests } from "./configTypes";
+import { DefinitionManifests } from "./manifestTypes";
 import { getCommonJsonAsset } from "../../lib/bungie_api/common";
 import {
     getManifestVersionInLocalStorage,
     putManifestVersionInLocalStorage,
     freshSaveOfAllDefinitionManifests,
     ManifestResponseWrapper
-} from "./configStorage";
+} from "./manifestStorage";
 
-type ManifestState = DestinyManifestComplete | null;
-type SaveManifestAction = PayloadAction<ManifestState>;
+type DestinyManifestState = DestinyManifestComplete | null;
+type SaveManifestAction = PayloadAction<DestinyManifestState>;
 
-interface ConfigState {
-    manifest: ManifestState;
+interface ManifestState {
+    manifest: DestinyManifestState;
 }
 
-const saveManifestReducer: CaseReducer<ConfigState, SaveManifestAction> = (state, action) => {
+const saveManifestReducer: CaseReducer<ManifestState, SaveManifestAction> = (state, action) => {
     return { ...state, manifest: action.payload };
 };
 
-const initialState: ConfigState = {
-    manifest: null as ManifestState
+const initialState: ManifestState = {
+    manifest: null as DestinyManifestState
 };
 
 const { actions, reducer } = createSlice({

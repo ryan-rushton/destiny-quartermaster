@@ -1,31 +1,19 @@
 import { DestinyCharacterComponent } from "bungie-api-ts/destiny2";
 
+import {
+    getClassManifest,
+    getGenderManifest,
+    getRaceManifest
+} from "./../manifest/manifestStorage";
 import { Character } from "./characterTypes";
-import { DefinitionManifestsEnum } from "../config/configTypes";
-import { getDefinitionManifestFromIndexDB } from "../config/configStorage";
 import { getFullImagePath } from "../../util/mappingUtils";
 
 export const mapCharacters = (characters: DestinyCharacterComponent[]): Promise<Character[]> => {
-    const {
-        DestinyClassDefinition,
-        DestinyGenderDefinition,
-        DestinyRaceDefinition
-    } = DefinitionManifestsEnum;
+    const classPromise = getClassManifest(characters.map(c => c.classHash));
 
-    const classPromise = getDefinitionManifestFromIndexDB(
-        DestinyClassDefinition,
-        characters.map(c => c.classHash)
-    );
+    const genderPromise = getGenderManifest(characters.map(c => c.genderHash));
 
-    const genderPromise = getDefinitionManifestFromIndexDB(
-        DestinyGenderDefinition,
-        characters.map(c => c.genderHash)
-    );
-
-    const racePromise = getDefinitionManifestFromIndexDB(
-        DestinyRaceDefinition,
-        characters.map(c => c.raceHash)
-    );
+    const racePromise = getRaceManifest(characters.map(c => c.raceHash));
 
     return Promise.all([classPromise, genderPromise, racePromise]).then(
         ([classManifest, genderManifest, raceManifest]) => {

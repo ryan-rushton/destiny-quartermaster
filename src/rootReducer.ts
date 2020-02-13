@@ -3,7 +3,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import appReducer from "./appReducer";
 import authReducer from "./components/auth/authReducer";
 import characterReducer from "./components/characters/characterReducer";
-import configReducer from "./components/config/configReducer";
+import manifestReducer from "./components/manifest/manifestReducer";
 import inventoryReducer from "./components/inventory/inventoryReducer";
 import userReducer from "./components/user/userReducer";
 
@@ -11,7 +11,7 @@ const rootReducer = combineReducers({
     app: appReducer,
     authToken: authReducer,
     characters: characterReducer,
-    config: configReducer,
+    manifest: manifestReducer,
     inventory: inventoryReducer,
     user: userReducer
 });

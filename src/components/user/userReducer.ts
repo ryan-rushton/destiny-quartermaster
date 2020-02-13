@@ -69,15 +69,15 @@ export const fetchProfileData = (id: string, membershipType: number) => {
             const profile = await getProfile(id, membershipType, token.accessToken);
             Promise.all([
                 dispatch(mapCharactersFromProfileData(profile.characters)),
-                dispatch(
-                    mapInventoryFromInventoryData(
-                        profile.profileInventory,
-                        profile.characterEquipment,
-                        profile.characterInventories
-                    )
-                ),
                 dispatch(saveProfile(profile))
             ]).finally(() => dispatch(setLoading(false)));
+            dispatch(
+                mapInventoryFromInventoryData(
+                    profile.profileInventory,
+                    profile.characterEquipment,
+                    profile.characterInventories
+                )
+            );
         } else {
             dispatch(setLoading(false));
         }

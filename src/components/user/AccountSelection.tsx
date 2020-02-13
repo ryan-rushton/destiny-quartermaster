@@ -6,7 +6,7 @@ import withAuth from "../auth/withAuth";
 import { fetchUserMembershipData, fetchProfileData } from "./userReducer";
 import AccountSelectionButton from "./components/AccountSelectionButton";
 import styles from "./AccountSelection.module.scss";
-import { fetchManifest } from "../config/configReducer";
+import { fetchManifest } from "../manifest/manifestReducer";
 
 const AccountSelection: FC = () => {
     const dispatch = useDispatch();

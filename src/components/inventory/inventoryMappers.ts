@@ -1,14 +1,17 @@
 import _ from "lodash";
-import { DestinyInventoryComponent, DestinyItemComponent } from "bungie-api-ts/destiny2";
+import {
+    DestinyInventoryComponent,
+    DestinyItemComponent,
+    DestinyInventoryItemDefinition
+} from "bungie-api-ts/destiny2";
 
-import { DefinitionManifestsEnum } from "../config/configTypes";
-import { getDefinitionManifestFromIndexDB } from "../config/configStorage";
 import {
     WeaponItemCategoryHashes,
     ArmourItemCategoryHashes,
     GeneralItemCategoryHashes,
     InventoryItem
 } from "./inventoryTypes";
+import { getInventoryItemManifest } from "../manifest/manifestStorage";
 
 interface Inventory {
     items: Record<string, InventoryItem>;
@@ -16,7 +19,7 @@ interface Inventory {
 
 const filterByCategory = (
     item: DestinyItemComponent,
-    itemsManifest: Record<string, any>
+    itemsManifest: Record<string, DestinyInventoryItemDefinition>
 ): boolean => {
     const categoriesOfInterest = [
         ...WeaponItemCategoryHashes,
@@ -31,7 +34,7 @@ const filterByCategory = (
 
 const mapSingleItem = (
     bungieItem: DestinyItemComponent,
-    itemsManifest: Record<string, any>
+    itemsManifest: Record<string, DestinyInventoryItemDefinition>
 ): InventoryItem => {
     const manifestEntry = itemsManifest[bungieItem.itemHash];
     return {
@@ -49,8 +52,6 @@ export const mapCharacterInventories = async (
 ): Promise<Inventory> => {
     const timerLabel = "Mapping Inventory";
     console.time(timerLabel);
-
-    const { DestinyInventoryItemDefinition } = DefinitionManifestsEnum;
 
     const profileValues = (profileInventory && Object.values(profileInventory.items)) || [];
 
@@ -70,10 +71,7 @@ export const mapCharacterInventories = async (
 
     const allItems = [...profileValues, ...charEquipValues, ...charValues];
 
-    const itemsManifest = await getDefinitionManifestFromIndexDB(
-        DestinyInventoryItemDefinition,
-        allItems.map(b => b.itemHash)
-    );
+    const itemsManifest = await getInventoryItemManifest(allItems.map(b => b.itemHash));
 
     const keyedItems = _.chain(allItems)
         .filter(item => filterByCategory(item, itemsManifest))
