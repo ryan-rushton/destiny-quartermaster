@@ -1,3 +1,4 @@
+# Currently under construction.
 # Destiny Quartermaster
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -15,7 +16,3 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
     - Origin Header - https://127.0.0.1:3000
 2. Put your API key and the client id and secret into the REACT_APP_BUNGIE_API_KEY, REACT_APP_BUNGIE_API_CLIENT_ID and REACT_APP_BUNGIE_API_CLIENT_SECRET variables in the .env.development file variables. Make sure this is never committed.
 
-## API Code generation
-
-1. Set up swagger-codegen as per here https://swagger.io/docs/open-source-tools/swagger-codegen/
-2.
