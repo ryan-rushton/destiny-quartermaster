@@ -75,7 +75,8 @@ export const fetchProfileData = (id: string, membershipType: number) => {
                 mapInventoryFromInventoryData(
                     profile.profileInventory,
                     profile.characterEquipment,
-                    profile.characterInventories
+                    profile.characterInventories,
+                    profile.itemComponents
                 )
             );
         } else {

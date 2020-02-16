@@ -5,7 +5,11 @@ import {
     DestinyGenderDefinition,
     DestinyInventoryItemDefinition,
     DestinyItemCategoryDefinition,
-    DestinyRaceDefinition
+    DestinyRaceDefinition,
+    DestinySandboxPerkDefinition,
+    DestinyStatDefinition,
+    DestinyStatGroupDefinition,
+    DestinyDamageTypeDefinition
 } from "bungie-api-ts/destiny2";
 
 import { JsonObject } from "../../lib/bungie_api/rest";
@@ -52,6 +56,17 @@ const getDefinitionManifestFromIndexDB = async (
         .value();
 };
 
+const getCompleteDefinitionManifestFromIndexDB = async (
+    manifestName: string
+): Promise<Record<string, any>> => {
+    const result = await DB.table(manifestName).toArray();
+
+    return _.chain(result)
+        .keyBy(item => item.hash)
+        .mapValues(item => item.data)
+        .value();
+};
+
 export const getClassManifest = async (
     hashes: number[]
 ): Promise<Record<string, DestinyClassDefinition>> => {
@@ -88,6 +103,37 @@ export const getItemCategoryManifest = async (
     return getDefinitionManifestFromIndexDB(
         DefinitionManifestsEnum.DestinyItemCategoryDefinition,
         hashes
+    );
+};
+
+export const getCompleteStatManifest = async (): Promise<Record<string, DestinyStatDefinition>> => {
+    return getCompleteDefinitionManifestFromIndexDB(DefinitionManifestsEnum.DestinyStatDefinition);
+};
+
+export const getCompletePerkManifest = async (): Promise<Record<
+    string,
+    DestinySandboxPerkDefinition
+>> => {
+    return getCompleteDefinitionManifestFromIndexDB(
+        DefinitionManifestsEnum.DestinySandboxPerkDefinition
+    );
+};
+
+export const getCompleteDamageTypeManifest = async (): Promise<Record<
+    string,
+    DestinyDamageTypeDefinition
+>> => {
+    return getCompleteDefinitionManifestFromIndexDB(
+        DefinitionManifestsEnum.DestinyDamageTypeDefinition
+    );
+};
+
+export const getCompleteStatGroupManifest = async (): Promise<Record<
+    string,
+    DestinyStatGroupDefinition
+>> => {
+    return getCompleteDefinitionManifestFromIndexDB(
+        DefinitionManifestsEnum.DestinyStatGroupDefinition
     );
 };
 

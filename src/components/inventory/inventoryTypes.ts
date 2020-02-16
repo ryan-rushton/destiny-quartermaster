@@ -60,9 +60,42 @@ export enum GeneralItemCategories {
 
 export const GeneralItemCategoryHashes = getHashesFromEnum(GeneralItemCategories);
 
+export interface Damage {
+    hash: number;
+    iconPath: string;
+    name: string;
+}
+
+export interface Perk {
+    perkHash: number;
+    iconPath: string;
+    name: string;
+    isActive: boolean;
+}
+
+export interface Perks {
+    [key: string]: Perk;
+}
+export interface Stat {
+    statHash: number;
+    name: string;
+    value: number;
+}
+
+export interface Stats {
+    [key: string]: Stat;
+}
+
 export interface InventoryItem {
     hash: number;
+    name: string;
+    iconPath: string;
+    stats: Stats;
+    perks?: Perks;
+    primaryStat?: Stat;
     categories: number[];
+    damage?: Damage[];
     bungieItem: DestinyItemComponent;
     itemManifest: Record<string, any>;
+    itemComponents: any;
 }

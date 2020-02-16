@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction, CaseReducer } from "@reduxjs/toolkit";
 
-type SelectedCharacterState = number | null;
+type SelectedCharacterState = string | null;
 type SetLoadingAction = PayloadAction<boolean>;
-type SetSelectedCharacter = PayloadAction<number | null>;
+type SetSelectedCharacter = PayloadAction<SelectedCharacterState>;
 
 interface AppState {
     loading: boolean;
@@ -32,6 +32,6 @@ const { actions, reducer } = createSlice({
     }
 });
 
-export const { setLoading } = actions;
+export const { setLoading, setSelectedCharacter } = actions;
 
 export default reducer;

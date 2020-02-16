@@ -2,7 +2,8 @@ import { createSlice, PayloadAction, CaseReducer } from "@reduxjs/toolkit";
 import {
     DestinyInventoryComponent,
     DictionaryComponentResponse,
-    SingleComponentResponse
+    SingleComponentResponse,
+    DestinyItemComponentSetOfint64
 } from "bungie-api-ts/destiny2";
 
 import { StoreDispatch } from "../../rootReducer";
@@ -28,12 +29,19 @@ export const { saveInventory } = actions;
 export const mapInventoryFromInventoryData = (
     profileInventory: SingleComponentResponse<DestinyInventoryComponent>,
     characterEquipment: DictionaryComponentResponse<DestinyInventoryComponent>,
-    characterInventoryData: DictionaryComponentResponse<DestinyInventoryComponent>
+    characterInventoryData: DictionaryComponentResponse<DestinyInventoryComponent>,
+    itemComponents: DestinyItemComponentSetOfint64
 ) => async (dispatch: StoreDispatch): Promise<void> => {
+    const { instances, perks, stats, sockets, reusablePlugs } = itemComponents;
     const inventory = await mapCharacterInventories(
         profileInventory.data,
         characterEquipment.data,
-        characterInventoryData.data
+        characterInventoryData.data,
+        instances.data,
+        perks.data,
+        stats.data,
+        sockets.data,
+        reusablePlugs.data
     );
     dispatch(saveInventory(inventory));
 };

@@ -1,6 +1,7 @@
 export enum DefinitionManifestsEnum {
     DestinyClassDefinition = "DestinyClassDefinition",
     DestinyDamageTypeDefinition = "DestinyDamageTypeDefinition",
+    DestinyEnergyTypeDefinition = "DestinyEnergyTypeDefinition",
     DestinyEquipmentSlotDefinition = "DestinyEquipmentSlotDefinition",
     DestinyGenderDefinition = "DestinyGenderDefinition",
     DestinyInventoryBucketDefinition = "DestinyInventoryBucketDefinition",
@@ -10,6 +11,7 @@ export enum DefinitionManifestsEnum {
     DestinyPlugSetDefinition = "DestinyPlugSetDefinition",
     DestinyRaceDefinition = "DestinyRaceDefinition",
     DestinySandboxPerkDefinition = "DestinySandboxPerkDefinition",
+    DestinySocketCategoryDefinition = "DestinySocketCategoryDefinition",
     DestinySocketTypeDefinition = "DestinySocketTypeDefinition",
     DestinyStatDefinition = "DestinyStatDefinition",
     DestinyStatGroupDefinition = "DestinyStatGroupDefinition",
