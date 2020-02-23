@@ -9,9 +9,9 @@
     display: grid;
     grid-template-columns: 5vw auto 5vw;
     grid-template-rows: 40px auto;
-    height: 100vh;
+    min-height: 100vh;
+    min-width: 100vw;
     text-align: center;
-    width: 100vw;
 }
 
 .body {

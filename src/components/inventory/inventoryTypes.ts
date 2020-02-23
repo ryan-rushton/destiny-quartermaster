@@ -1,5 +1,3 @@
-import { DestinyItemComponent } from "bungie-api-ts/destiny2";
-
 const getHashesFromEnum = (anEnum: any): number[] => {
     const hashes: number[] = [];
     for (const val of Object.values(anEnum)) {
@@ -98,11 +96,11 @@ export interface Stats {
 export interface Mod {
     name: string;
     iconPath: string;
+    enabled: boolean;
     description: string;
     hash: number;
     categories: number[];
     stats: Stats;
-    def?: any;
 }
 
 export interface InventoryItem {
@@ -111,32 +109,44 @@ export interface InventoryItem {
     iconPath: string;
     primaryStat?: Stat;
     categories: number[];
-    // to delete
-    sockets?: any[];
-    bungieItem: DestinyItemComponent;
-    itemManifest: Record<string, any>;
-    itemComponents: any;
 }
 
 export interface Weapon extends InventoryItem {
     damage: Damage[];
     stats: Stats;
     baseStats: Stats;
-    perks: Mod[];
+    perks: Mod[][];
     mods: Mod[];
     cosmetics: Mod[];
+    exotic: boolean;
 }
 
 export interface Armour extends InventoryItem {
     tier: Mod[];
     stats: Stats;
     baseStats: Stats;
-    perks: Mod[];
+    perks: Mod[][];
     mods: Mod[];
     cosmetics: Mod[];
+    exotic: boolean;
 }
 
 export interface GhostShell extends InventoryItem {
-    perks: Mod[];
+    perks: Mod[][];
     mods: Mod[];
+}
+
+export interface Inventory {
+    weapons: {
+        kinetic: Record<string, Weapon>;
+        energy: Record<string, Weapon>;
+        heavy: Record<string, Weapon>;
+    };
+    armour: {
+        warlock: Record<string, Armour>;
+        hunter: Record<string, Armour>;
+        titan: Record<string, Armour>;
+    };
+    ghosts: Record<string, InventoryItem>;
+    other: Record<string, InventoryItem>;
 }

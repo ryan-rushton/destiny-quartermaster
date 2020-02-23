@@ -6,14 +6,15 @@ import {
     DestinyItemComponentSetOfint64
 } from "bungie-api-ts/destiny2";
 
+import { Inventory } from "./inventoryTypes";
 import { StoreDispatch } from "../../rootReducer";
 import { mapCharacterInventories } from "./inventoryMappers";
 
-type SaveInventoryAction = PayloadAction<any>;
+type SaveInventoryAction = PayloadAction<Inventory>;
+type InventoryState = Inventory | null;
+const initialState = null as InventoryState;
 
-const initialState: any = null as any;
-
-const saveInventoryReducer: CaseReducer<any, SaveInventoryAction> = (state, action) =>
+const saveInventoryReducer: CaseReducer<InventoryState, SaveInventoryAction> = (state, action) =>
     action.payload;
 
 const { actions, reducer } = createSlice({
@@ -32,14 +33,15 @@ export const mapInventoryFromInventoryData = (
     characterInventoryData: DictionaryComponentResponse<DestinyInventoryComponent>,
     itemComponents: DestinyItemComponentSetOfint64
 ) => async (dispatch: StoreDispatch): Promise<void> => {
-    const { instances, sockets, stats } = itemComponents;
+    const { instances, sockets, stats, reusablePlugs } = itemComponents;
     const inventory = await mapCharacterInventories(
         profileInventory.data,
         characterEquipment.data,
         characterInventoryData.data,
         instances.data,
         stats.data,
-        sockets.data
+        sockets.data,
+        reusablePlugs.data
     );
     dispatch(saveInventory(inventory));
 };
