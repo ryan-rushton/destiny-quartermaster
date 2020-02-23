@@ -32,16 +32,14 @@ export const mapInventoryFromInventoryData = (
     characterInventoryData: DictionaryComponentResponse<DestinyInventoryComponent>,
     itemComponents: DestinyItemComponentSetOfint64
 ) => async (dispatch: StoreDispatch): Promise<void> => {
-    const { instances, perks, stats, sockets, reusablePlugs } = itemComponents;
+    const { instances, sockets, stats } = itemComponents;
     const inventory = await mapCharacterInventories(
         profileInventory.data,
         characterEquipment.data,
         characterInventoryData.data,
         instances.data,
-        perks.data,
         stats.data,
-        sockets.data,
-        reusablePlugs.data
+        sockets.data
     );
     dispatch(saveInventory(inventory));
 };

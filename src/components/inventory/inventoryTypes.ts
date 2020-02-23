@@ -38,6 +38,12 @@ export enum WeaponItemCategories {
 
 export const WeaponItemCategoryHashes = getHashesFromEnum(WeaponItemCategories);
 
+export enum WeaponSocketCategories {
+    Perks = 4241085061,
+    Mods = 2685412949,
+    Cosmetics = 2048875504
+}
+
 export enum ArmourItemCategories {
     Armour = 20,
     WarlockArmour = 21,
@@ -53,9 +59,22 @@ export enum ArmourItemCategories {
 
 export const ArmourItemCategoryHashes = getHashesFromEnum(ArmourItemCategories);
 
+export enum ArmourSocketCategories {
+    Tier = 760375309,
+    Perks = 2518356196,
+    Mods = 590099826,
+    Cosmetics = 1926152773
+}
+
 export enum GeneralItemCategories {
     Exotic = 31,
-    Ghosts = 39
+    Ghosts = 39,
+    Subclass = 50
+}
+
+export enum GhostShellSocketCategories {
+    Perks = 3301318876,
+    Mods = 3379164649
 }
 
 export const GeneralItemCategoryHashes = getHashesFromEnum(GeneralItemCategories);
@@ -66,16 +85,6 @@ export interface Damage {
     name: string;
 }
 
-export interface Perk {
-    perkHash: number;
-    iconPath: string;
-    name: string;
-    isActive: boolean;
-}
-
-export interface Perks {
-    [key: string]: Perk;
-}
 export interface Stat {
     statHash: number;
     name: string;
@@ -86,16 +95,48 @@ export interface Stats {
     [key: string]: Stat;
 }
 
+export interface Mod {
+    name: string;
+    iconPath: string;
+    description: string;
+    hash: number;
+    categories: number[];
+    stats: Stats;
+    def?: any;
+}
+
 export interface InventoryItem {
     hash: number;
     name: string;
     iconPath: string;
-    stats: Stats;
-    perks?: Perks;
     primaryStat?: Stat;
     categories: number[];
-    damage?: Damage[];
+    // to delete
+    sockets?: any[];
     bungieItem: DestinyItemComponent;
     itemManifest: Record<string, any>;
     itemComponents: any;
+}
+
+export interface Weapon extends InventoryItem {
+    damage: Damage[];
+    stats: Stats;
+    baseStats: Stats;
+    perks: Mod[];
+    mods: Mod[];
+    cosmetics: Mod[];
+}
+
+export interface Armour extends InventoryItem {
+    tier: Mod[];
+    stats: Stats;
+    baseStats: Stats;
+    perks: Mod[];
+    mods: Mod[];
+    cosmetics: Mod[];
+}
+
+export interface GhostShell extends InventoryItem {
+    perks: Mod[];
+    mods: Mod[];
 }

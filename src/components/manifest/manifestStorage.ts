@@ -9,7 +9,9 @@ import {
     DestinySandboxPerkDefinition,
     DestinyStatDefinition,
     DestinyStatGroupDefinition,
-    DestinyDamageTypeDefinition
+    DestinyDamageTypeDefinition,
+    DestinySocketTypeDefinition,
+    DestinyPlugSetDefinition
 } from "bungie-api-ts/destiny2";
 
 import { JsonObject } from "../../lib/bungie_api/rest";
@@ -106,6 +108,15 @@ export const getItemCategoryManifest = async (
     );
 };
 
+export const getCompleteInventoryItemManifest = async (): Promise<Record<
+    string,
+    DestinyInventoryItemDefinition
+>> => {
+    return getCompleteDefinitionManifestFromIndexDB(
+        DefinitionManifestsEnum.DestinyInventoryItemDefinition
+    );
+};
+
 export const getCompleteStatManifest = async (): Promise<Record<string, DestinyStatDefinition>> => {
     return getCompleteDefinitionManifestFromIndexDB(DefinitionManifestsEnum.DestinyStatDefinition);
 };
@@ -125,6 +136,24 @@ export const getCompleteDamageTypeManifest = async (): Promise<Record<
 >> => {
     return getCompleteDefinitionManifestFromIndexDB(
         DefinitionManifestsEnum.DestinyDamageTypeDefinition
+    );
+};
+
+export const getCompleteSocketTypeManifest = async (): Promise<Record<
+    string,
+    DestinySocketTypeDefinition
+>> => {
+    return getCompleteDefinitionManifestFromIndexDB(
+        DefinitionManifestsEnum.DestinySocketTypeDefinition
+    );
+};
+
+export const getCompletePlugSetManifest = async (): Promise<Record<
+    string,
+    DestinyPlugSetDefinition
+>> => {
+    return getCompleteDefinitionManifestFromIndexDB(
+        DefinitionManifestsEnum.DestinyPlugSetDefinition
     );
 };
 
