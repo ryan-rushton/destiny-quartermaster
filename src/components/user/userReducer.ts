@@ -11,14 +11,12 @@ import { mapCharactersFromProfileData } from "../characters/characterReducer";
 import { setLoading } from "../../appReducer";
 import { mapInventoryFromInventoryData } from "../inventory/inventoryReducer";
 
-type ProfileState = DestinyProfileResponse | null;
 type SaveUserMembershipAction = PayloadAction<UserMembership>;
 type SaveProfileAction = PayloadAction<DestinyProfileResponse>;
 type LoadingProfileAction = PayloadAction<boolean>;
 
 interface UserState {
     userMembership: UserMembership | null;
-    profile: ProfileState;
 }
 
 const saveUserMembershipReducer: CaseReducer<UserState, SaveUserMembershipAction> = (
@@ -26,26 +24,19 @@ const saveUserMembershipReducer: CaseReducer<UserState, SaveUserMembershipAction
     action
 ) => ({ ...state, userMembership: action.payload });
 
-const saveProfileReducer: CaseReducer<UserState, SaveProfileAction> = (state, action) => ({
-    ...state,
-    profile: action.payload
-});
-
 const initialState: UserState = {
-    userMembership: null as UserMembership | null,
-    profile: null as ProfileState
+    userMembership: null as UserMembership | null
 };
 
 const { actions, reducer } = createSlice({
     name: "user",
     initialState,
     reducers: {
-        saveUserMembership: saveUserMembershipReducer,
-        saveProfile: saveProfileReducer
+        saveUserMembership: saveUserMembershipReducer
     }
 });
 
-export const { saveUserMembership, saveProfile } = actions;
+export const { saveUserMembership } = actions;
 
 /*
  * Complex actions
@@ -67,10 +58,9 @@ export const fetchProfileData = (id: string, membershipType: number) => {
         dispatch(setLoading(true));
         if (token) {
             const profile = await getProfile(id, membershipType, token.accessToken);
-            Promise.all([
-                dispatch(mapCharactersFromProfileData(profile.characters)),
-                dispatch(saveProfile(profile))
-            ]).finally(() => dispatch(setLoading(false)));
+            dispatch(mapCharactersFromProfileData(profile.characters)).finally(() =>
+                dispatch(setLoading(false))
+            );
             dispatch(
                 mapInventoryFromInventoryData(
                     profile.profileInventory,

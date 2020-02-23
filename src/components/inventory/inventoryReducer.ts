@@ -8,7 +8,7 @@ import {
 
 import { Inventory } from "./inventoryTypes";
 import { StoreDispatch } from "../../rootReducer";
-import { mapCharacterInventories } from "./inventoryMappers";
+import InventoryMapper from "./InventoryMappers";
 
 type SaveInventoryAction = PayloadAction<Inventory>;
 type InventoryState = Inventory | null;
@@ -34,7 +34,7 @@ export const mapInventoryFromInventoryData = (
     itemComponents: DestinyItemComponentSetOfint64
 ) => async (dispatch: StoreDispatch): Promise<void> => {
     const { instances, sockets, stats, reusablePlugs } = itemComponents;
-    const inventory = await mapCharacterInventories(
+    const inventory = await new InventoryMapper().map(
         profileInventory.data,
         characterEquipment.data,
         characterInventoryData.data,

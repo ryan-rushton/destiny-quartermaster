@@ -12,7 +12,8 @@ import {
     DamageType,
     DestinyItemSocketCategoryDefinition,
     DestinyItemInvestmentStatDefinition,
-    DestinyItemReusablePlugsComponent
+    DestinyItemReusablePlugsComponent,
+    DestinyItemSocketState
 } from "bungie-api-ts/destiny2";
 
 import {
@@ -27,12 +28,9 @@ import {
     Stats,
     Stat,
     Damage,
-    Weapon,
     Mod,
     WeaponSocketCategories,
-    Armour,
     ArmourSocketCategories,
-    GhostShell,
     GhostShellSocketCategories
 } from "./inventoryTypes";
 import {
@@ -41,447 +39,397 @@ import {
     getCompleteInventoryItemManifest
 } from "../manifest/manifestStorage";
 
-const mapStat = (
-    statsManifest: Record<string, DestinyStatDefinition>,
-    { statHash, value }: DestinyStat
-): Stat => {
-    return {
-        statHash,
-        value,
-        name: statsManifest[statHash]?.displayProperties.name
-    };
-};
+class InventoryMapper {
+    itemsManifest?: Record<string, DestinyInventoryItemDefinition>;
+    statsManifest?: Record<string, DestinyStatDefinition>;
+    damageTypeManifests?: Record<string, DestinyDamageTypeDefinition>;
 
-const mapStats = (
-    statsManifest: Record<string, DestinyStatDefinition>,
-    stats?: DestinyItemStatsComponent
-): Stats => {
-    const mappedStats: Stats = {};
-    if (stats) {
-        for (const stat of Object.values(stats.stats)) {
-            mappedStats[stat.statHash] = mapStat(statsManifest, stat);
-        }
-    }
-
-    return mappedStats;
-};
-
-const mapInventoryStats = (
-    statsManifest: Record<string, DestinyStatDefinition>,
-    stats?: DestinyItemInvestmentStatDefinition[]
-): Stats => {
-    const mappedStats: Stats = {};
-    if (stats) {
-        for (const stat of stats) {
-            const { statTypeHash, value } = stat;
-            mappedStats[statTypeHash] = {
-                statHash: statTypeHash,
+    mapStat({ statHash, value }: DestinyStat): Stat | undefined {
+        const statDef = this.statsManifest && this.statsManifest[statHash];
+        if (statDef) {
+            return {
+                statHash,
                 value,
-                name: statsManifest[statTypeHash]?.displayProperties.name
+                name: statDef.displayProperties.name
             };
         }
     }
 
-    return mappedStats;
-};
-
-const mapDamageTypes = (
-    damageTypeManifests: Record<string, DestinyDamageTypeDefinition>,
-    damageTypes: DamageType[]
-): Damage[] => {
-    return damageTypes.map(type => {
-        const { hash, displayProperties } = damageTypeManifests[type];
-        return { hash, iconPath: displayProperties.icon, name: displayProperties.name };
-    });
-};
-
-const mapMod = (
-    plug: DestinyInventoryItemDefinition,
-    statsManifest: Record<string, DestinyStatDefinition>,
-    enabled
-): Mod => {
-    const { displayProperties, hash, itemCategoryHashes } = plug;
-    return {
-        name: displayProperties.name,
-        description: displayProperties.description,
-        iconPath: displayProperties.icon,
-        hash,
-        enabled,
-        categories: itemCategoryHashes,
-        stats: mapInventoryStats(statsManifest, plug.investmentStats)
-    };
-};
-
-const mapWeaponSockets = (
-    itemsManifest: Record<string, DestinyInventoryItemDefinition>,
-    statsManifest: Record<string, DestinyStatDefinition>,
-    categoryDefinitions: DestinyItemSocketCategoryDefinition[],
-    sockets?: DestinyItemSocketsComponent,
-    reusablePlugs?: DestinyItemReusablePlugsComponent
-): { perks: Mod[][]; mods: Mod[]; cosmetics: Mod[] } => {
-    const mods: Mod[] = [];
-    const perks: Mod[][] = [];
-    const cosmetics: Mod[] = [];
-
-    const categoriesByHash = _.keyBy(categoryDefinitions, def => def.socketCategoryHash);
-    const { Perks, Mods, Cosmetics } = WeaponSocketCategories;
-
-    if (sockets?.sockets) {
-        let index = 0;
-        for (const socket of sockets.sockets) {
-            const plug = socket.plugHash && itemsManifest[socket.plugHash];
-            const plugs =
-                reusablePlugs &&
-                reusablePlugs.plugs[index] &&
-                reusablePlugs.plugs[index]
-                    .map(plug => itemsManifest[plug.plugItemHash])
-                    .filter(Boolean);
-
-            if (plugs && plugs.length && categoriesByHash[Perks]?.socketIndexes.includes(index)) {
-                const mods = plugs.map(plug =>
-                    mapMod(plug, statsManifest, socket.isEnabled && plug.hash === socket.plugHash)
-                );
-                perks.push(mods);
-            } else if (plug && categoriesByHash[Perks]?.socketIndexes.includes(index)) {
-                const mod = mapMod(plug, statsManifest, socket.isEnabled);
-                perks.push([mod]);
-            } else if (plug && categoriesByHash[Cosmetics]?.socketIndexes.includes(index)) {
-                cosmetics.push(mapMod(plug, statsManifest, socket.isEnabled));
-            } else if (plug && categoriesByHash[Mods]?.socketIndexes.includes(index)) {
-                mods.push(mapMod(plug, statsManifest, socket.isEnabled));
+    mapStats(stats?: DestinyItemStatsComponent): Stats {
+        const mappedStats: Stats = {};
+        if (stats) {
+            for (const stat of Object.values(stats.stats)) {
+                const mappedStat = this.mapStat(stat);
+                if (mappedStat) {
+                    mappedStats[stat.statHash] = mappedStat;
+                }
             }
-
-            index++;
         }
+
+        return mappedStats;
     }
 
-    return { perks, mods, cosmetics };
-};
+    mapInventoryStats(stats?: DestinyItemInvestmentStatDefinition[]): Stats {
+        const mappedStats: Stats = {};
+        if (stats) {
+            for (const stat of stats) {
+                const { statTypeHash, value } = stat;
+                const manifestEntry = this.statsManifest && this.statsManifest[statTypeHash];
+                if (manifestEntry) {
+                    mappedStats[statTypeHash] = {
+                        statHash: statTypeHash,
+                        value,
+                        name: manifestEntry.displayProperties.name
+                    };
+                }
+            }
+        }
 
-const mapArmourSockets = (
-    itemsManifest: Record<string, DestinyInventoryItemDefinition>,
-    statsManifest: Record<string, DestinyStatDefinition>,
-    categoryDefinitions?: DestinyItemSocketCategoryDefinition[],
-    sockets?: DestinyItemSocketsComponent,
-    reusablePlugs?: DestinyItemReusablePlugsComponent
-): { tier: Mod[]; perks: Mod[][]; mods: Mod[]; cosmetics: Mod[] } => {
-    const mods: Mod[] = [];
-    const perks: Mod[][] = [];
-    const cosmetics: Mod[] = [];
-    const tier: Mod[] = [];
+        return mappedStats;
+    }
 
-    if (sockets?.sockets && categoryDefinitions) {
+    mapDamageTypes(damageTypes: DamageType[]): Damage[] {
+        const mappedDamages: Damage[] = [];
+
+        if (this.damageTypeManifests) {
+            for (const type of damageTypes) {
+                const manifestEntry = this.damageTypeManifests[type];
+                if (manifestEntry) {
+                    const { hash, displayProperties } = manifestEntry;
+                    const { name, icon } = displayProperties;
+                    mappedDamages.push({ hash, iconPath: icon, name: name });
+                }
+            }
+        }
+        return mappedDamages;
+    }
+
+    mapMod(plug: DestinyInventoryItemDefinition, enabled): Mod {
+        const { displayProperties, hash, itemCategoryHashes } = plug;
+        return {
+            name: displayProperties.name,
+            description: displayProperties.description,
+            iconPath: displayProperties.icon,
+            hash,
+            enabled,
+            categories: itemCategoryHashes,
+            stats: this.mapInventoryStats(plug.investmentStats)
+        };
+    }
+
+    getReusablePlugs(
+        socketIndex: number,
+        socket: DestinyItemSocketState,
+        categoryDefs?: DestinyItemSocketCategoryDefinition,
+        reusablePlugs?: DestinyItemReusablePlugsComponent
+    ): Mod[] {
+        const mods: Mod[] = [];
+        const plugsAtIndex = reusablePlugs && reusablePlugs.plugs[socketIndex];
+        const enabledPlugHash = socket.isEnabled && socket.plugHash;
+
+        if (plugsAtIndex && this.itemsManifest) {
+            for (const plug of plugsAtIndex) {
+                const manifestEntry = this.itemsManifest[plug.plugItemHash];
+
+                if (manifestEntry && categoryDefs?.socketIndexes.includes(socketIndex)) {
+                    mods.push(this.mapMod(manifestEntry, manifestEntry.hash === enabledPlugHash));
+                }
+            }
+        }
+
+        return mods;
+    }
+
+    mapWeaponSockets = (
+        categoryDefinitions: DestinyItemSocketCategoryDefinition[],
+        sockets?: DestinyItemSocketsComponent,
+        reusablePlugs?: DestinyItemReusablePlugsComponent
+    ): { perks: Mod[][]; mods: Mod[]; cosmetics: Mod[] } => {
+        const mods: Mod[] = [];
+        const perks: Mod[][] = [];
+        const cosmetics: Mod[] = [];
+
         const categoriesByHash = _.keyBy(categoryDefinitions, def => def.socketCategoryHash);
-        const { Tier, Perks, Mods, Cosmetics } = ArmourSocketCategories;
-        let index = 0;
+        const { Perks, Mods, Cosmetics } = WeaponSocketCategories;
 
-        for (const socket of sockets.sockets) {
-            const plug = socket.plugHash && itemsManifest[socket.plugHash];
-            const plugs =
-                reusablePlugs &&
-                reusablePlugs.plugs[index] &&
-                reusablePlugs.plugs[index]
-                    .map(plug => itemsManifest[plug.plugItemHash])
-                    .filter(Boolean);
-
-            if (plugs && plugs.length && categoriesByHash[Perks]?.socketIndexes.includes(index)) {
-                const mods = plugs.map(plug =>
-                    mapMod(plug, statsManifest, socket.isEnabled && plug.hash === socket.plugHash)
+        if (sockets?.sockets && this.itemsManifest) {
+            let index = 0;
+            for (const socket of sockets.sockets) {
+                const plug = socket.plugHash && this.itemsManifest[socket.plugHash];
+                const reusableMods = this.getReusablePlugs(
+                    index,
+                    socket,
+                    categoriesByHash[Perks],
+                    reusablePlugs
                 );
-                perks.push(mods);
-            } else if (plug && categoriesByHash[Perks]?.socketIndexes.includes(index)) {
-                const mod = mapMod(plug, statsManifest, socket.isEnabled);
-                perks.push([mod]);
-            } else if (plug && categoriesByHash[Tier]?.socketIndexes.includes(index)) {
-                tier.push(mapMod(plug, statsManifest, socket.isEnabled));
-            } else if (plug && categoriesByHash[Cosmetics]?.socketIndexes.includes(index)) {
-                cosmetics.push(mapMod(plug, statsManifest, socket.isEnabled));
-            } else if (plug && categoriesByHash[Mods]?.socketIndexes.includes(index)) {
-                mods.push(mapMod(plug, statsManifest, socket.isEnabled));
-            }
 
-            index++;
+                if (reusableMods && reusableMods.length) {
+                    perks.push(reusableMods);
+                } else if (plug) {
+                    const mod = this.mapMod(plug, socket.isEnabled);
+                    if (categoriesByHash[Perks]?.socketIndexes.includes(index)) {
+                        perks.push([mod]);
+                    } else if (categoriesByHash[Cosmetics]?.socketIndexes.includes(index)) {
+                        cosmetics.push(mod);
+                    } else if (categoriesByHash[Mods]?.socketIndexes.includes(index)) {
+                        mods.push(mod);
+                    }
+                }
+
+                index++;
+            }
         }
+
+        return { perks, mods, cosmetics };
+    };
+
+    mapArmourSockets(
+        categoryDefinitions?: DestinyItemSocketCategoryDefinition[],
+        sockets?: DestinyItemSocketsComponent,
+        reusablePlugs?: DestinyItemReusablePlugsComponent
+    ): { tier: Mod[]; perks: Mod[][]; mods: Mod[]; cosmetics: Mod[] } {
+        const mods: Mod[] = [];
+        const perks: Mod[][] = [];
+        const cosmetics: Mod[] = [];
+        const tier: Mod[] = [];
+
+        if (sockets?.sockets && categoryDefinitions && this.itemsManifest) {
+            const categoriesByHash = _.keyBy(categoryDefinitions, def => def.socketCategoryHash);
+            const { Tier, Perks, Mods, Cosmetics } = ArmourSocketCategories;
+            let index = 0;
+
+            for (const socket of sockets.sockets) {
+                const plug = socket.plugHash && this.itemsManifest[socket.plugHash];
+                const reusableMods = this.getReusablePlugs(
+                    index,
+                    socket,
+                    categoriesByHash[Perks],
+                    reusablePlugs
+                );
+
+                if (reusableMods && reusableMods.length) {
+                    perks.push(reusableMods);
+                } else if (plug) {
+                    const mod = this.mapMod(plug, socket.isEnabled);
+                    if (categoriesByHash[Perks]?.socketIndexes.includes(index)) {
+                        perks.push([mod]);
+                    } else if (categoriesByHash[Cosmetics]?.socketIndexes.includes(index)) {
+                        cosmetics.push(mod);
+                    } else if (categoriesByHash[Tier]?.socketIndexes.includes(index)) {
+                        tier.push(mod);
+                    } else if (categoriesByHash[Mods]?.socketIndexes.includes(index)) {
+                        mods.push(mod);
+                    }
+                }
+
+                index++;
+            }
+        }
+
+        return { tier, perks, mods, cosmetics };
     }
 
-    return { tier, perks, mods, cosmetics };
-};
+    mapGhostSockets(
+        categoryDefinitions?: DestinyItemSocketCategoryDefinition[],
+        sockets?: DestinyItemSocketsComponent,
+        reusablePlugs?: DestinyItemReusablePlugsComponent
+    ): { perks: Mod[][]; mods: Mod[] } {
+        const mods: Mod[] = [];
+        const perks: Mod[][] = [];
 
-const mapGhostSockets = (
-    itemsManifest: Record<string, DestinyInventoryItemDefinition>,
-    statsManifest: Record<string, DestinyStatDefinition>,
-    categoryDefinitions?: DestinyItemSocketCategoryDefinition[],
-    sockets?: DestinyItemSocketsComponent,
-    reusablePlugs?: DestinyItemReusablePlugsComponent
-): { perks: Mod[][]; mods: Mod[] } => {
-    const mods: Mod[] = [];
-    const perks: Mod[][] = [];
+        if (sockets?.sockets && categoryDefinitions && this.itemsManifest) {
+            const categoriesByHash = _.keyBy(categoryDefinitions, def => def.socketCategoryHash);
+            const { Perks, Mods } = GhostShellSocketCategories;
+            let index = 0;
 
-    if (sockets?.sockets && categoryDefinitions) {
-        const categoriesByHash = _.keyBy(categoryDefinitions, def => def.socketCategoryHash);
-        const { Perks, Mods } = GhostShellSocketCategories;
-        let index = 0;
-
-        for (const socket of sockets.sockets) {
-            const plug = socket.plugHash && itemsManifest[socket.plugHash];
-            const plugs =
-                reusablePlugs &&
-                reusablePlugs.plugs[index] &&
-                reusablePlugs.plugs[index]
-                    .map(plug => itemsManifest[plug.plugItemHash])
-                    .filter(Boolean);
-
-            if (plugs && plugs.length && categoriesByHash[Perks]?.socketIndexes.includes(index)) {
-                const mods = plugs.map(plug =>
-                    mapMod(plug, statsManifest, socket.isEnabled && plug.hash === socket.plugHash)
+            for (const socket of sockets.sockets) {
+                const plug = socket.plugHash && this.itemsManifest[socket.plugHash];
+                const reusableMods = this.getReusablePlugs(
+                    index,
+                    socket,
+                    categoriesByHash[Perks],
+                    reusablePlugs
                 );
-                perks.push(mods);
-            } else if (plug && categoriesByHash[Perks]?.socketIndexes.includes(index)) {
-                const mod = mapMod(plug, statsManifest, socket.isEnabled);
-                perks.push([mod]);
-            } else if (plug && categoriesByHash[Mods]?.socketIndexes.includes(index)) {
-                mods.push(mapMod(plug, statsManifest, socket.isEnabled));
-            }
 
-            index++;
+                if (reusableMods && reusableMods.length) {
+                    perks.push(reusableMods);
+                } else if (plug) {
+                    const mod = this.mapMod(plug, socket.isEnabled);
+                    if (categoriesByHash[Perks]?.socketIndexes.includes(index)) {
+                        perks.push([mod]);
+                    } else if (categoriesByHash[Mods]?.socketIndexes.includes(index)) {
+                        mods.push(mod);
+                    }
+                }
+
+                index++;
+            }
         }
+
+        return { perks, mods };
     }
 
-    return { perks, mods };
-};
+    mapBaseItem(
+        bungieItem: DestinyItemComponent,
+        manifestEntry: DestinyInventoryItemDefinition,
+        instance: DestinyItemInstanceComponent
+    ): InventoryItem {
+        return {
+            hash: bungieItem.itemHash,
+            name: manifestEntry.displayProperties.name,
+            iconPath: manifestEntry.displayProperties.icon,
+            primaryStat: instance.primaryStat && this.mapStat(instance.primaryStat),
+            categories: manifestEntry.itemCategoryHashes
+        };
+    }
 
-const mapSingleItem = (
-    bungieItem: DestinyItemComponent,
-    manifestEntry: DestinyInventoryItemDefinition,
-    statsManifest: Record<string, DestinyStatDefinition>,
-    instance: DestinyItemInstanceComponent
-): InventoryItem => {
-    return {
-        hash: bungieItem.itemHash,
-        name: manifestEntry.displayProperties.name,
-        iconPath: manifestEntry.displayProperties.icon,
-        primaryStat: instance.primaryStat && mapStat(statsManifest, instance.primaryStat),
-        categories: manifestEntry.itemCategoryHashes
-    };
-};
+    isANeededCategory(manifestEntry: DestinyInventoryItemDefinition): boolean {
+        const categoriesOfInterest = [
+            ...WeaponItemCategoryHashes,
+            ...ArmourItemCategoryHashes,
+            ...GeneralItemCategoryHashes
+        ];
 
-const mapWeapon = (
-    bungieItem: DestinyItemComponent,
-    manifestEntry: DestinyInventoryItemDefinition,
-    statsManifest: Record<string, DestinyStatDefinition>,
-    damageTypeManifests: Record<string, DestinyDamageTypeDefinition>,
-    itemsManifest: Record<string, DestinyInventoryItemDefinition>,
-    instance: DestinyItemInstanceComponent,
-    stats?: DestinyItemStatsComponent,
-    sockets?: DestinyItemSocketsComponent,
-    reusablePlugs?: DestinyItemReusablePlugsComponent
-): Weapon => {
-    const baseItem = mapSingleItem(bungieItem, manifestEntry, statsManifest, instance);
-    return {
-        ...baseItem,
-        damage: mapDamageTypes(damageTypeManifests, manifestEntry.damageTypeHashes),
-        stats: mapStats(statsManifest, stats),
-        baseStats: mapInventoryStats(statsManifest, manifestEntry.investmentStats),
-        exotic: manifestEntry.equippingBlock.uniqueLabel === "exotic_weapon",
-        ...mapWeaponSockets(
-            itemsManifest,
-            statsManifest,
-            manifestEntry?.sockets?.socketCategories,
-            sockets,
-            reusablePlugs
-        )
-    };
-};
+        const itemCategories = manifestEntry?.itemCategoryHashes || [];
 
-const mapArmour = (
-    bungieItem: DestinyItemComponent,
-    manifestEntry: DestinyInventoryItemDefinition,
-    statsManifest: Record<string, DestinyStatDefinition>,
-    itemsManifest: Record<string, DestinyInventoryItemDefinition>,
-    instance: DestinyItemInstanceComponent,
-    stats?: DestinyItemStatsComponent,
-    sockets?: DestinyItemSocketsComponent,
-    reusablePlugs?: DestinyItemReusablePlugsComponent
-): Armour => {
-    const baseItem = mapSingleItem(bungieItem, manifestEntry, statsManifest, instance);
+        return _.intersection(categoriesOfInterest, itemCategories).length > 0;
+    }
 
-    return {
-        ...baseItem,
-        stats: mapStats(statsManifest, stats),
-        baseStats: mapInventoryStats(statsManifest, manifestEntry.investmentStats),
-        exotic: manifestEntry.equippingBlock.uniqueLabel === "exotic_armor",
-        ...mapArmourSockets(
-            itemsManifest,
-            statsManifest,
-            manifestEntry?.sockets?.socketCategories,
-            sockets,
-            reusablePlugs
-        )
-    };
-};
+    map = async (
+        profileInventory?: DestinyInventoryComponent,
+        characterEquipment?: Record<string, DestinyInventoryComponent>,
+        characterInventories?: Record<string, DestinyInventoryComponent>,
+        allInstances?: Record<string, DestinyItemInstanceComponent>,
+        allStats?: Record<string, DestinyItemStatsComponent>,
+        allSockets?: Record<string, DestinyItemSocketsComponent>,
+        allReusablePlugs?: Record<string, DestinyItemReusablePlugsComponent>
+    ): Promise<Inventory> => {
+        const timerLabel = "Mapping Inventory";
+        console.time(timerLabel);
 
-const mapGhost = (
-    bungieItem: DestinyItemComponent,
-    manifestEntry: DestinyInventoryItemDefinition,
-    statsManifest: Record<string, DestinyStatDefinition>,
-    itemsManifest: Record<string, DestinyInventoryItemDefinition>,
-    instance: DestinyItemInstanceComponent,
-    sockets?: DestinyItemSocketsComponent,
-    reusablePlugs?: DestinyItemReusablePlugsComponent
-): GhostShell => {
-    const baseItem = mapSingleItem(bungieItem, manifestEntry, statsManifest, instance);
+        const profileValues = (profileInventory && Object.values(profileInventory.items)) || [];
 
-    return {
-        ...baseItem,
-        ...mapGhostSockets(
-            itemsManifest,
-            statsManifest,
-            manifestEntry?.sockets?.socketCategories,
-            sockets,
-            reusablePlugs
-        )
-    };
-};
+        const charEquipValues =
+            (characterEquipment &&
+                Object.values(characterEquipment)
+                    .map(char => char.items)
+                    .flat()) ||
+            [];
 
-const isANeededCategory = (manifestEntry: DestinyInventoryItemDefinition): boolean => {
-    const categoriesOfInterest = [
-        ...WeaponItemCategoryHashes,
-        ...ArmourItemCategoryHashes,
-        ...GeneralItemCategoryHashes
-    ];
+        const charValues =
+            (characterInventories &&
+                Object.values(characterInventories)
+                    .map(char => char.items)
+                    .flat()) ||
+            [];
 
-    const itemCategories = manifestEntry?.itemCategoryHashes || [];
+        const allItems = [...profileValues, ...charEquipValues, ...charValues];
 
-    return _.intersection(categoriesOfInterest, itemCategories).length > 0;
-};
+        await Promise.all([
+            getCompleteInventoryItemManifest(),
+            getCompleteStatManifest(),
+            getCompleteDamageTypeManifest()
+        ]).then(([itemsManifest, statsManifest, damageTypeManifests]) => {
+            this.itemsManifest = itemsManifest;
+            this.statsManifest = statsManifest;
+            this.damageTypeManifests = damageTypeManifests;
+        });
 
-export const mapCharacterInventories = async (
-    profileInventory?: DestinyInventoryComponent,
-    characterEquipment?: Record<string, DestinyInventoryComponent>,
-    characterInventories?: Record<string, DestinyInventoryComponent>,
-    allInstances?: Record<string, DestinyItemInstanceComponent>,
-    allStats?: Record<string, DestinyItemStatsComponent>,
-    allSockets?: Record<string, DestinyItemSocketsComponent>,
-    allReusablePlugs?: Record<string, DestinyItemReusablePlugsComponent>
-): Promise<Inventory> => {
-    const timerLabel = "Mapping Inventory";
-    console.time(timerLabel);
+        const inventory: Inventory = {
+            weapons: {
+                kinetic: {},
+                energy: {},
+                heavy: {}
+            },
+            armour: { warlock: {}, hunter: {}, titan: {} },
+            ghosts: {},
+            other: {}
+        };
 
-    const profileValues = (profileInventory && Object.values(profileInventory.items)) || [];
+        for (const item of allItems) {
+            const { itemHash, itemInstanceId } = item;
 
-    const charEquipValues =
-        (characterEquipment &&
-            Object.values(characterEquipment)
-                .map(char => char.items)
-                .flat()) ||
-        [];
+            if (itemInstanceId && this.itemsManifest) {
+                const manifestEntry = this.itemsManifest[itemHash];
+                const instance = allInstances && allInstances[itemInstanceId];
+                const stats = allStats && allStats[itemInstanceId];
+                const sockets = allSockets && allSockets[itemInstanceId];
+                const reusablePlugs = allReusablePlugs && allReusablePlugs[itemInstanceId];
 
-    const charValues =
-        (characterInventories &&
-            Object.values(characterInventories)
-                .map(char => char.items)
-                .flat()) ||
-        [];
+                if (instance) {
+                    if (manifestEntry && this.isANeededCategory(manifestEntry)) {
+                        const categories = manifestEntry.itemCategoryHashes;
+                        const baseItem = this.mapBaseItem(item, manifestEntry, instance);
 
-    const allItems = [...profileValues, ...charEquipValues, ...charValues];
+                        if (categories.includes(WeaponItemCategories.Weapons)) {
+                            const weapon = {
+                                ...baseItem,
+                                damage: this.mapDamageTypes(manifestEntry.damageTypeHashes),
+                                stats: this.mapStats(stats),
+                                baseStats: this.mapInventoryStats(manifestEntry.investmentStats),
+                                exotic:
+                                    manifestEntry.equippingBlock.uniqueLabel === "exotic_weapon",
+                                ...this.mapWeaponSockets(
+                                    manifestEntry.sockets.socketCategories,
+                                    sockets,
+                                    reusablePlugs
+                                )
+                            };
 
-    //const itemsManifest = await getInventoryItemManifest(allItems.map(b => [b.itemHash]));
-    const itemsManifest = await getCompleteInventoryItemManifest();
-    const statsManifest = await getCompleteStatManifest();
-    const damageTypeManifests = await getCompleteDamageTypeManifest();
+                            if (categories.includes(WeaponItemCategories.KineticWeapons)) {
+                                inventory.weapons.kinetic[itemHash] = weapon;
+                            } else if (categories.includes(WeaponItemCategories.EnergyWeapons)) {
+                                inventory.weapons.energy[itemHash] = weapon;
+                            } else if (categories.includes(WeaponItemCategories.PowerWeapons)) {
+                                inventory.weapons.heavy[itemHash] = weapon;
+                            }
+                        } else if (
+                            categories.includes(ArmourItemCategories.Armour) &&
+                            instance.energy &&
+                            !categories.includes(GeneralItemCategories.Subclass)
+                        ) {
+                            const armour = {
+                                ...baseItem,
+                                stats: this.mapStats(stats),
+                                baseStats: this.mapInventoryStats(manifestEntry.investmentStats),
+                                exotic: manifestEntry.equippingBlock.uniqueLabel === "exotic_armor",
+                                ...this.mapArmourSockets(
+                                    manifestEntry.sockets.socketCategories,
+                                    sockets,
+                                    reusablePlugs
+                                )
+                            };
 
-    const inventory: Inventory = {
-        weapons: {
-            kinetic: {},
-            energy: {},
-            heavy: {}
-        },
-        armour: { warlock: {}, hunter: {}, titan: {} },
-        ghosts: {},
-        other: {}
-    };
+                            if (categories.includes(ArmourItemCategories.WarlockArmour)) {
+                                inventory.armour.warlock[itemHash] = armour;
+                            } else if (categories.includes(ArmourItemCategories.HunterArmour)) {
+                                inventory.armour.hunter[itemHash] = armour;
+                            } else if (categories.includes(ArmourItemCategories.TitanArmour)) {
+                                inventory.armour.titan[itemHash] = armour;
+                            }
+                        } else if (categories.includes(GeneralItemCategories.Ghosts)) {
+                            const ghost = {
+                                ...baseItem,
+                                ...this.mapGhostSockets(
+                                    manifestEntry.sockets?.socketCategories,
+                                    sockets,
+                                    reusablePlugs
+                                )
+                            };
 
-    for (const item of allItems) {
-        const { itemHash, itemInstanceId } = item;
-
-        if (itemInstanceId) {
-            const manifestEntry = itemsManifest[itemHash];
-            const instance = allInstances && allInstances[itemInstanceId];
-            const stats = allStats && allStats[itemInstanceId];
-            const sockets = allSockets && allSockets[itemInstanceId];
-            const reusablePlugs = allReusablePlugs && allReusablePlugs[itemInstanceId];
-
-            if (instance) {
-                if (manifestEntry && isANeededCategory(manifestEntry)) {
-                    const categories = manifestEntry.itemCategoryHashes;
-                    if (categories.includes(WeaponItemCategories.Weapons)) {
-                        const weapon = mapWeapon(
-                            item,
-                            manifestEntry,
-                            statsManifest,
-                            damageTypeManifests,
-                            itemsManifest,
-                            instance,
-                            stats,
-                            sockets,
-                            reusablePlugs
-                        );
-                        if (categories.includes(WeaponItemCategories.KineticWeapons)) {
-                            inventory.weapons.kinetic[itemHash] = weapon;
-                        } else if (categories.includes(WeaponItemCategories.EnergyWeapons)) {
-                            inventory.weapons.energy[itemHash] = weapon;
-                        } else if (categories.includes(WeaponItemCategories.PowerWeapons)) {
-                            inventory.weapons.heavy[itemHash] = weapon;
+                            inventory.ghosts[itemHash] = ghost;
+                        } else {
+                            inventory.other[itemHash] = baseItem;
                         }
-                    } else if (
-                        categories.includes(ArmourItemCategories.Armour) &&
-                        instance.energy &&
-                        !categories.includes(GeneralItemCategories.Subclass)
-                    ) {
-                        const armour = mapArmour(
-                            item,
-                            manifestEntry,
-                            statsManifest,
-                            itemsManifest,
-                            instance,
-                            stats,
-                            sockets,
-                            reusablePlugs
-                        );
-
-                        if (categories.includes(ArmourItemCategories.WarlockArmour)) {
-                            inventory.armour.warlock[itemHash] = armour;
-                        } else if (categories.includes(ArmourItemCategories.HunterArmour)) {
-                            inventory.armour.hunter[itemHash] = armour;
-                        } else if (categories.includes(ArmourItemCategories.TitanArmour)) {
-                            inventory.armour.titan[itemHash] = armour;
-                        }
-                    } else if (categories.includes(GeneralItemCategories.Ghosts)) {
-                        const ghost = mapGhost(
-                            item,
-                            manifestEntry,
-                            statsManifest,
-                            itemsManifest,
-                            instance,
-                            sockets,
-                            reusablePlugs
-                        );
-                        inventory.ghosts[itemHash] = ghost;
-                    } else {
-                        const mappedItem = mapSingleItem(
-                            item,
-                            manifestEntry,
-                            statsManifest,
-                            instance
-                        );
-                        inventory.other[itemHash] = mappedItem;
                     }
                 }
             }
         }
-    }
 
-    console.timeEnd(timerLabel);
+        console.timeEnd(timerLabel);
 
-    return inventory;
-};
+        return inventory;
+    };
+}
+
+export default InventoryMapper;
