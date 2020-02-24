@@ -67,7 +67,10 @@ export enum ArmourSocketCategories {
 export enum GeneralItemCategories {
     Exotic = 31,
     Ghosts = 39,
-    Subclass = 50
+    Shaders = 41,
+    Subclass = 50,
+    Ornaments = 56,
+    Mods = 59
 }
 
 export enum GhostShellSocketCategories {
@@ -136,6 +139,14 @@ export interface GhostShell extends InventoryItem {
     mods: Mod[];
 }
 
+export interface ArmourInventory {
+    helmets: Record<string, Armour>;
+    arms: Record<string, Armour>;
+    chest: Record<string, Armour>;
+    legs: Record<string, Armour>;
+    classItems: Record<string, Armour>;
+}
+
 export interface Inventory {
     weapons: {
         kinetic: Record<string, Weapon>;
@@ -143,9 +154,9 @@ export interface Inventory {
         heavy: Record<string, Weapon>;
     };
     armour: {
-        warlock: Record<string, Armour>;
-        hunter: Record<string, Armour>;
-        titan: Record<string, Armour>;
+        warlock: ArmourInventory;
+        hunter: ArmourInventory;
+        titan: ArmourInventory;
     };
     ghosts: Record<string, InventoryItem>;
     other: Record<string, InventoryItem>;

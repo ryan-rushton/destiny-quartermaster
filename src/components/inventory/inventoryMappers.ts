@@ -36,7 +36,7 @@ import {
 import {
     getCompleteStatManifest,
     getCompleteDamageTypeManifest,
-    getCompleteInventoryItemManifest
+    getInventoryItemManifestByCategory
 } from "../manifest/manifestStorage";
 
 class InventoryMapper {
@@ -325,8 +325,14 @@ class InventoryMapper {
 
         const allItems = [...profileValues, ...charEquipValues, ...charValues];
 
+        const allCategories = [
+            WeaponItemCategories.Weapons,
+            ArmourItemCategories.Armour,
+            ...GeneralItemCategoryHashes
+        ];
+
         await Promise.all([
-            getCompleteInventoryItemManifest(),
+            getInventoryItemManifestByCategory(allCategories),
             getCompleteStatManifest(),
             getCompleteDamageTypeManifest()
         ]).then(([itemsManifest, statsManifest, damageTypeManifests]) => {
@@ -341,7 +347,29 @@ class InventoryMapper {
                 energy: {},
                 heavy: {}
             },
-            armour: { warlock: {}, hunter: {}, titan: {} },
+            armour: {
+                warlock: {
+                    helmets: {},
+                    arms: {},
+                    chest: {},
+                    legs: {},
+                    classItems: {}
+                },
+                hunter: {
+                    helmets: {},
+                    arms: {},
+                    chest: {},
+                    legs: {},
+                    classItems: {}
+                },
+                titan: {
+                    helmets: {},
+                    arms: {},
+                    chest: {},
+                    legs: {},
+                    classItems: {}
+                }
+            },
             ghosts: {},
             other: {}
         };
@@ -385,7 +413,6 @@ class InventoryMapper {
                             }
                         } else if (
                             categories.includes(ArmourItemCategories.Armour) &&
-                            instance.energy &&
                             !categories.includes(GeneralItemCategories.Subclass)
                         ) {
                             const armour = {
@@ -400,12 +427,26 @@ class InventoryMapper {
                                 )
                             };
 
+                            let armourSlot;
+
+                            if (categories.includes(ArmourItemCategories.Helmets)) {
+                                armourSlot = "helmets";
+                            } else if (categories.includes(ArmourItemCategories.Arms)) {
+                                armourSlot = "arms";
+                            } else if (categories.includes(ArmourItemCategories.Chest)) {
+                                armourSlot = "chest";
+                            } else if (categories.includes(ArmourItemCategories.Legs)) {
+                                armourSlot = "legs";
+                            } else if (categories.includes(ArmourItemCategories.ClassItems)) {
+                                armourSlot = "classItems";
+                            }
+
                             if (categories.includes(ArmourItemCategories.WarlockArmour)) {
-                                inventory.armour.warlock[itemHash] = armour;
+                                inventory.armour.warlock[armourSlot][itemHash] = armour;
                             } else if (categories.includes(ArmourItemCategories.HunterArmour)) {
-                                inventory.armour.hunter[itemHash] = armour;
+                                inventory.armour.hunter[armourSlot][itemHash] = armour;
                             } else if (categories.includes(ArmourItemCategories.TitanArmour)) {
-                                inventory.armour.titan[itemHash] = armour;
+                                inventory.armour.titan[armourSlot][itemHash] = armour;
                             }
                         } else if (categories.includes(GeneralItemCategories.Ghosts)) {
                             const ghost = {

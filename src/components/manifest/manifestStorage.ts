@@ -4,14 +4,9 @@ import {
     DestinyClassDefinition,
     DestinyGenderDefinition,
     DestinyInventoryItemDefinition,
-    DestinyItemCategoryDefinition,
     DestinyRaceDefinition,
-    DestinySandboxPerkDefinition,
     DestinyStatDefinition,
-    DestinyStatGroupDefinition,
-    DestinyDamageTypeDefinition,
-    DestinySocketTypeDefinition,
-    DestinyPlugSetDefinition
+    DestinyDamageTypeDefinition
 } from "bungie-api-ts/destiny2";
 
 import { JsonObject } from "../../lib/bungie_api/rest";
@@ -26,7 +21,11 @@ const DB = new Dexie(DB_NAME);
 const schema: Record<string, string> = {};
 
 for (const tableName of DefinitionManifests) {
-    schema[tableName] = "&hash, data";
+    if (tableName === DefinitionManifestsEnum.DestinyInventoryItemDefinition) {
+        schema[tableName] = "&hash, data, *itemCategoryHashes";
+    } else {
+        schema[tableName] = "&hash, data";
+    }
 }
 
 DB.version(1).stores(schema);
@@ -90,22 +89,18 @@ export const getRaceManifest = async (
     return getDefinitionManifestFromIndexDB(DefinitionManifestsEnum.DestinyRaceDefinition, hashes);
 };
 
-export const getInventoryItemManifest = async (
-    hashes: number[]
+export const getInventoryItemManifestByCategory = async (
+    categories: number[]
 ): Promise<Record<string, DestinyInventoryItemDefinition>> => {
-    return getDefinitionManifestFromIndexDB(
-        DefinitionManifestsEnum.DestinyInventoryItemDefinition,
-        hashes
-    );
-};
+    const result = await DB.table(DefinitionManifestsEnum.DestinyInventoryItemDefinition)
+        .where("itemCategoryHashes")
+        .anyOf(categories)
+        .toArray();
 
-export const getItemCategoryManifest = async (
-    hashes: number[]
-): Promise<Record<string, DestinyItemCategoryDefinition>> => {
-    return getDefinitionManifestFromIndexDB(
-        DefinitionManifestsEnum.DestinyItemCategoryDefinition,
-        hashes
-    );
+    return _.chain(result)
+        .keyBy(item => item.hash)
+        .mapValues(item => item.data)
+        .value();
 };
 
 export const getCompleteInventoryItemManifest = async (): Promise<Record<
@@ -121,48 +116,12 @@ export const getCompleteStatManifest = async (): Promise<Record<string, DestinyS
     return getCompleteDefinitionManifestFromIndexDB(DefinitionManifestsEnum.DestinyStatDefinition);
 };
 
-export const getCompletePerkManifest = async (): Promise<Record<
-    string,
-    DestinySandboxPerkDefinition
->> => {
-    return getCompleteDefinitionManifestFromIndexDB(
-        DefinitionManifestsEnum.DestinySandboxPerkDefinition
-    );
-};
-
 export const getCompleteDamageTypeManifest = async (): Promise<Record<
     string,
     DestinyDamageTypeDefinition
 >> => {
     return getCompleteDefinitionManifestFromIndexDB(
         DefinitionManifestsEnum.DestinyDamageTypeDefinition
-    );
-};
-
-export const getCompleteSocketTypeManifest = async (): Promise<Record<
-    string,
-    DestinySocketTypeDefinition
->> => {
-    return getCompleteDefinitionManifestFromIndexDB(
-        DefinitionManifestsEnum.DestinySocketTypeDefinition
-    );
-};
-
-export const getCompletePlugSetManifest = async (): Promise<Record<
-    string,
-    DestinyPlugSetDefinition
->> => {
-    return getCompleteDefinitionManifestFromIndexDB(
-        DefinitionManifestsEnum.DestinyPlugSetDefinition
-    );
-};
-
-export const getCompleteStatGroupManifest = async (): Promise<Record<
-    string,
-    DestinyStatGroupDefinition
->> => {
-    return getCompleteDefinitionManifestFromIndexDB(
-        DefinitionManifestsEnum.DestinyStatGroupDefinition
     );
 };
 
@@ -180,10 +139,22 @@ export const freshSaveOfAllDefinitionManifests = async (
     try {
         for (const manifestWrapper of manifestResponseWrappers) {
             DB.table(manifestWrapper.name).clear();
-            const entries = Object.values(manifestWrapper.data).map(data => ({
-                hash: data.hash,
-                data
-            }));
+            const entries = Object.values(manifestWrapper.data).map(data => {
+                if (
+                    manifestWrapper.name === DefinitionManifestsEnum.DestinyInventoryItemDefinition
+                ) {
+                    return {
+                        hash: data.hash,
+                        data,
+                        itemCategoryHashes: data.itemCategoryHashes
+                    };
+                }
+
+                return {
+                    hash: data.hash,
+                    data
+                };
+            });
 
             await DB.table(manifestWrapper.name).bulkAdd(entries);
         }
