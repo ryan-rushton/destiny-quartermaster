@@ -21,7 +21,7 @@
         "dexie": "^2.0.4",
         "lodash": "^4.17.15",
         "node-sass": "^4.13.1",
-        "query-string": "^6.10.1",
+        "query-string": "^6.11.1",
         "react": "^16.12.0",
         "react-dom": "^16.12.0",
         "react-redux": "^7.1.3",
