@@ -3,12 +3,15 @@ import {
     DestinyInventoryComponent,
     DictionaryComponentResponse,
     SingleComponentResponse,
-    DestinyItemComponentSetOfint64
+    DestinyItemComponentSetOfint64,
+    DestinyInventoryItemDefinition,
+    DestinyStatDefinition,
+    DestinyDamageTypeDefinition
 } from "bungie-api-ts/destiny2";
 
 import { Inventory } from "./inventoryTypes";
 import { StoreDispatch } from "../../rootReducer";
-import InventoryMapper from "./InventoryMappers";
+import InventoryMapper from "./InventoryMapper";
 
 type SaveInventoryAction = PayloadAction<Inventory>;
 type InventoryState = Inventory | null;
@@ -28,13 +31,17 @@ const { actions, reducer } = createSlice({
 export const { saveInventory } = actions;
 
 export const mapInventoryFromInventoryData = (
+    itemsManifest: Record<string, DestinyInventoryItemDefinition>,
+    statsManifest: Record<string, DestinyStatDefinition>,
+    damageTypeManifests: Record<string, DestinyDamageTypeDefinition>,
     profileInventory: SingleComponentResponse<DestinyInventoryComponent>,
     characterEquipment: DictionaryComponentResponse<DestinyInventoryComponent>,
     characterInventoryData: DictionaryComponentResponse<DestinyInventoryComponent>,
     itemComponents: DestinyItemComponentSetOfint64
-) => async (dispatch: StoreDispatch): Promise<void> => {
+) => (dispatch: StoreDispatch): void => {
     const { instances, sockets, stats, reusablePlugs } = itemComponents;
-    const inventory = await new InventoryMapper().map(
+
+    const inventory = new InventoryMapper(itemsManifest, statsManifest, damageTypeManifests).map(
         profileInventory.data,
         characterEquipment.data,
         characterInventoryData.data,
@@ -43,6 +50,7 @@ export const mapInventoryFromInventoryData = (
         sockets.data,
         reusablePlugs.data
     );
+
     dispatch(saveInventory(inventory));
 };
 

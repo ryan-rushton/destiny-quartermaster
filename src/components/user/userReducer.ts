@@ -9,7 +9,22 @@ import { UserMembership } from "./userTypes";
 import { StoreDispatch } from "../../rootReducer";
 import { mapCharactersFromProfileData } from "../characters/characterReducer";
 import { setLoading } from "../../appReducer";
-import { mapInventoryFromInventoryData } from "../inventory/inventoryReducer";
+import { mapInventoryFromInventoryData } from "../itemInventory/inventoryReducer";
+import { buildLibrary } from "../itemLibrary/libraryReducer";
+import {
+    WeaponItemCategories,
+    ArmourItemCategories,
+    GeneralItemCategoryHashes,
+    WeaponModCategories,
+    ArmourModCategories,
+    GhostModCategories
+} from "../itemCommon/commonItemTypes";
+import {
+    getInventoryItemManifestByCategory,
+    getCompleteStatManifest,
+    getCompleteDamageTypeManifest,
+    getCompletePlugSetManifest
+} from "../manifest/manifestStorage";
 
 type SaveUserMembershipAction = PayloadAction<UserMembership>;
 type SaveProfileAction = PayloadAction<DestinyProfileResponse>;
@@ -61,8 +76,35 @@ export const fetchProfileData = (id: string, membershipType: number) => {
             dispatch(mapCharactersFromProfileData(profile.characters)).finally(() =>
                 dispatch(setLoading(false))
             );
+            const allCategories = [
+                WeaponItemCategories.Weapons,
+                ArmourItemCategories.Armour,
+                ...GeneralItemCategoryHashes,
+                WeaponModCategories.WeaponMods,
+                ArmourModCategories.ArmourMods,
+                GhostModCategories.GhostMods
+            ];
+            const [
+                itemsManifest,
+                statsManifest,
+                damageTypeManifests,
+                plugSetDefinition
+            ] = await Promise.all([
+                getInventoryItemManifestByCategory(allCategories),
+                getCompleteStatManifest(),
+                getCompleteDamageTypeManifest(),
+                getCompletePlugSetManifest()
+            ]);
+
+            dispatch(
+                buildLibrary(itemsManifest, statsManifest, damageTypeManifests, plugSetDefinition)
+            );
+
             dispatch(
                 mapInventoryFromInventoryData(
+                    itemsManifest,
+                    statsManifest,
+                    damageTypeManifests,
                     profile.profileInventory,
                     profile.characterEquipment,
                     profile.characterInventories,

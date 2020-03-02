@@ -4,7 +4,8 @@ import appReducer from "./appReducer";
 import authReducer from "./components/auth/authReducer";
 import characterReducer from "./components/characters/characterReducer";
 import manifestReducer from "./components/manifest/manifestReducer";
-import inventoryReducer from "./components/inventory/inventoryReducer";
+import inventoryReducer from "./components/itemInventory/inventoryReducer";
+import libraryReducer from "./components/itemLibrary/libraryReducer";
 import userReducer from "./components/user/userReducer";
 
 const rootReducer = combineReducers({
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     characters: characterReducer,
     manifest: manifestReducer,
     inventory: inventoryReducer,
+    library: libraryReducer,
     user: userReducer
 });
 

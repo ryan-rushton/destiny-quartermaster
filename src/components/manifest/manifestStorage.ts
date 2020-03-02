@@ -6,7 +6,8 @@ import {
     DestinyInventoryItemDefinition,
     DestinyRaceDefinition,
     DestinyStatDefinition,
-    DestinyDamageTypeDefinition
+    DestinyDamageTypeDefinition,
+    DestinyPlugSetDefinition
 } from "bungie-api-ts/destiny2";
 
 import { JsonObject } from "../../lib/bungie_api/rest";
@@ -95,6 +96,7 @@ export const getInventoryItemManifestByCategory = async (
     const result = await DB.table(DefinitionManifestsEnum.DestinyInventoryItemDefinition)
         .where("itemCategoryHashes")
         .anyOf(categories)
+        .and(item => !item.itemCategoryHashes.includes(3109687656))
         .toArray();
 
     return _.chain(result)
@@ -122,6 +124,15 @@ export const getCompleteDamageTypeManifest = async (): Promise<Record<
 >> => {
     return getCompleteDefinitionManifestFromIndexDB(
         DefinitionManifestsEnum.DestinyDamageTypeDefinition
+    );
+};
+
+export const getCompletePlugSetManifest = async (): Promise<Record<
+    string,
+    DestinyPlugSetDefinition
+>> => {
+    return getCompleteDefinitionManifestFromIndexDB(
+        DefinitionManifestsEnum.DestinyPlugSetDefinition
     );
 };
 
