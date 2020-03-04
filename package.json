@@ -56,7 +56,7 @@
     },
     "devDependencies": {
         "@ryan-rushton/eslint-config": "^1.0.6",
-        "@testing-library/dom": "^6.12.2",
+        "@testing-library/dom": "^6.15.0",
         "@testing-library/jest-dom": "^5.1.1",
         "@testing-library/react": "^9.4.1",
         "@testing-library/user-event": "^10.0.0",
