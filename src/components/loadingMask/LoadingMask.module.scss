@@ -1,0 +1,36 @@
+@import "../../styleVariables.scss";
+
+.loadingMask {
+    background-color: rgba(0, 0, 0, 0.2);
+    bottom: 0;
+    height: 100vh;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100vw;
+    z-index: 100;
+}
+
+.spinnerBox {
+    animation: spin 1.2s linear infinite;
+    left: calc(50% - 22px);
+    height: 44px;
+    position: absolute;
+    top: calc(50% - 22px);
+    width: 44px;
+}
+
+.spinner {
+    stroke-dasharray: 100px;
+    stroke-dashoffset: -25px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

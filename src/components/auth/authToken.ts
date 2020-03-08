@@ -1,4 +1,4 @@
-import { StoreDispatch } from "../../rootReducer";
+import { StoreDispatch } from "rootReducer";
 import {
     getTokenTimeFromLocalStorage,
     getTokenFromLocalStorage,
@@ -7,7 +7,7 @@ import {
 } from "./authStorage";
 import { AuthToken } from "./authTypes";
 import { mapAuthToken } from "./authMappers";
-import { refreshOAuthToken } from "../../lib/bungie_api/auth";
+import { refreshOAuthToken } from "lib/bungie_api/auth";
 import { saveAuthToken } from "./authReducer";
 
 /**

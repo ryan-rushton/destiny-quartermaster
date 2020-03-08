@@ -6,7 +6,7 @@ import {
     DestinyPlugSetDefinition
 } from "bungie-api-ts/destiny2";
 
-import { StoreDispatch } from "../../rootReducer";
+import { StoreDispatch } from "rootReducer";
 import { Library } from "./libraryTypes";
 import LibraryMapper from "./LibraryMapper";
 

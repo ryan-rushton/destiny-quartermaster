@@ -2,7 +2,7 @@ import React, { FC, ComponentType } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import { RootStore } from "../../rootReducer";
+import { RootStore } from "rootReducer";
 
 const withAuth = <T,>(WrappedComponent: ComponentType<T>): FC<T> => {
     const Authenticate: FC<T> = props => {

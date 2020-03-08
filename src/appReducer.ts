@@ -4,34 +4,51 @@ type SelectedCharacterState = string | null;
 type SetLoadingAction = PayloadAction<boolean>;
 type SetSelectedCharacter = PayloadAction<SelectedCharacterState>;
 
+interface SelectedProfile {
+    id: string;
+    membershipType: number;
+}
+
+type SelectedProfileState = SelectedProfile | null;
+type SetSelectedProfile = PayloadAction<SelectedProfileState>;
+
 interface AppState {
-    loading: boolean;
+    loadingProfile: boolean;
     selectedCharacter: SelectedCharacterState;
+    selectedProfile: SelectedProfileState;
 }
 
 const initialState: AppState = {
-    loading: false,
-    selectedCharacter: null as SelectedCharacterState
+    loadingProfile: false,
+    selectedCharacter: null as SelectedCharacterState,
+    selectedProfile: null as SelectedProfileState
 };
 
-const setLoadingReducer: CaseReducer<AppState, SetLoadingAction> = (state, action) => ({
+const setLoadingProfileReducer: CaseReducer<AppState, SetLoadingAction> = (state, action) => ({
     ...state,
-    loading: action.payload
+    loadingProfile: action.payload
 });
+
 const setSelectedCharacterReducer: CaseReducer<AppState, SetSelectedCharacter> = (
     state,
     action
 ) => ({ ...state, selectedCharacter: action.payload });
 
+const setSelectedProfileReducer: CaseReducer<AppState, SetSelectedProfile> = (state, action) => ({
+    ...state,
+    selectedProfile: action.payload
+});
+
 const { actions, reducer } = createSlice({
     name: "app",
     initialState,
     reducers: {
-        setLoading: setLoadingReducer,
-        setSelectedCharacter: setSelectedCharacterReducer
+        setLoadingProfile: setLoadingProfileReducer,
+        setSelectedCharacter: setSelectedCharacterReducer,
+        setSelectedProfile: setSelectedProfileReducer
     }
 });
 
-export const { setLoading, setSelectedCharacter } = actions;
+export const { setLoadingProfile, setSelectedCharacter, setSelectedProfile } = actions;
 
 export default reducer;

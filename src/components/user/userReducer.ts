@@ -1,14 +1,13 @@
 import { createSlice, PayloadAction, CaseReducer } from "@reduxjs/toolkit";
 import { DestinyProfileResponse } from "bungie-api-ts/destiny2";
 
-import { getProfile } from "./../../lib/bungie_api/destiny2";
+import { getProfile } from "lib/bungie_api/destiny2";
 import { getValidToken } from "../auth/authToken";
-import { getMembershipDataForCurrentUser } from "../../lib/bungie_api/user";
+import { getMembershipDataForCurrentUser } from "lib/bungie_api/user";
 import { mapUserMembership } from "./userMappers";
 import { UserMembership } from "./userTypes";
-import { StoreDispatch } from "../../rootReducer";
+import { StoreDispatch } from "rootReducer";
 import { mapCharactersFromProfileData } from "../characters/characterReducer";
-import { setLoading } from "../../appReducer";
 import { mapInventoryFromInventoryData } from "../itemInventory/inventoryReducer";
 import { buildLibrary } from "../itemLibrary/libraryReducer";
 import {
@@ -25,6 +24,7 @@ import {
     getCompleteDamageTypeManifest,
     getCompletePlugSetManifest
 } from "../manifest/manifestStorage";
+import { setLoadingProfile } from "appReducer";
 
 type SaveUserMembershipAction = PayloadAction<UserMembership>;
 type SaveProfileAction = PayloadAction<DestinyProfileResponse>;
@@ -70,12 +70,12 @@ export const fetchUserMembershipData = () => {
 export const fetchProfileData = (id: string, membershipType: number) => {
     return async (dispatch: StoreDispatch): Promise<void> => {
         const token = await dispatch(getValidToken());
-        dispatch(setLoading(true));
         if (token) {
+            dispatch(setLoadingProfile(true));
+
             const profile = await getProfile(id, membershipType, token.accessToken);
-            dispatch(mapCharactersFromProfileData(profile.characters)).finally(() =>
-                dispatch(setLoading(false))
-            );
+            dispatch(mapCharactersFromProfileData(profile.characters));
+
             const allCategories = [
                 WeaponItemCategories.Weapons,
                 ArmourItemCategories.Armour,
@@ -111,8 +111,6 @@ export const fetchProfileData = (id: string, membershipType: number) => {
                     profile.itemComponents
                 )
             );
-        } else {
-            dispatch(setLoading(false));
         }
     };
 };

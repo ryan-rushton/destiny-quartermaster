@@ -1,11 +1,11 @@
 import React, { FC, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { RootStore } from "../../rootReducer";
+import { RootStore } from "rootReducer";
 import styles from "./CharacterSelect.module.scss";
 import AccountSelection from "../user/AccountSelection";
 import { Character } from "../characters/characterTypes";
-import { setSelectedCharacter } from "../../appReducer";
+import { setSelectedCharacter } from "appReducer";
 
 interface EmblemProps {
     character: Character;

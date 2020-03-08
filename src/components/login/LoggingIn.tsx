@@ -3,10 +3,10 @@ import { Redirect } from "react-router-dom";
 import { parse } from "query-string";
 import { useSelector, useDispatch } from "react-redux";
 
-import { getOAuthToken } from "../../lib/bungie_api/auth";
+import { getOAuthToken } from "lib/bungie_api/auth";
 import { saveToken } from "../auth/authToken";
 import { mapAuthToken } from "../auth/authMappers";
-import { RootStore, StoreDispatch } from "../../rootReducer";
+import { RootStore, StoreDispatch } from "rootReducer";
 
 const getCodeFromQueryParam = (): string | undefined => {
     const { location } = window;

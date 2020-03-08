@@ -2,7 +2,7 @@ import { PayloadAction, createSlice, CaseReducer } from "@reduxjs/toolkit";
 import { DictionaryComponentResponse, DestinyCharacterComponent } from "bungie-api-ts/destiny2";
 
 import { Character } from "./characterTypes";
-import { StoreDispatch } from "../../rootReducer";
+import { StoreDispatch } from "rootReducer";
 import { mapCharacters } from "./characterMappers";
 
 type CharacterState = Character | null;

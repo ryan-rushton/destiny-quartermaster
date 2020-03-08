@@ -1,12 +1,8 @@
 import { DestinyCharacterComponent } from "bungie-api-ts/destiny2";
 
-import {
-    getClassManifest,
-    getGenderManifest,
-    getRaceManifest
-} from "./../manifest/manifestStorage";
+import { getClassManifest, getGenderManifest, getRaceManifest } from "../manifest/manifestStorage";
 import { Character } from "./characterTypes";
-import { getFullImagePath } from "../../util/mappingUtils";
+import { getFullImagePath } from "util/mappingUtils";
 
 export const mapCharacters = (characters: DestinyCharacterComponent[]): Promise<Character[]> => {
     const classPromise = getClassManifest(characters.map(c => c.classHash));

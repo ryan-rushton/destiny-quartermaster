@@ -1,12 +1,14 @@
 import { combineReducers, configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 
-import appReducer from "./appReducer";
-import authReducer from "./components/auth/authReducer";
-import characterReducer from "./components/characters/characterReducer";
-import manifestReducer from "./components/manifest/manifestReducer";
-import inventoryReducer from "./components/itemInventory/inventoryReducer";
-import libraryReducer from "./components/itemLibrary/libraryReducer";
-import userReducer from "./components/user/userReducer";
+import appReducer from "appReducer";
+import authReducer from "components/auth/authReducer";
+import characterReducer from "components/characters/characterReducer";
+import manifestReducer from "components/manifest/manifestReducer";
+import inventoryReducer from "components/itemInventory/inventoryReducer";
+import libraryReducer from "components/itemLibrary/libraryReducer";
+import userReducer from "components/user/userReducer";
+import { getTokenFromLocalStorage } from "components/auth/authStorage";
+import { getLastUsedProfileFromLocalStorage } from "components/user/userStorage";
 
 const rootReducer = combineReducers({
     app: appReducer,
@@ -31,7 +33,13 @@ if (process.env.NODE_ENV === `development`) {
 
 const store = configureStore({
     reducer: rootReducer,
-    middleware
+    middleware,
+    preloadedState: {
+        authToken: getTokenFromLocalStorage(),
+        app: {
+            selectedProfile: getLastUsedProfileFromLocalStorage()
+        }
+    }
 });
 
 export type StoreDispatch = typeof store.dispatch;

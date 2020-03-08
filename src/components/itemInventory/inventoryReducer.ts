@@ -10,7 +10,7 @@ import {
 } from "bungie-api-ts/destiny2";
 
 import { Inventory } from "./inventoryTypes";
-import { StoreDispatch } from "../../rootReducer";
+import { StoreDispatch } from "rootReducer";
 import InventoryMapper from "./InventoryMapper";
 
 type SaveInventoryAction = PayloadAction<Inventory>;

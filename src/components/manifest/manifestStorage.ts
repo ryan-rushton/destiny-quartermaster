@@ -10,7 +10,7 @@ import {
     DestinyPlugSetDefinition
 } from "bungie-api-ts/destiny2";
 
-import { JsonObject } from "../../lib/bungie_api/rest";
+import { JsonObject } from "lib/bungie_api/rest";
 import { DefinitionManifests, DefinitionManifestsEnum } from "./manifestTypes";
 
 // DB Setup ---------------

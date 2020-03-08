@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 
-import { RootStore } from "../../rootReducer";
+import { RootStore } from "rootReducer";
 
 const Login = (): ReactElement => {
     const isLoggedIn = useSelector((state: RootStore) => Boolean(state.authToken));

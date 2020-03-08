@@ -1,11 +1,11 @@
 import React, { FC } from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
 
-import Login from "./components/login/Login";
-import NavBar from "./components/navbar/NavBar";
-import styles from "./App.module.scss";
-import LoggingIn from "./components/login/LoggingIn";
-import CharacterSelect from "./components/characterSelect/CharacterSelect";
+import Login from "components/login/Login";
+import NavBar from "components/navbar/NavBar";
+import styles from "App.module.scss";
+import LoggingIn from "components/login/LoggingIn";
+import Quartermaster from "components/quartermaster/Quartermaster";
 
 const App: FC = () => {
     return (
@@ -14,7 +14,7 @@ const App: FC = () => {
             <div className={styles.body}>
                 <Switch>
                     <Route exact path="/">
-                        <CharacterSelect />
+                        <Quartermaster />
                     </Route>
                     <Route path="/login">
                         <Login />

@@ -39,13 +39,20 @@ module.exports = {
         node: true
     },
     settings: {
+        "import/resolver": {
+            typescript: {
+                alwaysTryTypes: true
+            }
+        },
         react: {
             version: "detect"
         }
     },
     rules: {
+        "import/default": "off",
         "import/named": "off",
         "import/newline-after-import": "warn",
+        "import/no-named-as-default-member": "off",
         "import/order": ["warn", { "newlines-between": "always", groups: ["builtin", "external"] }],
         "no-undef": "warn",
         "no-unused-vars": ["warn", { vars: "all", args: "after-used", ignoreRestSiblings: false }],
