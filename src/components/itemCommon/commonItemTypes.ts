@@ -1,4 +1,4 @@
-const getHashesFromEnum = (anEnum: any): number[] => {
+const getHashesFromEnum = (anEnum: object): number[] => {
     const hashes: number[] = [];
     for (const val of Object.values(anEnum)) {
         if (typeof val === "number") {
@@ -73,11 +73,17 @@ export enum GeneralItemCategories {
 }
 
 export enum WeaponModCategories {
-    WeaponMods = 610365472
+    WeaponMods = 610365472,
+    Ornaments = 3124752623
 }
 
 export enum ArmourModCategories {
-    ArmourMods = 4104513227
+    ArmourMods = 4104513227,
+    Helmets = 1362265421,
+    Arms = 3872696960,
+    Chest = 3723676689,
+    Legs = 3607371986,
+    ClassItems = 3196106184
 }
 
 export enum GhostModCategories {
@@ -90,6 +96,9 @@ export enum GhostShellSocketCategories {
 }
 
 export const GeneralItemCategoryHashes = getHashesFromEnum(GeneralItemCategories);
+
+export type Class = "warlock" | "hunter" | "titan";
+export type ArmourSlot = "helmets" | "arms" | "chest" | "legs" | "classItems";
 
 export interface Damage {
     hash: number;

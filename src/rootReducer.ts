@@ -1,4 +1,4 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 
 import appReducer from "./appReducer";
 import authReducer from "./components/auth/authReducer";
@@ -20,8 +20,18 @@ const rootReducer = combineReducers({
 
 export type RootStore = ReturnType<typeof rootReducer>;
 
+const middleware = [...getDefaultMiddleware()];
+
+if (process.env.NODE_ENV === `development`) {
+    // eslint-disable-next-line
+    const { createLogger } = require(`redux-logger`);
+    const logger = createLogger({ duration: true });
+    middleware.push(logger);
+}
+
 const store = configureStore({
-    reducer: rootReducer
+    reducer: rootReducer,
+    middleware
 });
 
 export type StoreDispatch = typeof store.dispatch;

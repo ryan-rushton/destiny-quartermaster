@@ -1,4 +1,4 @@
-import { Stat, Damage, Stats, Mod } from "../itemCommon/commonItemTypes";
+import { Stat, Damage, Stats, Mod, Class, ArmourSlot } from "../itemCommon/commonItemTypes";
 
 export interface InventoryItem {
     hash: number;
@@ -6,7 +6,6 @@ export interface InventoryItem {
     iconPath: string;
     primaryStat?: Stat;
     categories: number[];
-    other?: any;
 }
 
 export interface Weapon extends InventoryItem {
@@ -34,14 +33,6 @@ export interface GhostShell extends InventoryItem {
     mods: Mod[];
 }
 
-export interface ArmourInventory {
-    helmets: Record<string, Armour>;
-    arms: Record<string, Armour>;
-    chest: Record<string, Armour>;
-    legs: Record<string, Armour>;
-    classItems: Record<string, Armour>;
-}
-
 export interface Inventory {
     weapons: {
         kinetic: Record<string, Weapon>;
@@ -49,9 +40,9 @@ export interface Inventory {
         heavy: Record<string, Weapon>;
     };
     armour: {
-        warlock: ArmourInventory;
-        hunter: ArmourInventory;
-        titan: ArmourInventory;
+        [key in Class]: {
+            [key in ArmourSlot]: Record<string, Armour>;
+        };
     };
     ghosts: Record<string, InventoryItem>;
     other: Record<string, InventoryItem>;

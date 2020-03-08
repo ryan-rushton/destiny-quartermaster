@@ -12,8 +12,12 @@ import {
     ArmourItemCategories,
     GeneralItemCategories,
     WeaponSocketCategories,
-    Mod
-} from "../itemCommon/commonItemTypes";
+    Mod,
+    ArmourSocketCategories,
+    GhostShellSocketCategories,
+    ArmourModCategories,
+    WeaponModCategories
+} from "./../itemCommon/commonItemTypes";
 import { Library, LibraryItem } from "./libraryTypes";
 import { mapDamageTypes, mapInventoryStats, mapMod } from "../itemCommon/commonItemMappers";
 
@@ -39,8 +43,11 @@ class LibraryMapper {
         };
     }
 
-    mapWeaponSockets(
-        socketBlock?: DestinyItemSocketBlockDefinition
+    mapSockets(
+        perkCategory: number,
+        modCategory: number,
+        socketBlock?: DestinyItemSocketBlockDefinition,
+        cosmeticCategory?: number
     ): { perks: Mod[][]; mods: Mod[]; cosmetics: Mod[] } {
         const mods: Mod[] = [];
         const perks: Mod[][] = [];
@@ -50,7 +57,6 @@ class LibraryMapper {
             socketBlock?.socketCategories,
             def => def.socketCategoryHash
         );
-        const { Perks, Mods, Cosmetics } = WeaponSocketCategories;
 
         if (socketBlock?.socketEntries) {
             let index = 0;
@@ -75,7 +81,7 @@ class LibraryMapper {
                         }
                     }
                     if (modSet.length) {
-                        if (categoriesByHash[Perks]?.socketIndexes.includes(index)) {
+                        if (categoriesByHash[perkCategory]?.socketIndexes.includes(index)) {
                             perks.push(modSet);
                         } else {
                             console.log("Mod set didn't map to perks");
@@ -83,11 +89,14 @@ class LibraryMapper {
                     }
                 } else if (plug) {
                     const mod = mapMod(this.statsManifest, plug, false);
-                    if (categoriesByHash[Perks]?.socketIndexes.includes(index)) {
+                    if (categoriesByHash[perkCategory]?.socketIndexes.includes(index)) {
                         perks.push([mod]);
-                    } else if (categoriesByHash[Cosmetics]?.socketIndexes.includes(index)) {
+                    } else if (
+                        cosmeticCategory &&
+                        categoriesByHash[cosmeticCategory]?.socketIndexes.includes(index)
+                    ) {
                         cosmetics.push(mod);
-                    } else if (categoriesByHash[Mods]?.socketIndexes.includes(index)) {
+                    } else if (categoriesByHash[modCategory]?.socketIndexes.includes(index)) {
                         mods.push(mod);
                     }
                 }
@@ -133,7 +142,16 @@ class LibraryMapper {
                 }
             },
             ghosts: {},
-            other: {}
+            mods: {
+                weapons: {},
+                armour: {
+                    helmets: {},
+                    arms: {},
+                    chest: {},
+                    legs: {},
+                    classItems: {}
+                }
+            }
         };
 
         for (const manifestEntry of Object.values(this.itemsManifest)) {
@@ -149,7 +167,12 @@ class LibraryMapper {
                     ),
                     baseStats: mapInventoryStats(this.statsManifest, manifestEntry.investmentStats),
                     exotic: manifestEntry.equippingBlock.uniqueLabel === "exotic_weapon",
-                    ...this.mapWeaponSockets(manifestEntry.sockets)
+                    ...this.mapSockets(
+                        WeaponSocketCategories.Perks,
+                        WeaponSocketCategories.Mods,
+                        manifestEntry.sockets,
+                        WeaponSocketCategories.Cosmetics
+                    )
                 };
 
                 if (categories.includes(WeaponItemCategories.KineticWeapons)) {
@@ -166,7 +189,13 @@ class LibraryMapper {
                 const armour = {
                     ...baseItem,
                     baseStats: mapInventoryStats(this.statsManifest, manifestEntry.investmentStats),
-                    exotic: manifestEntry.equippingBlock.uniqueLabel === "exotic_armor"
+                    exotic: manifestEntry.equippingBlock.uniqueLabel === "exotic_armor",
+                    ...this.mapSockets(
+                        ArmourSocketCategories.Perks,
+                        ArmourSocketCategories.Mods,
+                        manifestEntry.sockets,
+                        ArmourSocketCategories.Cosmetics
+                    )
                 };
 
                 let armourSlot;
@@ -192,12 +221,48 @@ class LibraryMapper {
                 }
             } else if (categories.includes(GeneralItemCategories.Ghosts)) {
                 const ghost = {
-                    ...baseItem
+                    ...baseItem,
+                    ...this.mapSockets(
+                        GhostShellSocketCategories.Perks,
+                        GhostShellSocketCategories.Mods,
+                        manifestEntry.sockets
+                    )
                 };
 
                 library.ghosts[manifestEntry.hash] = ghost;
-            } else {
-                library.other[manifestEntry.hash] = baseItem;
+            } else if (
+                categories.includes(ArmourModCategories.ArmourMods) &&
+                manifestEntry.plug?.plugCategoryIdentifier.startsWith("enhancements.v2")
+            ) {
+                let armourSlot;
+                if (categories.includes(ArmourModCategories.Helmets)) {
+                    armourSlot = "helmets";
+                } else if (categories.includes(ArmourModCategories.Arms)) {
+                    armourSlot = "arms";
+                } else if (categories.includes(ArmourModCategories.Chest)) {
+                    armourSlot = "chest";
+                } else if (categories.includes(ArmourModCategories.Legs)) {
+                    armourSlot = "legs";
+                } else if (categories.includes(ArmourModCategories.ClassItems)) {
+                    armourSlot = "classItems";
+                }
+                if (armourSlot) {
+                    library.mods.armour[armourSlot][manifestEntry.hash] = mapMod(
+                        this.statsManifest,
+                        manifestEntry,
+                        false
+                    );
+                }
+            } else if (
+                categories.includes(WeaponModCategories.WeaponMods) &&
+                !categories.includes(WeaponModCategories.Ornaments) &&
+                manifestEntry.plug.plugCategoryIdentifier.startsWith("v400")
+            ) {
+                library.mods.weapons[manifestEntry.hash] = mapMod(
+                    this.statsManifest,
+                    manifestEntry,
+                    false
+                );
             }
         }
 
