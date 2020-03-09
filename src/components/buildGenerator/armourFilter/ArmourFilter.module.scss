@@ -1,0 +1,32 @@
+@import "../../../styleVariables.scss";
+
+.armourFilter {
+    text-align: left;
+    width: 100%;
+}
+
+.sectionTitle {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 6px 0;
+}
+
+.statsFilter {
+    width: 100%;
+}
+
+.stat {
+    margin-right: 6px;
+}
+
+.statInput {
+    width: 40px;
+}
+
+.selectedMods {
+    background-color: $qm-grey;
+    border-radius: 2px;
+    border: 1px solid $qm-dark-grey;
+    height: 51px;
+    margin: 3px 0;
+}

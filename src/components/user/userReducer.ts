@@ -1,12 +1,12 @@
-import { createSlice, PayloadAction, CaseReducer } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, CaseReducer, ThunkAction, Action } from "@reduxjs/toolkit";
 import { DestinyProfileResponse } from "bungie-api-ts/destiny2";
 
+import { RootStore, StoreDispatch } from "./../../rootReducer";
 import { getProfile } from "lib/bungie_api/destiny2";
 import { getValidToken } from "../auth/authToken";
 import { getMembershipDataForCurrentUser } from "lib/bungie_api/user";
 import { mapUserMembership } from "./userMappers";
 import { UserMembership } from "./userTypes";
-import { StoreDispatch } from "rootReducer";
 import { mapCharactersFromProfileData } from "../characters/characterReducer";
 import { mapInventoryFromInventoryData } from "../itemInventory/inventoryReducer";
 import { buildLibrary } from "../itemLibrary/libraryReducer";
@@ -67,50 +67,62 @@ export const fetchUserMembershipData = () => {
     };
 };
 
-export const fetchProfileData = (id: string, membershipType: number) => {
-    return async (dispatch: StoreDispatch): Promise<void> => {
-        const token = await dispatch(getValidToken());
-        if (token) {
-            dispatch(setLoadingProfile(true));
+export const fetchProfileData = (
+    id: string,
+    membershipType: number
+): ThunkAction<Promise<void>, RootStore, unknown, Action<string>> => {
+    return async (dispatch, getState): Promise<void> => {
+        if (!getState().app.loadingProfile) {
+            const token = await dispatch(getValidToken());
+            if (token) {
+                dispatch(setLoadingProfile(true));
 
-            const profile = await getProfile(id, membershipType, token.accessToken);
-            dispatch(mapCharactersFromProfileData(profile.characters));
+                const profile = await getProfile(id, membershipType, token.accessToken);
+                dispatch(mapCharactersFromProfileData(profile.characters));
 
-            const allCategories = [
-                WeaponItemCategories.Weapons,
-                ArmourItemCategories.Armour,
-                ...GeneralItemCategoryHashes,
-                WeaponModCategories.WeaponMods,
-                ArmourModCategories.ArmourMods,
-                GhostModCategories.GhostMods
-            ];
-            const [
-                itemsManifest,
-                statsManifest,
-                damageTypeManifests,
-                plugSetDefinition
-            ] = await Promise.all([
-                getInventoryItemManifestByCategory(allCategories),
-                getCompleteStatManifest(),
-                getCompleteDamageTypeManifest(),
-                getCompletePlugSetManifest()
-            ]);
-
-            dispatch(
-                buildLibrary(itemsManifest, statsManifest, damageTypeManifests, plugSetDefinition)
-            );
-
-            dispatch(
-                mapInventoryFromInventoryData(
+                const allCategories = [
+                    WeaponItemCategories.Weapons,
+                    ArmourItemCategories.Armour,
+                    ...GeneralItemCategoryHashes,
+                    WeaponModCategories.WeaponMods,
+                    ArmourModCategories.ArmourMods,
+                    GhostModCategories.GhostMods
+                ];
+                const [
                     itemsManifest,
                     statsManifest,
                     damageTypeManifests,
-                    profile.profileInventory,
-                    profile.characterEquipment,
-                    profile.characterInventories,
-                    profile.itemComponents
-                )
-            );
+                    plugSetDefinition
+                ] = await Promise.all([
+                    getInventoryItemManifestByCategory(allCategories),
+                    getCompleteStatManifest(),
+                    getCompleteDamageTypeManifest(),
+                    getCompletePlugSetManifest()
+                ]);
+
+                dispatch(
+                    buildLibrary(
+                        itemsManifest,
+                        statsManifest,
+                        damageTypeManifests,
+                        plugSetDefinition
+                    )
+                );
+
+                dispatch(
+                    mapInventoryFromInventoryData(
+                        itemsManifest,
+                        statsManifest,
+                        damageTypeManifests,
+                        profile.profileInventory,
+                        profile.characterEquipment,
+                        profile.characterInventories,
+                        profile.itemComponents
+                    )
+                );
+
+                dispatch(setLoadingProfile(false));
+            }
         }
     };
 };

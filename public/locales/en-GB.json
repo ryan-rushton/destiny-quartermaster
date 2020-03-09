@@ -1,0 +1,13 @@
+{
+    "armourFilter": {
+        "statsFilter": "Stats Filter",
+        "intellect": "Intellect",
+        "discipline": "Discipline",
+        "strength": "Strength",
+        "mobility": "Mobility",
+        "resilience": "Resilience",
+        "recovery": "Recovery",
+        "requiredMods": "Required Mods",
+        "clickToAddMod": "Click to add a mod to requirements"
+    }
+}

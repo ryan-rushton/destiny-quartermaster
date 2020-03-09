@@ -7,7 +7,6 @@ import { RootStore } from "rootReducer";
 import withAuth from "../auth/withAuth";
 import AccountSelection from "../user/AccountSelection";
 import BuildGenerator from "../buildGenerator/BuildGenerator";
-import { setLoadingProfile } from "appReducer";
 import LoadingMask from "components/loadingMask/LoadingMask";
 
 const Quartermaster: FC = () => {
@@ -16,7 +15,6 @@ const Quartermaster: FC = () => {
     const manifest = useSelector((store: RootStore) => store.manifest);
     const userMembership = useSelector((store: RootStore) => store.user.userMembership);
     const selectedProfile = useSelector((store: RootStore) => store.app.selectedProfile);
-    const loadingProfile = useSelector((store: RootStore) => store.app.loadingProfile);
     const itemsHaveLoaded = useSelector((store: RootStore) =>
         Boolean(store.inventory && store.library)
     );
@@ -29,19 +27,15 @@ const Quartermaster: FC = () => {
         dispatch(fetchUserMembershipData());
     }
 
-    if (selectedProfile && !itemsHaveLoaded && !loadingProfile) {
+    if (selectedProfile && !itemsHaveLoaded) {
         dispatch(fetchProfileData(selectedProfile.id, selectedProfile.membershipType));
-    }
-
-    if (itemsHaveLoaded && loadingProfile) {
-        dispatch(setLoadingProfile(false));
     }
 
     return (
         <div>
             <LoadingMask isLoading={!itemsHaveLoaded} />
             {!selectedProfile && <AccountSelection />}
-            {!loadingProfile && itemsHaveLoaded && <BuildGenerator />}
+            {itemsHaveLoaded && <BuildGenerator />}
         </div>
     );
 };

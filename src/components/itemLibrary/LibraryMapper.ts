@@ -21,6 +21,9 @@ import {
 import { Library, LibraryItem } from "./libraryTypes";
 import { mapDamageTypes, mapInventoryStats, mapMod } from "../itemCommon/commonItemMappers";
 
+// This has been deprecated so filter it out
+const ParagonModHash = 926084009;
+
 class LibraryMapper {
     itemsManifest: Record<string, DestinyInventoryItemDefinition>;
     statsManifest: Record<string, DestinyStatDefinition>;
@@ -149,7 +152,8 @@ class LibraryMapper {
                     arms: {},
                     chest: {},
                     legs: {},
-                    classItems: {}
+                    classItems: {},
+                    generic: {}
                 }
             }
         };
@@ -231,8 +235,11 @@ class LibraryMapper {
 
                 library.ghosts[manifestEntry.hash] = ghost;
             } else if (
+                manifestEntry.hash !== ParagonModHash &&
                 categories.includes(ArmourModCategories.ArmourMods) &&
-                manifestEntry.plug?.plugCategoryIdentifier.startsWith("enhancements.v2")
+                manifestEntry.plug?.plugCategoryIdentifier !== "enhancements.season_penumbra" &&
+                (manifestEntry.plug?.plugCategoryIdentifier.startsWith("enhancements.v2") ||
+                    manifestEntry.plug?.plugCategoryIdentifier.startsWith("enhancements.season"))
             ) {
                 let armourSlot;
                 if (categories.includes(ArmourModCategories.Helmets)) {
@@ -245,6 +252,8 @@ class LibraryMapper {
                     armourSlot = "legs";
                 } else if (categories.includes(ArmourModCategories.ClassItems)) {
                     armourSlot = "classItems";
+                } else {
+                    armourSlot = "generic";
                 }
                 if (armourSlot) {
                     library.mods.armour[armourSlot][manifestEntry.hash] = mapMod(

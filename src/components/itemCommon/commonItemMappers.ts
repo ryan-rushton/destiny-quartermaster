@@ -53,7 +53,7 @@ export const mapMod = (
     plug: DestinyInventoryItemDefinition,
     enabled
 ): Mod => {
-    const { displayProperties, hash, itemCategoryHashes } = plug;
+    const { displayProperties, hash, itemCategoryHashes, collectibleHash } = plug;
     return {
         name: displayProperties.name,
         description: displayProperties.description,
@@ -61,6 +61,7 @@ export const mapMod = (
         hash,
         enabled,
         categories: itemCategoryHashes,
-        stats: mapInventoryStats(statsManifest, plug.investmentStats)
+        stats: mapInventoryStats(statsManifest, plug.investmentStats),
+        collectibleHash
     };
 };

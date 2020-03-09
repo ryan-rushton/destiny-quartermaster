@@ -1,0 +1,33 @@
+@import "../../styleVariables.scss";
+
+.buildGenerator {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    width: 100%;
+}
+
+.categorySelector {
+    font-size: x-large;
+    font-weight: 600;
+    grid-column-start: 1;
+}
+
+.categoryButton {
+    border-radius: 2px;
+    margin: auto;
+    padding: 6px 20px;
+    text-align: left;
+
+    &:hover {
+        background-color: $qm-grey-2;
+        cursor: pointer;
+    }
+}
+
+.selected {
+    color: $qm-blue;
+}
+
+.categoryFilter {
+    grid-column-start: 2;
+}

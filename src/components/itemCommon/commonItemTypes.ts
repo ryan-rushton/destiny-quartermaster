@@ -124,4 +124,5 @@ export interface Mod {
     hash: number;
     categories: number[];
     stats: Stats;
+    collectibleHash?: number;
 }

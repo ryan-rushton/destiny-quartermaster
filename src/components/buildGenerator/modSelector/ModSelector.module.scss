@@ -1,0 +1,24 @@
+@import "../../../styleVariables.scss";
+
+.modSelector {
+    display: inline-block;
+}
+
+.button {
+    background-color: $qm-dark-grey;
+    border-radius: 2px;
+    margin-right: 6px;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.modPanel {
+    background-color: $qm-grey;
+    display: grid;
+    margin-top: 6px;
+    overflow: auto;
+    position: absolute;
+    text-align: center;
+    z-index: 10;
+}
