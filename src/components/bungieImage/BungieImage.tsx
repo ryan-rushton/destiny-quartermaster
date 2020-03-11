@@ -2,19 +2,22 @@ import React, { FC } from "react";
 
 import { getFullImagePath } from "util/mappingUtils";
 import styles from "./BungieImage.module.scss";
-import { useClickAndEnterKey } from "hooks/useClickAndEnterKey";
 
 interface Props {
     url: string;
     title: string;
-    onClick(): void;
+    className?: string;
 }
 
-const BungieImage: FC<Props> = ({ url, title, onClick }) => {
-    const [onClickHandler, onEnter] = useClickAndEnterKey(onClick);
+const BungieImage: FC<Props> = ({ url, title, className }) => {
     return (
-        <span onClick={onClickHandler} onKeyPress={onEnter} role="button" tabIndex={0}>
-            <img className={styles.bungieImage} alt="" src={getFullImagePath(url)} title={title} />
+        <span>
+            <img
+                className={`${styles.bungieImage} ${className}`}
+                alt=""
+                src={getFullImagePath(url)}
+                title={title}
+            />
         </span>
     );
 };

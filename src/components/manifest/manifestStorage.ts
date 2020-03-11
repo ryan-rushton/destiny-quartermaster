@@ -7,7 +7,8 @@ import {
     DestinyRaceDefinition,
     DestinyStatDefinition,
     DestinyDamageTypeDefinition,
-    DestinyPlugSetDefinition
+    DestinyPlugSetDefinition,
+    DestinyEnergyTypeDefinition
 } from "bungie-api-ts/destiny2";
 
 import { JsonObject } from "lib/bungie_api/rest";
@@ -133,6 +134,15 @@ export const getCompletePlugSetManifest = async (): Promise<Record<
 >> => {
     return getCompleteDefinitionManifestFromIndexDB(
         DefinitionManifestsEnum.DestinyPlugSetDefinition
+    );
+};
+
+export const getCompleteEnergyTypeManifest = async (): Promise<Record<
+    string,
+    DestinyEnergyTypeDefinition
+>> => {
+    return getCompleteDefinitionManifestFromIndexDB(
+        DefinitionManifestsEnum.DestinyEnergyTypeDefinition
     );
 };
 

@@ -6,7 +6,8 @@ import {
     DestinyItemComponentSetOfint64,
     DestinyInventoryItemDefinition,
     DestinyStatDefinition,
-    DestinyDamageTypeDefinition
+    DestinyDamageTypeDefinition,
+    DestinyEnergyTypeDefinition
 } from "bungie-api-ts/destiny2";
 
 import { Inventory } from "./inventoryTypes";
@@ -34,6 +35,7 @@ export const mapInventoryFromInventoryData = (
     itemsManifest: Record<string, DestinyInventoryItemDefinition>,
     statsManifest: Record<string, DestinyStatDefinition>,
     damageTypeManifests: Record<string, DestinyDamageTypeDefinition>,
+    energyTypeManifest: Record<string, DestinyEnergyTypeDefinition>,
     profileInventory: SingleComponentResponse<DestinyInventoryComponent>,
     characterEquipment: DictionaryComponentResponse<DestinyInventoryComponent>,
     characterInventoryData: DictionaryComponentResponse<DestinyInventoryComponent>,
@@ -41,7 +43,12 @@ export const mapInventoryFromInventoryData = (
 ) => (dispatch: StoreDispatch): void => {
     const { instances, sockets, stats, reusablePlugs } = itemComponents;
 
-    const inventory = new InventoryMapper(itemsManifest, statsManifest, damageTypeManifests).map(
+    const inventory = new InventoryMapper(
+        itemsManifest,
+        statsManifest,
+        damageTypeManifests,
+        energyTypeManifest
+    ).map(
         profileInventory.data,
         characterEquipment.data,
         characterInventoryData.data,

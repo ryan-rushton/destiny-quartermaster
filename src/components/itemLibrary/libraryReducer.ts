@@ -3,7 +3,8 @@ import {
     DestinyInventoryItemDefinition,
     DestinyStatDefinition,
     DestinyDamageTypeDefinition,
-    DestinyPlugSetDefinition
+    DestinyPlugSetDefinition,
+    DestinyEnergyTypeDefinition
 } from "bungie-api-ts/destiny2";
 
 import { StoreDispatch } from "rootReducer";
@@ -31,13 +32,15 @@ export const buildLibrary = (
     itemsManifest: Record<string, DestinyInventoryItemDefinition>,
     statsManifest: Record<string, DestinyStatDefinition>,
     damageTypeManifests: Record<string, DestinyDamageTypeDefinition>,
-    plugSetsManifest: Record<string, DestinyPlugSetDefinition>
+    plugSetsManifest: Record<string, DestinyPlugSetDefinition>,
+    energyTypeManifest: Record<string, DestinyEnergyTypeDefinition>
 ) => (dispatch: StoreDispatch): void => {
     const library = new LibraryMapper(
         itemsManifest,
         statsManifest,
         damageTypeManifests,
-        plugSetsManifest
+        plugSetsManifest,
+        energyTypeManifest
     ).map();
 
     dispatch(saveLibrary(library));

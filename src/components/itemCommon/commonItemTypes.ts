@@ -116,6 +116,13 @@ export interface Stats {
     [key: string]: Stat;
 }
 
+export interface EnergyCost {
+    name: string;
+    iconPath: string;
+    description: string;
+    cost: number;
+}
+
 export interface Mod {
     name: string;
     iconPath: string;
@@ -125,4 +132,5 @@ export interface Mod {
     categories: number[];
     stats: Stats;
     collectibleHash?: number;
+    energyType?: EnergyCost;
 }

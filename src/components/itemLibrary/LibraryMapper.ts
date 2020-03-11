@@ -4,7 +4,8 @@ import {
     DestinyStatDefinition,
     DestinyDamageTypeDefinition,
     DestinyItemSocketBlockDefinition,
-    DestinyPlugSetDefinition
+    DestinyPlugSetDefinition,
+    DestinyEnergyTypeDefinition
 } from "bungie-api-ts/destiny2";
 
 import {
@@ -29,12 +30,20 @@ class LibraryMapper {
     statsManifest: Record<string, DestinyStatDefinition>;
     damageTypeManifests: Record<string, DestinyDamageTypeDefinition>;
     plugSetsManifest: Record<string, DestinyPlugSetDefinition>;
+    energyTypeManifest: Record<string, DestinyEnergyTypeDefinition>;
 
-    constructor(itemsManifest, statsManifest, damageTypeManifests, plugSetsManifest) {
+    constructor(
+        itemsManifest,
+        statsManifest,
+        damageTypeManifests,
+        plugSetsManifest,
+        energyTypeManifest
+    ) {
         this.itemsManifest = itemsManifest || {};
         this.statsManifest = statsManifest || {};
         this.damageTypeManifests = damageTypeManifests || {};
         this.plugSetsManifest = plugSetsManifest || {};
+        this.energyTypeManifest = energyTypeManifest || {};
     }
 
     mapBaseItem(manifestEntry: DestinyInventoryItemDefinition): LibraryItem {
@@ -80,7 +89,9 @@ class LibraryMapper {
                         const plugDef = this.itemsManifest[randomisedPlugDef.plugItemHash];
 
                         if (plugDef) {
-                            modSet.push(mapMod(this.statsManifest, plugDef, false));
+                            modSet.push(
+                                mapMod(this.statsManifest, this.energyTypeManifest, plugDef, false)
+                            );
                         }
                     }
                     if (modSet.length) {
@@ -91,7 +102,7 @@ class LibraryMapper {
                         }
                     }
                 } else if (plug) {
-                    const mod = mapMod(this.statsManifest, plug, false);
+                    const mod = mapMod(this.statsManifest, this.energyTypeManifest, plug, false);
                     if (categoriesByHash[perkCategory]?.socketIndexes.includes(index)) {
                         perks.push([mod]);
                     } else if (
@@ -258,6 +269,7 @@ class LibraryMapper {
                 if (armourSlot) {
                     library.mods.armour[armourSlot][manifestEntry.hash] = mapMod(
                         this.statsManifest,
+                        this.energyTypeManifest,
                         manifestEntry,
                         false
                     );
@@ -269,6 +281,7 @@ class LibraryMapper {
             ) {
                 library.mods.weapons[manifestEntry.hash] = mapMod(
                     this.statsManifest,
+                    this.energyTypeManifest,
                     manifestEntry,
                     false
                 );

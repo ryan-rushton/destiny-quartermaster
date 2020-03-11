@@ -15,9 +15,11 @@
 
 .modPanel {
     background-color: $qm-grey;
+    border-radius: 2px;
     display: grid;
-    margin-top: 6px;
+    margin: 6px 0;
     overflow: auto;
+    padding: 6px;
     position: absolute;
     text-align: center;
     z-index: 10;

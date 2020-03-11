@@ -4,8 +4,9 @@ import { useTranslation } from "react-i18next";
 
 import { Mod } from "components/itemCommon/commonItemTypes";
 import styles from "./ModSelector.module.scss";
-import BungieImage from "components/bungieImage/BungieImage";
+import BungieImageButton from "components/bungieImage/BungieImageButton";
 import useClickOutside from "hooks/useClickOutside";
+import ModImage from "./ModImage";
 
 interface Props {
     mods: Mod[];
@@ -35,7 +36,7 @@ const ModSelector: FC<Props> = ({ mods, onModSelected }) => {
     return (
         <div ref={ref} className={styles.modSelector}>
             <div className={styles.button}>
-                <BungieImage
+                <BungieImageButton
                     url={defaultMod.iconPath}
                     title={t("armourFilter.clickToAddMod")}
                     onClick={(): void => setOpen(!open)}
@@ -48,11 +49,7 @@ const ModSelector: FC<Props> = ({ mods, onModSelected }) => {
                             key={mod.hash}
                             style={{ gridColumnStart: (modColumn++ % numberOfModColumns) + 1 }}
                         >
-                            <BungieImage
-                                url={mod.iconPath}
-                                title={mod.name}
-                                onClick={(): void => onModSelected(mod)}
-                            />
+                            <ModImage mod={mod} onModClick={(): void => onModSelected(mod)} />
                         </div>
                     ))}
                 </div>

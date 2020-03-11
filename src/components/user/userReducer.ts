@@ -22,7 +22,8 @@ import {
     getInventoryItemManifestByCategory,
     getCompleteStatManifest,
     getCompleteDamageTypeManifest,
-    getCompletePlugSetManifest
+    getCompletePlugSetManifest,
+    getCompleteEnergyTypeManifest
 } from "../manifest/manifestStorage";
 import { setLoadingProfile } from "appReducer";
 
@@ -92,12 +93,14 @@ export const fetchProfileData = (
                     itemsManifest,
                     statsManifest,
                     damageTypeManifests,
-                    plugSetDefinition
+                    plugSetDefinition,
+                    energyTypeManifest
                 ] = await Promise.all([
                     getInventoryItemManifestByCategory(allCategories),
                     getCompleteStatManifest(),
                     getCompleteDamageTypeManifest(),
-                    getCompletePlugSetManifest()
+                    getCompletePlugSetManifest(),
+                    getCompleteEnergyTypeManifest()
                 ]);
 
                 dispatch(
@@ -105,7 +108,8 @@ export const fetchProfileData = (
                         itemsManifest,
                         statsManifest,
                         damageTypeManifests,
-                        plugSetDefinition
+                        plugSetDefinition,
+                        energyTypeManifest
                     )
                 );
 
@@ -114,6 +118,7 @@ export const fetchProfileData = (
                         itemsManifest,
                         statsManifest,
                         damageTypeManifests,
+                        energyTypeManifest,
                         profile.profileInventory,
                         profile.characterEquipment,
                         profile.characterInventories,

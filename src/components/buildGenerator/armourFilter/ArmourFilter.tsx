@@ -8,7 +8,7 @@ import { saveStatFilter, updateArmourMods } from "./armourFilterReducer";
 import { RootStore } from "rootReducer";
 import ModSelector from "../modSelector/ModSelector";
 import { Mod } from "components/itemCommon/commonItemTypes";
-import BungieImage from "components/bungieImage/BungieImage";
+import ModImage from "../modSelector/ModImage";
 
 const ArmourFilter: FC = () => {
     const dispatch = useDispatch();
@@ -52,11 +52,10 @@ const ArmourFilter: FC = () => {
                 <div className={styles.sectionTitle}>{t("armourFilter.requiredMods")}</div>
                 <div className={styles.selectedMods}>
                     {armourFilter.mods.map(mod => (
-                        <BungieImage
+                        <ModImage
                             key={mod.hash}
-                            url={mod.iconPath}
-                            title={mod.name}
-                            onClick={(): void => {
+                            mod={mod}
+                            onModClick={(): void => {
                                 dispatch(updateArmourMods(mod));
                             }}
                         />

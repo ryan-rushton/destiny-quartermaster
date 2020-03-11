@@ -12,7 +12,7 @@ import LoadingMask from "components/loadingMask/LoadingMask";
 const Quartermaster: FC = () => {
     const dispatch = useDispatch();
 
-    const manifest = useSelector((store: RootStore) => store.manifest);
+    const manifest = useSelector((store: RootStore) => store.manifest.manifest);
     const userMembership = useSelector((store: RootStore) => store.user.userMembership);
     const selectedProfile = useSelector((store: RootStore) => store.app.selectedProfile);
     const itemsHaveLoaded = useSelector((store: RootStore) =>

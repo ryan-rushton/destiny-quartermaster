@@ -11,7 +11,8 @@ import {
     DestinyItemSocketCategoryDefinition,
     DestinyItemReusablePlugsComponent,
     DestinyItemSocketState,
-    DestinyStat
+    DestinyStat,
+    DestinyEnergyTypeDefinition
 } from "bungie-api-ts/destiny2";
 
 import { Inventory, InventoryItem } from "./inventoryTypes";
@@ -35,11 +36,13 @@ class InventoryMapper {
     itemsManifest: Record<string, DestinyInventoryItemDefinition>;
     statsManifest: Record<string, DestinyStatDefinition>;
     damageTypeManifests: Record<string, DestinyDamageTypeDefinition>;
+    energyTypeManifest: Record<string, DestinyEnergyTypeDefinition>;
 
-    constructor(itemsManifest, statsManifest, damageTypeManifests) {
+    constructor(itemsManifest, statsManifest, damageTypeManifests, energyTypeManifest) {
         this.itemsManifest = itemsManifest || {};
         this.statsManifest = statsManifest || {};
         this.damageTypeManifests = damageTypeManifests || {};
+        this.energyTypeManifest = energyTypeManifest || {};
     }
 
     mapStat({ statHash, value }: DestinyStat): Stat | undefined {
@@ -85,6 +88,7 @@ class InventoryMapper {
                     mods.push(
                         mapMod(
                             this.statsManifest,
+                            this.energyTypeManifest,
                             manifestEntry,
                             manifestEntry.hash === enabledPlugHash
                         )
@@ -122,7 +126,12 @@ class InventoryMapper {
                 if (reusableMods && reusableMods.length) {
                     perks.push(reusableMods);
                 } else if (plug) {
-                    const mod = mapMod(this.statsManifest, plug, socket.isEnabled);
+                    const mod = mapMod(
+                        this.statsManifest,
+                        this.energyTypeManifest,
+                        plug,
+                        socket.isEnabled
+                    );
                     if (categoriesByHash[Perks]?.socketIndexes.includes(index)) {
                         perks.push([mod]);
                     } else if (categoriesByHash[Cosmetics]?.socketIndexes.includes(index)) {
@@ -166,7 +175,12 @@ class InventoryMapper {
                 if (reusableMods && reusableMods.length) {
                     perks.push(reusableMods);
                 } else if (plug) {
-                    const mod = mapMod(this.statsManifest, plug, socket.isEnabled);
+                    const mod = mapMod(
+                        this.statsManifest,
+                        this.energyTypeManifest,
+                        plug,
+                        socket.isEnabled
+                    );
                     if (categoriesByHash[Perks]?.socketIndexes.includes(index)) {
                         perks.push([mod]);
                     } else if (categoriesByHash[Cosmetics]?.socketIndexes.includes(index)) {
@@ -210,7 +224,12 @@ class InventoryMapper {
                 if (reusableMods && reusableMods.length) {
                     perks.push(reusableMods);
                 } else if (plug) {
-                    const mod = mapMod(this.statsManifest, plug, socket.isEnabled);
+                    const mod = mapMod(
+                        this.statsManifest,
+                        this.energyTypeManifest,
+                        plug,
+                        socket.isEnabled
+                    );
                     if (categoriesByHash[Perks]?.socketIndexes.includes(index)) {
                         perks.push([mod]);
                     } else if (categoriesByHash[Mods]?.socketIndexes.includes(index)) {

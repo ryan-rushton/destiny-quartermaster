@@ -3,10 +3,13 @@ import {
     DestinyDamageTypeDefinition,
     DamageType,
     DestinyItemInvestmentStatDefinition,
-    DestinyInventoryItemDefinition
+    DestinyInventoryItemDefinition,
+    DestinyEnergyTypeDefinition,
+    DestinyEnergyCostEntry
 } from "bungie-api-ts/destiny2";
 
-import { Damage, Stats, Mod } from "./commonItemTypes";
+import { Damage, Stats, Mod, EnergyCost } from "./commonItemTypes";
+import { preloadImage } from "util/mappingUtils";
 
 export const mapInventoryStats = (
     statsManifest: Record<string, DestinyStatDefinition>,
@@ -48,12 +51,36 @@ export const mapDamageTypes = (
     return mappedDamages;
 };
 
+const mapEnergyCost = (
+    instance: DestinyEnergyCostEntry,
+    energyTypeManifest: Record<string, DestinyEnergyTypeDefinition>
+): EnergyCost | undefined => {
+    const manifest = energyTypeManifest[instance.energyTypeHash];
+
+    if (!manifest) {
+        return;
+    }
+
+    const { name, icon, description } = manifest.displayProperties;
+
+    return {
+        name,
+        iconPath: icon,
+        description,
+        cost: instance.energyCost
+    };
+};
+
 export const mapMod = (
     statsManifest: Record<string, DestinyStatDefinition>,
+    energyTypeManifest: Record<string, DestinyEnergyTypeDefinition>,
     plug: DestinyInventoryItemDefinition,
     enabled
 ): Mod => {
     const { displayProperties, hash, itemCategoryHashes, collectibleHash } = plug;
+    if (displayProperties.icon) {
+        preloadImage(displayProperties.icon);
+    }
     return {
         name: displayProperties.name,
         description: displayProperties.description,
@@ -62,6 +89,8 @@ export const mapMod = (
         enabled,
         categories: itemCategoryHashes,
         stats: mapInventoryStats(statsManifest, plug.investmentStats),
-        collectibleHash
+        collectibleHash,
+        energyType:
+            plug?.plug?.energyCost && mapEnergyCost(plug.plug.energyCost, energyTypeManifest)
     };
 };
