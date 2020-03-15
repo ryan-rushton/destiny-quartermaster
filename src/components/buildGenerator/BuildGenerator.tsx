@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootStore } from "rootReducer";
 import styles from "./BuildGenerator.module.scss";
 import ArmourFilter from "./armourFilter/ArmourFilter";
+import CharacterSelect from "components/characterSelect/CharacterSelect";
 
 enum Category {
     Armour = "armour",
@@ -51,6 +52,7 @@ const BuildGenerator: FC = () => {
     return (
         <div className={styles.buildGenerator}>
             <div className={styles.categorySelector}>
+                <CharacterSelect />
                 <CategoryButton
                     text={"Armour"}
                     selected={category === Category.Armour}

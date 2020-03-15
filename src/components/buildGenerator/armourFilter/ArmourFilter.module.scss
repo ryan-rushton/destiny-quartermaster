@@ -20,13 +20,20 @@
 }
 
 .statInput {
+    border: 1px solid $qm-grey-2;
+    border-radius: 2px;
+    text-align: end;
     width: 40px;
 }
 
 .selectedMods {
-    background-color: $qm-grey;
+    background-color: $qm-grey-3;
     border-radius: 2px;
-    border: 1px solid $qm-dark-grey;
-    height: 51px;
-    margin: 3px 0;
+    border: 1px solid $qm-grey;
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+    margin: 3px 0 6px 0;
+    min-width: 50px;
+    width: fit-content;
 }

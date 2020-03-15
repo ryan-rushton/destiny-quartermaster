@@ -5,7 +5,7 @@ const handleClick = (
     ref: MutableRefObject<HTMLElement | null>,
     callback: () => void
 ): void => {
-    if (ref.current && event.target instanceof HTMLElement && !ref.current.contains(event.target)) {
+    if (ref.current && event.target instanceof Element && !ref.current.contains(event.target)) {
         callback();
     }
 };

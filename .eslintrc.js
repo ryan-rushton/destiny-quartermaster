@@ -57,6 +57,7 @@ module.exports = {
         "no-undef": "warn",
         "no-unused-vars": ["warn", { vars: "all", args: "after-used", ignoreRestSiblings: false }],
         "prettier/prettier": "error",
-        "react/prop-types": "off"
+        "react/prop-types": "off",
+        "react/self-closing-comp": "warn"
     }
 };

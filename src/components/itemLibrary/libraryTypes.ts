@@ -42,8 +42,8 @@ export interface Library {
     ghosts: Record<string, LibraryItem>;
     mods: {
         armour: {
-            [key in ArmourSlot | "generic"]: Record<string, Mod>;
+            [key in ArmourSlot | "generic"]: Mod[];
         };
-        weapons: Record<string, Mod>;
+        weapons: Mod[];
     };
 }

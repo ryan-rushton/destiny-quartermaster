@@ -14,9 +14,9 @@ const BungieImageButton: FC<Props> = ({ url, title, onClick }) => {
     const [onClickHandler, onEnter] = useClickAndEnterKey(onClick);
 
     return (
-        <span onClick={onClickHandler} onKeyPress={onEnter} role="button" tabIndex={0}>
+        <div onClick={onClickHandler} onKeyPress={onEnter} role="button" tabIndex={0}>
             <img className={styles.bungieImage} alt="" src={getFullImagePath(url)} title={title} />
-        </span>
+        </div>
     );
 };
 

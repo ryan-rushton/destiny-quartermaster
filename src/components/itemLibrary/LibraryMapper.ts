@@ -21,9 +21,7 @@ import {
 } from "./../itemCommon/commonItemTypes";
 import { Library, LibraryItem } from "./libraryTypes";
 import { mapDamageTypes, mapInventoryStats, mapMod } from "../itemCommon/commonItemMappers";
-
-// This has been deprecated so filter it out
-const ParagonModHash = 926084009;
+import { isArmour2, isArmour2Mod } from "./libraryUtils";
 
 class LibraryMapper {
     itemsManifest: Record<string, DestinyInventoryItemDefinition>;
@@ -157,14 +155,14 @@ class LibraryMapper {
             },
             ghosts: {},
             mods: {
-                weapons: {},
+                weapons: [],
                 armour: {
-                    helmets: {},
-                    arms: {},
-                    chest: {},
-                    legs: {},
-                    classItems: {},
-                    generic: {}
+                    helmets: [],
+                    arms: [],
+                    chest: [],
+                    legs: [],
+                    classItems: [],
+                    generic: []
                 }
             }
         };
@@ -197,10 +195,7 @@ class LibraryMapper {
                 } else if (categories.includes(WeaponItemCategories.PowerWeapons)) {
                     library.weapons.heavy[manifestEntry.hash] = weapon;
                 }
-            } else if (
-                categories.includes(ArmourItemCategories.Armour) &&
-                !categories.includes(GeneralItemCategories.Subclass)
-            ) {
+            } else if (isArmour2(manifestEntry)) {
                 const armour = {
                     ...baseItem,
                     baseStats: mapInventoryStats(this.statsManifest, manifestEntry.investmentStats),
@@ -245,13 +240,7 @@ class LibraryMapper {
                 };
 
                 library.ghosts[manifestEntry.hash] = ghost;
-            } else if (
-                manifestEntry.hash !== ParagonModHash &&
-                categories.includes(ArmourModCategories.ArmourMods) &&
-                manifestEntry.plug?.plugCategoryIdentifier !== "enhancements.season_penumbra" &&
-                (manifestEntry.plug?.plugCategoryIdentifier.startsWith("enhancements.v2") ||
-                    manifestEntry.plug?.plugCategoryIdentifier.startsWith("enhancements.season"))
-            ) {
+            } else if (isArmour2Mod(manifestEntry)) {
                 let armourSlot;
                 if (categories.includes(ArmourModCategories.Helmets)) {
                     armourSlot = "helmets";
@@ -267,11 +256,8 @@ class LibraryMapper {
                     armourSlot = "generic";
                 }
                 if (armourSlot) {
-                    library.mods.armour[armourSlot][manifestEntry.hash] = mapMod(
-                        this.statsManifest,
-                        this.energyTypeManifest,
-                        manifestEntry,
-                        false
+                    library.mods.armour[armourSlot].push(
+                        mapMod(this.statsManifest, this.energyTypeManifest, manifestEntry, false)
                     );
                 }
             } else if (
@@ -279,11 +265,8 @@ class LibraryMapper {
                 !categories.includes(WeaponModCategories.Ornaments) &&
                 manifestEntry.plug.plugCategoryIdentifier.startsWith("v400")
             ) {
-                library.mods.weapons[manifestEntry.hash] = mapMod(
-                    this.statsManifest,
-                    this.energyTypeManifest,
-                    manifestEntry,
-                    false
+                library.mods.weapons.push(
+                    mapMod(this.statsManifest, this.energyTypeManifest, manifestEntry, false)
                 );
             }
         }

@@ -7,6 +7,7 @@ import styles from "./ModSelector.module.scss";
 import BungieImageButton from "components/bungieImage/BungieImageButton";
 import useClickOutside from "hooks/useClickOutside";
 import ModImage from "./ModImage";
+import { preloadImages } from "util/mappingUtils";
 
 interface Props {
     mods: Mod[];
@@ -16,14 +17,15 @@ interface Props {
 const ModSelector: FC<Props> = ({ mods, onModSelected }) => {
     const [open, setOpen] = useState(false);
     const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
-    const popupRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
     const { t } = useTranslation();
 
     useClickOutside(ref, () => setOpen(false));
 
-    const groupedMods = _.groupBy(mods, mod => Boolean(mod.collectibleHash));
-    const equipableMods = groupedMods["true"];
-    const defaultMod = (groupedMods["false"].length && groupedMods["false"][0]) || equipableMods[0];
+    preloadImages(mods);
+
+    const groupedMods = _.groupBy(mods, mod => (mod.collectibleHash ? "equipable" : "default"));
+    const equipableMods = groupedMods.equipable;
+    const defaultMod = (groupedMods.default?.length && groupedMods.default[0]) || equipableMods[0];
 
     const numberOfModColumns = 8;
     let modColumn = 0;
@@ -43,7 +45,7 @@ const ModSelector: FC<Props> = ({ mods, onModSelected }) => {
                 />
             </div>
             {open && (
-                <div ref={popupRef} className={styles.modPanel} style={{ gridTemplateColumns }}>
+                <div className={styles.modPanel} style={{ gridTemplateColumns }}>
                     {equipableMods.map(mod => (
                         <div
                             key={mod.hash}

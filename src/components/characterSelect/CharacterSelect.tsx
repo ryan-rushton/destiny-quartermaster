@@ -3,30 +3,30 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { RootStore } from "rootReducer";
 import styles from "./CharacterSelect.module.scss";
-import AccountSelection from "../user/AccountSelection";
 import { Character } from "../characters/characterTypes";
 import { setSelectedCharacter } from "appReducer";
 
 interface EmblemProps {
     character: Character;
+    isSelected: boolean;
+    onClick(id: string): void;
 }
 
-const Emblem: FC<EmblemProps> = ({ character }) => {
-    const dispatch = useDispatch();
+const Emblem: FC<EmblemProps> = ({ character, isSelected, onClick }) => {
     const [emblemLoaded, setEmblemLoaded] = useState(false);
-    const dispatchSelectedCharacter = (): void => {
-        dispatch(setSelectedCharacter(character.id));
-    };
+    const className = isSelected
+        ? styles.emblemButton
+        : `${styles.emblemButton} ${styles.disabled}`;
 
     return (
         <div
             key={character.id}
-            className={styles.emblemButton}
+            className={className}
             role="button"
             tabIndex={0}
-            onClick={dispatchSelectedCharacter}
+            onClick={(): void => onClick(character.id)}
             onKeyPress={(e): void => {
-                e.key === "Enter" && dispatchSelectedCharacter();
+                e.key === "Enter" && onClick(character.id);
             }}
         >
             <img
@@ -51,15 +51,29 @@ const Emblem: FC<EmblemProps> = ({ character }) => {
 };
 
 const CharacterSelect: FC = () => {
+    const dispatch = useDispatch();
     const characters = useSelector((state: RootStore) => state.characters);
+    const selectedCharacter = useSelector((state: RootStore) => state.app.selectedCharacter);
+
+    const dispatchSelectedCharacter = (id: string): void => {
+        if (id === selectedCharacter) {
+            dispatch(setSelectedCharacter(null));
+        } else {
+            dispatch(setSelectedCharacter(id));
+        }
+    };
 
     return (
         <>
-            <AccountSelection />
             <div className={styles.characterSelect}>
                 {characters &&
                     Object.values(characters).map(character => (
-                        <Emblem key={character.id} character={character} />
+                        <Emblem
+                            key={character.id}
+                            character={character}
+                            isSelected={selectedCharacter === character.id}
+                            onClick={dispatchSelectedCharacter}
+                        />
                     ))}
             </div>
         </>

@@ -1,13 +1,16 @@
 {
     "armourFilter": {
-        "statsFilter": "Stats Filter",
-        "intellect": "Intellect",
+        "clickToAddMod": "Click to add a mod to requirements",
         "discipline": "Discipline",
-        "strength": "Strength",
+        "intellect": "Intellect",
         "mobility": "Mobility",
-        "resilience": "Resilience",
         "recovery": "Recovery",
+        "requiredArmour": "Required Armour",
         "requiredMods": "Required Mods",
-        "clickToAddMod": "Click to add a mod to requirements"
+        "resilience": "Resilience",
+        "selectCharacter": "You need to select a character before you can select armour",
+        "selectRequiredArmour": "Click to select your required armour",
+        "statsFilter": "Stats Filter",
+        "strength": "Strength"
     }
 }
