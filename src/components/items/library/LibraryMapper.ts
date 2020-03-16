@@ -18,9 +18,9 @@ import {
     GhostShellSocketCategories,
     ArmourModCategories,
     WeaponModCategories
-} from "./../itemCommon/commonItemTypes";
-import { Library, LibraryItem } from "./libraryTypes";
-import { mapDamageTypes, mapInventoryStats, mapMod } from "../itemCommon/commonItemMappers";
+} from "../commonItemTypes";
+import { Library, LibraryItem, LibraryArmour } from "./libraryTypes";
+import { mapDamageTypes, mapInventoryStats, mapMod } from "../commonItemMappers";
 import { isArmour2, isArmour2Mod } from "./libraryUtils";
 
 class LibraryMapper {
@@ -196,7 +196,7 @@ class LibraryMapper {
                     library.weapons.heavy[manifestEntry.hash] = weapon;
                 }
             } else if (isArmour2(manifestEntry)) {
-                const armour = {
+                const baseArmour = {
                     ...baseItem,
                     baseStats: mapInventoryStats(this.statsManifest, manifestEntry.investmentStats),
                     exotic: manifestEntry.equippingBlock.uniqueLabel === "exotic_armor",
@@ -209,24 +209,30 @@ class LibraryMapper {
                 };
 
                 let armourSlot;
+                let armour: LibraryArmour | null = null;
 
                 if (categories.includes(ArmourItemCategories.Helmets)) {
                     armourSlot = "helmets";
+                    armour = { ...baseArmour, type: "helmet" };
                 } else if (categories.includes(ArmourItemCategories.Arms)) {
                     armourSlot = "arms";
+                    armour = { ...baseArmour, type: "arms" };
                 } else if (categories.includes(ArmourItemCategories.Chest)) {
                     armourSlot = "chest";
+                    armour = { ...baseArmour, type: "chest" };
                 } else if (categories.includes(ArmourItemCategories.Legs)) {
                     armourSlot = "legs";
+                    armour = { ...baseArmour, type: "legs" };
                 } else if (categories.includes(ArmourItemCategories.ClassItems)) {
                     armourSlot = "classItems";
+                    armour = { ...baseArmour, type: "classItem" };
                 }
 
-                if (categories.includes(ArmourItemCategories.WarlockArmour)) {
+                if (armour && categories.includes(ArmourItemCategories.WarlockArmour)) {
                     library.armour.warlock[armourSlot][manifestEntry.hash] = armour;
-                } else if (categories.includes(ArmourItemCategories.HunterArmour)) {
+                } else if (armour && categories.includes(ArmourItemCategories.HunterArmour)) {
                     library.armour.hunter[armourSlot][manifestEntry.hash] = armour;
-                } else if (categories.includes(ArmourItemCategories.TitanArmour)) {
+                } else if (armour && categories.includes(ArmourItemCategories.TitanArmour)) {
                     library.armour.titan[armourSlot][manifestEntry.hash] = armour;
                 }
             } else if (categories.includes(GeneralItemCategories.Ghosts)) {

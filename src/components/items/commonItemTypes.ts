@@ -97,8 +97,9 @@ export enum GhostShellSocketCategories {
 
 export const GeneralItemCategoryHashes = getHashesFromEnum(GeneralItemCategories);
 
-export type Class = "warlock" | "hunter" | "titan";
+export type CharacterClass = "warlock" | "hunter" | "titan";
 export type ArmourSlot = "helmets" | "arms" | "chest" | "legs" | "classItems";
+export type ArmourType = "helmet" | "arms" | "chest" | "legs" | "classItem";
 
 export interface Damage {
     hash: number;

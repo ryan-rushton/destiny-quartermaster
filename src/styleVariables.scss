@@ -14,7 +14,7 @@ $large-screen: 1024px; //ipad-pro width (going to treat it as a tablet
             @content;
         }
     } @else if $media == desktops {
-        @media only screen and (min-width: $break-large + 1) {
+        @media only screen and (min-width: $large-screen + 1) {
             @content;
         }
     }

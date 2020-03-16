@@ -1,4 +1,4 @@
-import { Damage, Stats, Mod, Class, ArmourSlot } from "../itemCommon/commonItemTypes";
+import { Damage, Stats, Mod, CharacterClass, ArmourSlot, ArmourType } from "../commonItemTypes";
 
 export interface LibraryItem {
     hash: number;
@@ -17,6 +17,8 @@ export interface LibraryWeapon extends LibraryItem {
 }
 
 export interface LibraryArmour extends LibraryItem {
+    type: ArmourType;
+    baseStats: Stats;
     perks?: Mod[][];
     mods?: Mod[];
     cosmetics?: Mod[];
@@ -28,6 +30,8 @@ export interface LibraryGhostShell extends LibraryItem {
     mods?: Mod[];
 }
 
+export type LibraryArmourModState = { [key in ArmourSlot | "generic"]: Mod[] };
+
 export interface Library {
     weapons: {
         kinetic: Record<string, LibraryWeapon>;
@@ -35,15 +39,13 @@ export interface Library {
         heavy: Record<string, LibraryWeapon>;
     };
     armour: {
-        [key in Class]: {
+        [key in CharacterClass]: {
             [key in ArmourSlot]: Record<string, LibraryArmour>;
         };
     };
     ghosts: Record<string, LibraryItem>;
     mods: {
-        armour: {
-            [key in ArmourSlot | "generic"]: Mod[];
-        };
+        armour: LibraryArmourModState;
         weapons: Mod[];
     };
 }

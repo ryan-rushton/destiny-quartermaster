@@ -1,6 +1,9 @@
+export type CharacterClass = "warlock" | "hunter" | "titan";
+
 export interface Character {
     id: string;
-    class: string;
+    classDisplay: string;
+    classType: CharacterClass;
     light: number;
     race: string;
     gender: string;

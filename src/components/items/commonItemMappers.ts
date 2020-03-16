@@ -9,7 +9,7 @@ import {
 } from "bungie-api-ts/destiny2";
 
 import { Damage, Stats, Mod, EnergyCost } from "./commonItemTypes";
-import { preloadImage } from "util/mappingUtils";
+import { preloadImage } from "util/imageUtils";
 
 export const mapInventoryStats = (
     statsManifest: Record<string, DestinyStatDefinition>,

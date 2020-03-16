@@ -1,8 +1,15 @@
 import { DestinyCharacterComponent } from "bungie-api-ts/destiny2";
 
+import { CharacterClass } from "./../items/commonItemTypes";
 import { getClassManifest, getGenderManifest, getRaceManifest } from "../manifest/manifestStorage";
 import { Character } from "./characterTypes";
-import { getFullImagePath } from "util/mappingUtils";
+import { getFullImagePath } from "util/imageUtils";
+
+const classHashMap: { [hash: number]: CharacterClass } = {
+    671679327: "hunter",
+    2271682572: "warlock",
+    3655393761: "titan"
+};
 
 export const mapCharacters = (characters: DestinyCharacterComponent[]): Promise<Character[]> => {
     const classPromise = getClassManifest(characters.map(c => c.classHash));
@@ -18,7 +25,8 @@ export const mapCharacters = (characters: DestinyCharacterComponent[]): Promise<
             for (const character of characters) {
                 mappedCharacters.push({
                     id: character.characterId,
-                    class: classManifest[character.classHash]?.displayProperties?.name,
+                    classDisplay: classManifest[character.classHash]?.displayProperties?.name,
+                    classType: classHashMap[character.classHash],
                     light: character.light,
                     race: raceManifest[character.raceHash]?.displayProperties?.name,
                     gender: genderManifest[character.genderHash]?.displayProperties?.name,

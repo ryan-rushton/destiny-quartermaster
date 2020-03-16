@@ -1,21 +1,21 @@
 import React, { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchManifest } from "../manifest/manifestReducer";
-import { fetchUserMembershipData, fetchProfileData } from "../user/userReducer";
-import { RootStore } from "rootReducer";
-import withAuth from "../auth/withAuth";
-import AccountSelection from "../user/AccountSelection";
-import BuildGenerator from "../buildGenerator/BuildGenerator";
+import { fetchManifest } from "./manifest/manifestReducer";
+import { fetchUserMembershipData, fetchProfileData } from "./user/userReducer";
+import { RootState } from "rootReducer";
+import withAuth from "./auth/withAuth";
+import AccountSelection from "./user/AccountSelection";
+import BuildGenerator from "./buildGenerator/BuildGenerator";
 import LoadingMask from "components/loadingMask/LoadingMask";
 
 const Quartermaster: FC = () => {
     const dispatch = useDispatch();
 
-    const manifest = useSelector((store: RootStore) => store.manifest.manifest);
-    const userMembership = useSelector((store: RootStore) => store.user.userMembership);
-    const selectedProfile = useSelector((store: RootStore) => store.app.selectedProfile);
-    const itemsHaveLoaded = useSelector((store: RootStore) =>
+    const manifest = useSelector((store: RootState) => store.manifest.manifest);
+    const userMembership = useSelector((store: RootState) => store.user.userMembership);
+    const selectedProfile = useSelector((store: RootState) => store.app.selectedProfile);
+    const itemsHaveLoaded = useSelector((store: RootState) =>
         Boolean(store.inventory && store.library)
     );
 

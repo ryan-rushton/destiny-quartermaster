@@ -1,11 +1,19 @@
-@import "../../../styleVariables.scss";
+@import "../../../../styleVariables.scss";
 
-.armourSelector {
+.modSelector {
     display: inline-block;
-    margin-right: 6px;
 }
 
-.armourPanel {
+.button {
+    background-color: $qm-grey;
+    border-radius: 2px;
+    margin-right: 6px;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.modPanel {
     background-color: $qm-grey-2;
     border-radius: 2px;
     display: grid;

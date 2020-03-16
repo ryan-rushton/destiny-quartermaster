@@ -1,4 +1,4 @@
-import { Stat, Damage, Stats, Mod, Class, ArmourSlot } from "../itemCommon/commonItemTypes";
+import { Stat, Damage, Stats, Mod, ArmourSlot, CharacterClass } from "../commonItemTypes";
 
 export interface InventoryItem {
     hash: number;
@@ -40,7 +40,7 @@ export interface Inventory {
         heavy: Record<string, Weapon>;
     };
     armour: {
-        [key in Class]: {
+        [key in CharacterClass]: {
             [key in ArmourSlot]: Record<string, Armour>;
         };
     };

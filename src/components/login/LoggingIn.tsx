@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getOAuthToken } from "lib/bungie_api/auth";
 import { saveToken } from "../auth/authToken";
 import { mapAuthToken } from "../auth/authMappers";
-import { RootStore, StoreDispatch } from "rootReducer";
+import { RootState, StoreDispatch } from "rootReducer";
 
 const getCodeFromQueryParam = (): string | undefined => {
     const { location } = window;
@@ -16,7 +16,7 @@ const getCodeFromQueryParam = (): string | undefined => {
 };
 
 const LoggingIn: FC = () => {
-    const isLoggedIn = useSelector((state: RootStore) => Boolean(state.authToken));
+    const isLoggedIn = useSelector((state: RootState) => Boolean(state.authToken));
     const dispatch: StoreDispatch = useDispatch();
 
     if (isLoggedIn) {

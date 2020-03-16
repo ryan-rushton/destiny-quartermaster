@@ -3,10 +3,10 @@ import { v4 as uuid } from "uuid";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 
-import { RootStore } from "rootReducer";
+import { RootState } from "rootReducer";
 
 const Login = (): ReactElement => {
-    const isLoggedIn = useSelector((state: RootStore) => Boolean(state.authToken));
+    const isLoggedIn = useSelector((state: RootState) => Boolean(state.authToken));
 
     if (isLoggedIn) {
         return <Redirect to="/" />;

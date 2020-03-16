@@ -4,7 +4,7 @@ import {
     ArmourItemCategories,
     GeneralItemCategories,
     ArmourModCategories
-} from "components/itemCommon/commonItemTypes";
+} from "components/items/commonItemTypes";
 
 // This has been deprecated so filter it out
 const ParagonModHash = 926084009;

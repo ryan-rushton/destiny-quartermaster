@@ -1,16 +1,28 @@
 import { createSlice, PayloadAction, CaseReducer } from "@reduxjs/toolkit";
 
+import { CharacterClass, Mod, ArmourType } from "./../../items/commonItemTypes";
 import { ArmourStat } from "./armourFilterTypes";
-import { Mod } from "components/itemCommon/commonItemTypes";
-import { LibraryArmour } from "components/itemLibrary/libraryTypes";
+import { LibraryArmour } from "components/items/library/libraryTypes";
 
 interface ArmourFilterState {
     stats: {
         [key in ArmourStat]: number;
     };
     mods: Mod[];
-    armour: LibraryArmour[];
+    armour: {
+        warlock: { [key in ArmourType]: LibraryArmour | null };
+        hunter: { [key in ArmourType]: LibraryArmour | null };
+        titan: { [key in ArmourType]: LibraryArmour | null };
+    };
 }
+
+const armourSlotState: { [key in ArmourType]: LibraryArmour | null } = {
+    helmet: null,
+    arms: null,
+    chest: null,
+    legs: null,
+    classItem: null
+};
 
 const initialState: ArmourFilterState = {
     stats: {
@@ -22,11 +34,18 @@ const initialState: ArmourFilterState = {
         recovery: NaN
     },
     mods: [] as Mod[],
-    armour: [] as LibraryArmour[]
+    armour: {
+        warlock: armourSlotState,
+        hunter: armourSlotState,
+        titan: armourSlotState
+    }
 };
 
 type UpdateArmourMods = PayloadAction<Mod>;
-type UpdateRequiredArmour = PayloadAction<LibraryArmour>;
+type UpdateRequiredArmour = PayloadAction<{
+    armour: LibraryArmour;
+    characterClass: CharacterClass;
+}>;
 
 type SaveStatFilterAction = PayloadAction<{ stat: ArmourStat; value: number }>;
 
@@ -53,10 +72,13 @@ const updateRequiredArmourReducer: CaseReducer<ArmourFilterState, UpdateRequired
     state,
     action
 ) => {
-    if (state.armour.some(armour => armour.hash === action.payload.hash)) {
-        state.armour = state.armour.filter(armour => armour.hash !== action.payload.hash);
-    } else {
-        state.armour.push(action.payload);
+    const { characterClass, armour } = action.payload;
+    if (characterClass) {
+        if (state.armour[characterClass][armour.type]?.hash === armour.hash) {
+            state.armour[characterClass][armour.type] = null;
+        } else {
+            state.armour[characterClass][armour.type] = armour;
+        }
     }
 };
 

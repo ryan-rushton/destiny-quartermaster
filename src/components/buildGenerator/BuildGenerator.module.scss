@@ -2,8 +2,12 @@
 
 .buildGenerator {
     display: grid;
-    grid-template-columns: 25% 75%;
+    grid-template-columns: 100%;
     width: 100%;
+
+    @include styles-for(desktops) {
+        grid-template-columns: 25% 75%;
+    }
 }
 
 .categorySelector {
@@ -29,5 +33,9 @@
 }
 
 .categoryFilter {
-    grid-column-start: 2;
+    grid-column-start: 1;
+
+    @include styles-for(desktops) {
+        grid-column-start: 2;
+    }
 }

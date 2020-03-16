@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction, CaseReducer, ThunkAction, Action } from "@reduxjs/toolkit";
 import { DestinyProfileResponse } from "bungie-api-ts/destiny2";
 
-import { RootStore, StoreDispatch } from "./../../rootReducer";
+import { RootState, StoreDispatch } from "./../../rootReducer";
 import { getProfile } from "lib/bungie_api/destiny2";
 import { getValidToken } from "../auth/authToken";
 import { getMembershipDataForCurrentUser } from "lib/bungie_api/user";
 import { mapUserMembership } from "./userMappers";
 import { UserMembership } from "./userTypes";
 import { mapCharactersFromProfileData } from "../characters/characterReducer";
-import { mapInventoryFromInventoryData } from "../itemInventory/inventoryReducer";
-import { buildLibrary } from "../itemLibrary/libraryReducer";
+import { mapInventoryFromInventoryData } from "../items/inventory/inventoryReducer";
+import { buildLibrary } from "../items/library/libraryReducer";
 import {
     WeaponItemCategories,
     ArmourItemCategories,
@@ -17,7 +17,7 @@ import {
     WeaponModCategories,
     ArmourModCategories,
     GhostModCategories
-} from "../itemCommon/commonItemTypes";
+} from "../items/commonItemTypes";
 import {
     getInventoryItemManifestByCategory,
     getCompleteStatManifest,
@@ -71,7 +71,7 @@ export const fetchUserMembershipData = () => {
 export const fetchProfileData = (
     id: string,
     membershipType: number
-): ThunkAction<Promise<void>, RootStore, unknown, Action<string>> => {
+): ThunkAction<Promise<void>, RootState, unknown, Action<string>> => {
     return async (dispatch, getState): Promise<void> => {
         if (!getState().app.loadingProfile) {
             const token = await dispatch(getValidToken());

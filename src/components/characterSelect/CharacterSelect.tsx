@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { RootStore } from "rootReducer";
+import { RootState } from "rootReducer";
 import styles from "./CharacterSelect.module.scss";
 import { Character } from "../characters/characterTypes";
 import { setSelectedCharacter } from "appReducer";
@@ -38,7 +38,7 @@ const Emblem: FC<EmblemProps> = ({ character, isSelected, onClick }) => {
             {emblemLoaded && (
                 <>
                     <div className={styles.demographics}>
-                        <div className={styles.classText}>{character.class}</div>
+                        <div className={styles.classText}>{character.classDisplay}</div>
                         <div
                             className={styles.genderText}
                         >{`${character.gender} ${character.race}`}</div>
@@ -52,8 +52,8 @@ const Emblem: FC<EmblemProps> = ({ character, isSelected, onClick }) => {
 
 const CharacterSelect: FC = () => {
     const dispatch = useDispatch();
-    const characters = useSelector((state: RootStore) => state.characters);
-    const selectedCharacter = useSelector((state: RootStore) => state.app.selectedCharacter);
+    const characters = useSelector((state: RootState) => state.characters);
+    const selectedCharacter = useSelector((state: RootState) => state.app.selectedCharacter);
 
     const dispatchSelectedCharacter = (id: string): void => {
         if (id === selectedCharacter) {

@@ -29,8 +29,8 @@ import {
     ArmourSocketCategories,
     GhostShellSocketCategories,
     Stat
-} from "../itemCommon/commonItemTypes";
-import { mapDamageTypes, mapInventoryStats, mapMod } from "../itemCommon/commonItemMappers";
+} from "../commonItemTypes";
+import { mapDamageTypes, mapInventoryStats, mapMod } from "../commonItemMappers";
 
 class InventoryMapper {
     itemsManifest: Record<string, DestinyInventoryItemDefinition>;

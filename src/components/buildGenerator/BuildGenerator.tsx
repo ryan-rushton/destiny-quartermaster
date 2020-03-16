@@ -1,7 +1,7 @@
 import React, { FC, useState, KeyboardEvent } from "react";
 import { useSelector } from "react-redux";
 
-import { RootStore } from "rootReducer";
+import { RootState } from "rootReducer";
 import styles from "./BuildGenerator.module.scss";
 import ArmourFilter from "./armourFilter/ArmourFilter";
 import CharacterSelect from "components/characterSelect/CharacterSelect";
@@ -41,7 +41,7 @@ const CategoryButton: FC<CategoryButtonProps> = ({ text, selected, onClick }) =>
 };
 
 const BuildGenerator: FC = () => {
-    const library = useSelector((store: RootStore) => store.library);
+    const library = useSelector((store: RootState) => store.library);
 
     const [category, setCategory] = useState(Category.Armour);
 

@@ -4,32 +4,30 @@ import { useTranslation } from "react-i18next";
 
 import { ArmourStats } from "./armourFilterTypes";
 import styles from "./ArmourFilter.module.scss";
-import { saveStatFilter, updateArmourMods, updateRequiredArmour } from "./armourFilterReducer";
-import { RootStore } from "rootReducer";
-import ModSelector from "../modSelector/ModSelector";
-import { Mod } from "components/itemCommon/commonItemTypes";
-import ModImage from "../modSelector/ModImage";
-import BungieImageButton from "components/bungieImage/BungieImageButton";
-import ArmourSelector from "../armoutSelector/ArmourSelector";
+import { saveStatFilter, updateArmourMods } from "./armourFilterReducer";
+import { RootState } from "rootReducer";
+import { Mod } from "components/items/commonItemTypes";
+import ArmourSelector from "./armoutSelector/ArmourSelector";
 import { ReactComponent as HelmetIcon } from "destiny-icons/armor_types/helmet.svg";
 import { ReactComponent as ArmsIcon } from "destiny-icons/armor_types/gloves.svg";
 import { ReactComponent as ChestIcon } from "destiny-icons/armor_types/chest.svg";
 import { ReactComponent as LegsIcon } from "destiny-icons/armor_types/boots.svg";
 import { ReactComponent as ClassIcon } from "destiny-icons/armor_types/class.svg";
-import { LibraryArmour } from "components/itemLibrary/libraryTypes";
+import { LibraryArmour } from "components/items/library/libraryTypes";
+import ModFilter from "./modFilter/ModFilter";
 
 const ArmourFilter: FC = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    const armourFilter = useSelector((state: RootStore) => state.armourFilter);
-    const armourMods = useSelector((state: RootStore) => state.library?.mods.armour);
-    const armour = useSelector((state: RootStore) => state.library?.armour);
+    const armourFilter = useSelector((state: RootState) => state.armourFilter);
+    const armourMods = useSelector((state: RootState) => state.library?.mods.armour);
+    const armour = useSelector((state: RootState) => state.library?.armour);
     const selectedCharacter = useSelector(
-        (state: RootStore) =>
+        (state: RootState) =>
             state.app.selectedCharacter && state.characters?.[state.app.selectedCharacter]
     );
 
-    const selectedClass = selectedCharacter && selectedCharacter.class.toLowerCase();
+    const selectedClass = (selectedCharacter && selectedCharacter.classType) || null;
 
     const onModSelected = (mod: Mod): void => {
         dispatch(updateArmourMods(mod));
@@ -66,63 +64,44 @@ const ArmourFilter: FC = () => {
                     ))}
                 </div>
             </div>
-            <div className={styles.modFilter}>
-                <div className={styles.sectionTitle}>{t("armourFilter.requiredMods")}</div>
-                <div className={styles.selectedMods}>
-                    {armourFilter.mods.map(mod => (
-                        <ModImage
-                            key={mod.hash}
-                            mod={mod}
-                            onModClick={(): void => {
-                                dispatch(updateArmourMods(mod));
-                            }}
-                        />
-                    ))}
-                </div>
-                {armourMods && (
-                    <>
-                        <ModSelector mods={armourMods.helmets} onModSelected={onModSelected} />
-                        <ModSelector mods={armourMods.arms} onModSelected={onModSelected} />
-                        <ModSelector mods={armourMods.chest} onModSelected={onModSelected} />
-                        <ModSelector mods={armourMods.legs} onModSelected={onModSelected} />
-                        <ModSelector mods={armourMods.classItems} onModSelected={onModSelected} />
-                        <ModSelector mods={armourMods.generic} onModSelected={onModSelected} />
-                    </>
-                )}
-            </div>
+            {armourMods && (
+                <ModFilter
+                    selectedMods={armourFilter.mods}
+                    armourMods={armourMods}
+                    onModSelected={onModSelected}
+                />
+            )}
             <div className={styles.modFilter}>
                 <div className={styles.sectionTitle}>{t("armourFilter.requiredArmour")}</div>
-                <div className={styles.selectedMods}>
-                    {armourFilter.armour.map(armour => (
-                        <BungieImageButton
-                            key={armour.hash}
-                            url={armour.iconPath}
-                            title={armour.name}
-                            onClick={(): void => {
-                                dispatch(updateRequiredArmour(armour));
-                            }}
-                        />
-                    ))}
-                </div>
                 <ArmourSelector
                     defaultImage={<HelmetIcon />}
                     libraryArmours={getArmourItems("helmets")}
+                    selectedClass={selectedClass}
+                    selectedArmour={selectedClass && armourFilter.armour[selectedClass].helmet}
                 />
                 <ArmourSelector
                     defaultImage={<ArmsIcon />}
                     libraryArmours={getArmourItems("arms")}
+                    selectedClass={selectedClass}
+                    selectedArmour={selectedClass && armourFilter.armour[selectedClass].arms}
                 />
                 <ArmourSelector
                     defaultImage={<ChestIcon />}
                     libraryArmours={getArmourItems("chest")}
+                    selectedClass={selectedClass}
+                    selectedArmour={selectedClass && armourFilter.armour[selectedClass].chest}
                 />
                 <ArmourSelector
                     defaultImage={<LegsIcon />}
                     libraryArmours={getArmourItems("legs")}
+                    selectedClass={selectedClass}
+                    selectedArmour={selectedClass && armourFilter.armour[selectedClass].legs}
                 />
                 <ArmourSelector
                     defaultImage={<ClassIcon />}
                     libraryArmours={getArmourItems("classItems")}
+                    selectedClass={selectedClass}
+                    selectedArmour={selectedClass && armourFilter.armour[selectedClass].classItem}
                 />
             </div>
         </div>

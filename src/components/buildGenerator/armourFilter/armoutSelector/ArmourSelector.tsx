@@ -2,20 +2,28 @@ import React, { FC, useState, ReactNode, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-import { LibraryArmour } from "components/itemLibrary/libraryTypes";
+import { LibraryArmour } from "components/items/library/libraryTypes";
 import BungieImageButton from "components/bungieImage/BungieImageButton";
-import { updateRequiredArmour } from "../armourFilter/armourFilterReducer";
+import { updateRequiredArmour } from "../armourFilterReducer";
 import DestinyIconImageButton from "components/bungieImage/DestinyIconImageButton";
 import styles from "./ArmourSelector.module.scss";
 import useClickOutside from "hooks/useClickOutside";
-import { preloadImages } from "util/mappingUtils";
+import { preloadImages } from "util/imageUtils";
+import { CharacterClass } from "components/items/commonItemTypes";
 
 interface Props {
     libraryArmours: LibraryArmour[] | null;
     defaultImage: ReactNode;
+    selectedClass: CharacterClass | null;
+    selectedArmour: LibraryArmour | null;
 }
 
-const ArmourSelector: FC<Props> = ({ libraryArmours, defaultImage }) => {
+const ArmourSelector: FC<Props> = ({
+    libraryArmours,
+    defaultImage,
+    selectedClass,
+    selectedArmour
+}) => {
     const [open, setOpen] = useState(false);
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -39,18 +47,38 @@ const ArmourSelector: FC<Props> = ({ libraryArmours, defaultImage }) => {
         ? t("armourFilter.selectRequiredArmour")
         : t("armourFilter.selectCharacter");
 
+    const getOnArmourClick = (armour: LibraryArmour) => (): void => {
+        if (selectedClass) {
+            dispatch(
+                updateRequiredArmour({
+                    armour,
+                    characterClass: selectedClass
+                })
+            );
+        }
+    };
+
     return (
         <div ref={ref} className={styles.armourSelector}>
-            <DestinyIconImageButton
-                url={defaultImage}
-                disabled={!libraryArmours}
-                title={buttonTitle}
-                onClick={(): void => {
-                    if (libraryArmours) {
-                        setOpen(!open);
-                    }
-                }}
-            />
+            {!selectedArmour && (
+                <DestinyIconImageButton
+                    url={defaultImage}
+                    disabled={!libraryArmours}
+                    title={buttonTitle}
+                    onClick={(): void => {
+                        if (libraryArmours) {
+                            setOpen(!open);
+                        }
+                    }}
+                />
+            )}
+            {selectedArmour && (
+                <BungieImageButton
+                    url={selectedArmour.iconPath}
+                    title={selectedArmour.name}
+                    onClick={getOnArmourClick(selectedArmour)}
+                />
+            )}
             {open && libraryArmours && (
                 <div className={styles.armourPanel} style={{ gridTemplateColumns }}>
                     {libraryArmours.map(armour => (
@@ -63,9 +91,7 @@ const ArmourSelector: FC<Props> = ({ libraryArmours, defaultImage }) => {
                             <BungieImageButton
                                 url={armour.iconPath}
                                 title={armour.name}
-                                onClick={(): void => {
-                                    dispatch(updateRequiredArmour(armour));
-                                }}
+                                onClick={getOnArmourClick(armour)}
                             />
                         </div>
                     ))}

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import { Mod } from "components/itemCommon/commonItemTypes";
+import { Mod } from "components/items/commonItemTypes";
 import BungieImage from "components/bungieImage/BungieImage";
 import { useClickAndEnterKey } from "hooks/useClickAndEnterKey";
 import styles from "./ModImage.module.scss";
