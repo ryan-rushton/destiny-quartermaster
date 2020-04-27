@@ -19,7 +19,7 @@
         "@types/uuid": "^7.0.3",
         "bungie-api-ts": "^3.0.0",
         "dexie": "^2.0.4",
-        "i18next": "^19.4.3",
+        "i18next": "^19.4.4",
         "i18next-browser-languagedetector": "^4.1.1",
         "i18next-xhr-backend": "^3.2.2",
         "lodash": "^4.17.15",
