@@ -18,7 +18,7 @@
         "@types/react-router-dom": "^5.1.5",
         "@types/uuid": "^7.0.3",
         "bungie-api-ts": "^3.0.0",
-        "dexie": "^3.0.0",
+        "dexie": "^3.0.1",
         "i18next": "^19.4.4",
         "i18next-browser-languagedetector": "^4.1.1",
         "i18next-xhr-backend": "^3.2.2",
