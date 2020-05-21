@@ -2971,10 +2971,10 @@ builtin-status-codes@^3.0.0:
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
   integrity sha1-hZgoeOIbmOHGZCXgPQF0eI9Wnug=
 
-bungie-api-ts@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/bungie-api-ts/-/bungie-api-ts-4.0.0.tgz#dee79d3f4c078fba93f52c4753c8714d49762b6e"
-  integrity sha512-Kr4Er0xGfOa5GRe8PJ4aBA3KXTY0TiQ/MRqQeGwHoZT0V1wCePZyUkxzw7iPI1DvKzbrr0O6xvfMFMlrEBWutg==
+bungie-api-ts@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/bungie-api-ts/-/bungie-api-ts-4.1.0.tgz#bd66925239217cf4eab0cb7450c6b66b568aa591"
+  integrity sha512-9W0liGc4Rb0DgGkYiPALGRBXCm19Ktxy9C6ew4dj2/4sgnFFvj/S06F83mePjFB1DK5lFl9rSYmkrTuCj4Lnwg==
 
 bytes@3.0.0:
   version "3.0.0"
