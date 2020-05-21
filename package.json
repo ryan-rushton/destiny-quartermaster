@@ -17,7 +17,7 @@
         "@types/react-redux": "^7.1.9",
         "@types/react-router-dom": "^5.1.5",
         "@types/uuid": "^8.0.0",
-        "bungie-api-ts": "^4.0.0",
+        "bungie-api-ts": "^4.1.0",
         "dexie": "^3.0.1",
         "i18next": "^19.4.4",
         "i18next-browser-languagedetector": "^4.2.0",
