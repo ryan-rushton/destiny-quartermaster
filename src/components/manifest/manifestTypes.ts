@@ -19,3 +19,5 @@ export enum DefinitionManifestsEnum {
 }
 
 export const DefinitionManifests = Object.keys(DefinitionManifestsEnum);
+
+export type Manifest<T> = Partial<Record<string, T>>;

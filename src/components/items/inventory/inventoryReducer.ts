@@ -13,6 +13,7 @@ import {
 import { Inventory } from "./inventoryTypes";
 import { StoreDispatch } from "rootReducer";
 import InventoryMapper from "./InventoryMapper";
+import { Manifest } from "components/manifest/manifestTypes";
 
 type SaveInventoryAction = PayloadAction<Inventory>;
 type InventoryState = Inventory | null;
@@ -32,10 +33,10 @@ const { actions, reducer } = createSlice({
 export const { saveInventory } = actions;
 
 export const mapInventoryFromInventoryData = (
-    itemsManifest: Record<string, DestinyInventoryItemDefinition>,
-    statsManifest: Record<string, DestinyStatDefinition>,
-    damageTypeManifests: Record<string, DestinyDamageTypeDefinition>,
-    energyTypeManifest: Record<string, DestinyEnergyTypeDefinition>,
+    itemsManifest: Manifest<DestinyInventoryItemDefinition>,
+    statsManifest: Manifest<DestinyStatDefinition>,
+    damageTypeManifests: Manifest<DestinyDamageTypeDefinition>,
+    energyTypeManifest: Manifest<DestinyEnergyTypeDefinition>,
     profileInventory: SingleComponentResponse<DestinyInventoryComponent>,
     characterEquipment: DictionaryComponentResponse<DestinyInventoryComponent>,
     characterInventoryData: DictionaryComponentResponse<DestinyInventoryComponent>,

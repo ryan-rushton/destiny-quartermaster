@@ -1,4 +1,5 @@
 import { Damage, Stats, Mod, CharacterClass, ArmourSlot, ArmourType } from "../commonItemTypes";
+import { Manifest } from "components/manifest/manifestTypes";
 
 export interface LibraryItem {
     hash: number;
@@ -34,16 +35,16 @@ export type LibraryArmourModState = { [key in ArmourSlot | "generic"]: Mod[] };
 
 export interface Library {
     weapons: {
-        kinetic: Record<string, LibraryWeapon>;
-        energy: Record<string, LibraryWeapon>;
-        heavy: Record<string, LibraryWeapon>;
+        kinetic: Manifest<LibraryWeapon>;
+        energy: Manifest<LibraryWeapon>;
+        heavy: Manifest<LibraryWeapon>;
     };
     armour: {
         [key in CharacterClass]: {
-            [key in ArmourSlot]: Record<string, LibraryArmour>;
+            [key in ArmourSlot]: Manifest<LibraryArmour>;
         };
     };
-    ghosts: Record<string, LibraryItem>;
+    ghosts: Manifest<LibraryItem>;
     mods: {
         armour: LibraryArmourModState;
         weapons: Mod[];

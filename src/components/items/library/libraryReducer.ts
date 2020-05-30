@@ -10,6 +10,7 @@ import {
 import { StoreDispatch } from "rootReducer";
 import { Library } from "./libraryTypes";
 import LibraryMapper from "./LibraryMapper";
+import { Manifest } from "components/manifest/manifestTypes";
 
 type SaveLibraryAction = PayloadAction<Library>;
 type LibraryState = Library | null;
@@ -29,11 +30,11 @@ const { actions, reducer } = createSlice({
 export const { saveLibrary } = actions;
 
 export const buildLibrary = (
-    itemsManifest: Record<string, DestinyInventoryItemDefinition>,
-    statsManifest: Record<string, DestinyStatDefinition>,
-    damageTypeManifests: Record<string, DestinyDamageTypeDefinition>,
-    plugSetsManifest: Record<string, DestinyPlugSetDefinition>,
-    energyTypeManifest: Record<string, DestinyEnergyTypeDefinition>
+    itemsManifest: Manifest<DestinyInventoryItemDefinition>,
+    statsManifest: Manifest<DestinyStatDefinition>,
+    damageTypeManifests: Manifest<DestinyDamageTypeDefinition>,
+    plugSetsManifest: Manifest<DestinyPlugSetDefinition>,
+    energyTypeManifest: Manifest<DestinyEnergyTypeDefinition>
 ) => (dispatch: StoreDispatch): void => {
     const library = new LibraryMapper(
         itemsManifest,

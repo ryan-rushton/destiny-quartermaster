@@ -1,4 +1,5 @@
 import { Stat, Damage, Stats, Mod, ArmourSlot, CharacterClass } from "../commonItemTypes";
+import { Manifest } from "components/manifest/manifestTypes";
 
 export interface InventoryItem {
     hash: number;
@@ -35,15 +36,15 @@ export interface GhostShell extends InventoryItem {
 
 export interface Inventory {
     weapons: {
-        kinetic: Record<string, Weapon>;
-        energy: Record<string, Weapon>;
-        heavy: Record<string, Weapon>;
+        kinetic: Manifest<Weapon>;
+        energy: Manifest<Weapon>;
+        heavy: Manifest<Weapon>;
     };
     armour: {
         [key in CharacterClass]: {
-            [key in ArmourSlot]: Record<string, Armour>;
+            [key in ArmourSlot]: Manifest<Armour>;
         };
     };
-    ghosts: Record<string, InventoryItem>;
-    other: Record<string, InventoryItem>;
+    ghosts: Manifest<InventoryItem>;
+    other: Manifest<InventoryItem>;
 }

@@ -11,14 +11,12 @@ interface Props {
 
 const BungieImage: FC<Props> = ({ url, title, className }) => {
     return (
-        <div>
-            <img
-                className={`${styles.bungieImage} ${className}`}
-                alt=""
-                src={getFullImagePath(url)}
-                title={title}
-            />
-        </div>
+        <img
+            className={`${styles.bungieImage} ${className}`}
+            alt=""
+            src={getFullImagePath(url)}
+            title={title}
+        />
     );
 };
 

@@ -12,7 +12,7 @@ import {
 } from "bungie-api-ts/destiny2";
 
 import { JsonObject } from "lib/bungie_api/rest";
-import { DefinitionManifests, DefinitionManifestsEnum } from "./manifestTypes";
+import { DefinitionManifests, DefinitionManifestsEnum, Manifest } from "./manifestTypes";
 
 // DB Setup ---------------
 
@@ -47,7 +47,7 @@ export const getManifestVersionInLocalStorage = (): string | null => {
 const getDefinitionManifestFromIndexDB = async (
     manifestName: string,
     hashes: number[]
-): Promise<Record<string, any>> => {
+): Promise<Manifest<any>> => {
     const result = await DB.table(manifestName)
         .where("hash")
         .anyOf(hashes)
@@ -61,7 +61,7 @@ const getDefinitionManifestFromIndexDB = async (
 
 const getCompleteDefinitionManifestFromIndexDB = async (
     manifestName: string
-): Promise<Record<string, any>> => {
+): Promise<Manifest<any>> => {
     const result = await DB.table(manifestName).toArray();
 
     return _.chain(result)
@@ -72,13 +72,13 @@ const getCompleteDefinitionManifestFromIndexDB = async (
 
 export const getClassManifest = async (
     hashes: number[]
-): Promise<Record<string, DestinyClassDefinition>> => {
+): Promise<Manifest<DestinyClassDefinition>> => {
     return getDefinitionManifestFromIndexDB(DefinitionManifestsEnum.DestinyClassDefinition, hashes);
 };
 
 export const getGenderManifest = async (
     hashes: number[]
-): Promise<Record<string, DestinyGenderDefinition>> => {
+): Promise<Manifest<DestinyGenderDefinition>> => {
     return getDefinitionManifestFromIndexDB(
         DefinitionManifestsEnum.DestinyGenderDefinition,
         hashes
@@ -87,13 +87,13 @@ export const getGenderManifest = async (
 
 export const getRaceManifest = async (
     hashes: number[]
-): Promise<Record<string, DestinyRaceDefinition>> => {
+): Promise<Manifest<DestinyRaceDefinition>> => {
     return getDefinitionManifestFromIndexDB(DefinitionManifestsEnum.DestinyRaceDefinition, hashes);
 };
 
 export const getInventoryItemManifestByCategory = async (
     categories: number[]
-): Promise<Record<string, DestinyInventoryItemDefinition>> => {
+): Promise<Manifest<DestinyInventoryItemDefinition>> => {
     const result = await DB.table(DefinitionManifestsEnum.DestinyInventoryItemDefinition)
         .where("itemCategoryHashes")
         .anyOf(categories)
@@ -115,7 +115,7 @@ export const getCompleteInventoryItemManifest = async (): Promise<Record<
     );
 };
 
-export const getCompleteStatManifest = async (): Promise<Record<string, DestinyStatDefinition>> => {
+export const getCompleteStatManifest = async (): Promise<Manifest<DestinyStatDefinition>> => {
     return getCompleteDefinitionManifestFromIndexDB(DefinitionManifestsEnum.DestinyStatDefinition);
 };
 
@@ -160,7 +160,7 @@ export const freshSaveOfAllDefinitionManifests = async (
     try {
         for (const manifestWrapper of manifestResponseWrappers) {
             DB.table(manifestWrapper.name).clear();
-            const entries = Object.values(manifestWrapper.data).map(data => {
+            const entries = Object.values(manifestWrapper.data).map((data: any) => {
                 if (
                     manifestWrapper.name === DefinitionManifestsEnum.DestinyInventoryItemDefinition
                 ) {

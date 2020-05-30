@@ -14,7 +14,7 @@ const ModImage: FC<Props> = ({ mod, onModClick }) => {
     const [onClick, onEnter] = useClickAndEnterKey(onModClick);
 
     return (
-        <span
+        <div
             className={styles.wrapper}
             role="button"
             onClick={onClick}
@@ -29,7 +29,7 @@ const ModImage: FC<Props> = ({ mod, onModClick }) => {
                     title={mod.energyType.name}
                 />
             )}
-        </span>
+        </div>
     );
 };
 

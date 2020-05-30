@@ -10,9 +10,10 @@ import {
 
 import { Damage, Stats, Mod, EnergyCost } from "./commonItemTypes";
 import { preloadImage } from "util/imageUtils";
+import { Manifest } from "components/manifest/manifestTypes";
 
 export const mapInventoryStats = (
-    statsManifest: Record<string, DestinyStatDefinition>,
+    statsManifest: Manifest<DestinyStatDefinition>,
     stats?: DestinyItemInvestmentStatDefinition[]
 ): Stats => {
     const mappedStats: Stats = {};
@@ -34,7 +35,7 @@ export const mapInventoryStats = (
 };
 
 export const mapDamageTypes = (
-    damageTypeManifests: Record<string, DestinyDamageTypeDefinition>,
+    damageTypeManifests: Manifest<DestinyDamageTypeDefinition>,
     damageTypes: DamageType[]
 ): Damage[] => {
     const mappedDamages: Damage[] = [];
@@ -53,10 +54,11 @@ export const mapDamageTypes = (
 
 const mapEnergyCost = (
     instance: DestinyEnergyCostEntry,
-    energyTypeManifest: Record<string, DestinyEnergyTypeDefinition>
+    energyTypeManifest: Manifest<DestinyEnergyTypeDefinition>,
+    statManifest: Manifest<DestinyStatDefinition>
 ): EnergyCost | undefined => {
     const manifest = energyTypeManifest[instance.energyTypeHash];
-
+    const statCost = manifest && statManifest[manifest.costStatHash];
     if (!manifest) {
         return;
     }
@@ -65,15 +67,15 @@ const mapEnergyCost = (
 
     return {
         name,
-        iconPath: icon,
+        iconPath: statCost?.displayProperties.icon || icon,
         description,
         cost: instance.energyCost
     };
 };
 
 export const mapMod = (
-    statsManifest: Record<string, DestinyStatDefinition>,
-    energyTypeManifest: Record<string, DestinyEnergyTypeDefinition>,
+    statsManifest: Manifest<DestinyStatDefinition>,
+    energyTypeManifest: Manifest<DestinyEnergyTypeDefinition>,
     plug: DestinyInventoryItemDefinition,
     enabled
 ): Mod => {
@@ -91,6 +93,7 @@ export const mapMod = (
         stats: mapInventoryStats(statsManifest, plug.investmentStats),
         collectibleHash,
         energyType:
-            plug?.plug?.energyCost && mapEnergyCost(plug.plug.energyCost, energyTypeManifest)
+            plug?.plug?.energyCost &&
+            mapEnergyCost(plug.plug.energyCost, energyTypeManifest, statsManifest)
     };
 };

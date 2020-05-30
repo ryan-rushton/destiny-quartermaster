@@ -31,12 +31,13 @@ import {
     Stat
 } from "../commonItemTypes";
 import { mapDamageTypes, mapInventoryStats, mapMod } from "../commonItemMappers";
+import { Manifest } from "components/manifest/manifestTypes";
 
 class InventoryMapper {
-    itemsManifest: Record<string, DestinyInventoryItemDefinition>;
-    statsManifest: Record<string, DestinyStatDefinition>;
-    damageTypeManifests: Record<string, DestinyDamageTypeDefinition>;
-    energyTypeManifest: Record<string, DestinyEnergyTypeDefinition>;
+    itemsManifest: Manifest<DestinyInventoryItemDefinition>;
+    statsManifest: Manifest<DestinyStatDefinition>;
+    damageTypeManifests: Manifest<DestinyDamageTypeDefinition>;
+    energyTypeManifest: Manifest<DestinyEnergyTypeDefinition>;
 
     constructor(itemsManifest, statsManifest, damageTypeManifests, energyTypeManifest) {
         this.itemsManifest = itemsManifest || {};
@@ -272,31 +273,33 @@ class InventoryMapper {
 
     map = (
         profileInventory?: DestinyInventoryComponent,
-        characterEquipment?: Record<string, DestinyInventoryComponent>,
-        characterInventories?: Record<string, DestinyInventoryComponent>,
-        allInstances?: Record<string, DestinyItemInstanceComponent>,
-        allStats?: Record<string, DestinyItemStatsComponent>,
-        allSockets?: Record<string, DestinyItemSocketsComponent>,
-        allReusablePlugs?: Record<string, DestinyItemReusablePlugsComponent>
+        characterEquipment?: Manifest<DestinyInventoryComponent>,
+        characterInventories?: Manifest<DestinyInventoryComponent>,
+        allInstances?: Manifest<DestinyItemInstanceComponent>,
+        allStats?: Manifest<DestinyItemStatsComponent>,
+        allSockets?: Manifest<DestinyItemSocketsComponent>,
+        allReusablePlugs?: Manifest<DestinyItemReusablePlugsComponent>
     ): Inventory => {
         const timerLabel = "Mapping Inventory";
         console.time(timerLabel);
 
         const profileValues = (profileInventory && Object.values(profileInventory.items)) || [];
 
-        const charEquipValues =
-            (characterEquipment &&
-                Object.values(characterEquipment)
-                    .map(char => char.items)
-                    .flat()) ||
-            [];
+        const charEquipValues: DestinyItemComponent[] = [];
 
-        const charValues =
-            (characterInventories &&
-                Object.values(characterInventories)
-                    .map(char => char.items)
-                    .flat()) ||
-            [];
+        for (const equipment of Object.values(characterEquipment || [])) {
+            if (equipment) {
+                charEquipValues.push(...equipment.items);
+            }
+        }
+
+        const charValues: DestinyItemComponent[] = [];
+
+        for (const equipment of Object.values(characterInventories || [])) {
+            if (equipment) {
+                charEquipValues.push(...equipment.items);
+            }
+        }
 
         const allItems = [...profileValues, ...charEquipValues, ...charValues];
 

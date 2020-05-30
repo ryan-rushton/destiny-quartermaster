@@ -1,15 +1,17 @@
 .wrapper {
     position: relative;
+    height: 48px;
+    width: 48px;
 }
 
 .mod {
     position: relative;
+    height: 48px;
+    width: 48px;
 }
 
 .energy {
-    height: 8px;
     position: absolute;
-    width: 8px;
-    bottom: 37px;
-    left: 7px;
+    top: 0;
+    left: 0;
 }

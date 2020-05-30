@@ -22,13 +22,14 @@ import {
 import { Library, LibraryItem, LibraryArmour } from "./libraryTypes";
 import { mapDamageTypes, mapInventoryStats, mapMod } from "../commonItemMappers";
 import { isArmour2, isArmour2Mod } from "./libraryUtils";
+import { Manifest } from "components/manifest/manifestTypes";
 
 class LibraryMapper {
-    itemsManifest: Record<string, DestinyInventoryItemDefinition>;
-    statsManifest: Record<string, DestinyStatDefinition>;
-    damageTypeManifests: Record<string, DestinyDamageTypeDefinition>;
-    plugSetsManifest: Record<string, DestinyPlugSetDefinition>;
-    energyTypeManifest: Record<string, DestinyEnergyTypeDefinition>;
+    itemsManifest: Manifest<DestinyInventoryItemDefinition>;
+    statsManifest: Manifest<DestinyStatDefinition>;
+    damageTypeManifests: Manifest<DestinyDamageTypeDefinition>;
+    plugSetsManifest: Manifest<DestinyPlugSetDefinition>;
+    energyTypeManifest: Manifest<DestinyEnergyTypeDefinition>;
 
     constructor(
         itemsManifest,
@@ -77,8 +78,7 @@ class LibraryMapper {
 
                 const plugSet =
                     socket.randomizedPlugSetHash &&
-                    this.plugSetsManifest[socket.randomizedPlugSetHash] &&
-                    this.plugSetsManifest[socket.randomizedPlugSetHash].reusablePlugItems;
+                    this.plugSetsManifest?.[socket.randomizedPlugSetHash]?.reusablePlugItems;
 
                 if (plugSet) {
                     const modSet: Mod[] = [];
@@ -168,112 +168,125 @@ class LibraryMapper {
         };
 
         for (const manifestEntry of Object.values(this.itemsManifest)) {
-            const categories = manifestEntry.itemCategoryHashes;
-            const baseItem = this.mapBaseItem(manifestEntry);
+            if (manifestEntry) {
+                const categories = manifestEntry?.itemCategoryHashes;
+                const baseItem = this.mapBaseItem(manifestEntry);
 
-            if (categories.includes(WeaponItemCategories.Weapons)) {
-                const weapon = {
-                    ...baseItem,
-                    damage: mapDamageTypes(
-                        this.damageTypeManifests,
-                        manifestEntry.damageTypeHashes
-                    ),
-                    baseStats: mapInventoryStats(this.statsManifest, manifestEntry.investmentStats),
-                    exotic: manifestEntry.equippingBlock.uniqueLabel === "exotic_weapon",
-                    ...this.mapSockets(
-                        WeaponSocketCategories.Perks,
-                        WeaponSocketCategories.Mods,
-                        manifestEntry.sockets,
-                        WeaponSocketCategories.Cosmetics
-                    )
-                };
+                if (categories.includes(WeaponItemCategories.Weapons)) {
+                    const weapon = {
+                        ...baseItem,
+                        damage: mapDamageTypes(
+                            this.damageTypeManifests,
+                            manifestEntry.damageTypeHashes
+                        ),
+                        baseStats: mapInventoryStats(
+                            this.statsManifest,
+                            manifestEntry.investmentStats
+                        ),
+                        exotic: manifestEntry.equippingBlock.uniqueLabel === "exotic_weapon",
+                        ...this.mapSockets(
+                            WeaponSocketCategories.Perks,
+                            WeaponSocketCategories.Mods,
+                            manifestEntry.sockets,
+                            WeaponSocketCategories.Cosmetics
+                        )
+                    };
 
-                if (categories.includes(WeaponItemCategories.KineticWeapons)) {
-                    library.weapons.kinetic[manifestEntry.hash] = weapon;
-                } else if (categories.includes(WeaponItemCategories.EnergyWeapons)) {
-                    library.weapons.energy[manifestEntry.hash] = weapon;
-                } else if (categories.includes(WeaponItemCategories.PowerWeapons)) {
-                    library.weapons.heavy[manifestEntry.hash] = weapon;
-                }
-            } else if (isArmour2(manifestEntry)) {
-                const baseArmour = {
-                    ...baseItem,
-                    baseStats: mapInventoryStats(this.statsManifest, manifestEntry.investmentStats),
-                    exotic: manifestEntry.equippingBlock.uniqueLabel === "exotic_armor",
-                    ...this.mapSockets(
-                        ArmourSocketCategories.Perks,
-                        ArmourSocketCategories.Mods,
-                        manifestEntry.sockets,
-                        ArmourSocketCategories.Cosmetics
-                    )
-                };
+                    if (categories.includes(WeaponItemCategories.KineticWeapons)) {
+                        library.weapons.kinetic[manifestEntry.hash] = weapon;
+                    } else if (categories.includes(WeaponItemCategories.EnergyWeapons)) {
+                        library.weapons.energy[manifestEntry.hash] = weapon;
+                    } else if (categories.includes(WeaponItemCategories.PowerWeapons)) {
+                        library.weapons.heavy[manifestEntry.hash] = weapon;
+                    }
+                } else if (isArmour2(manifestEntry)) {
+                    const baseArmour = {
+                        ...baseItem,
+                        baseStats: mapInventoryStats(
+                            this.statsManifest,
+                            manifestEntry.investmentStats
+                        ),
+                        exotic: manifestEntry.equippingBlock.uniqueLabel === "exotic_armor",
+                        ...this.mapSockets(
+                            ArmourSocketCategories.Perks,
+                            ArmourSocketCategories.Mods,
+                            manifestEntry.sockets,
+                            ArmourSocketCategories.Cosmetics
+                        )
+                    };
 
-                let armourSlot;
-                let armour: LibraryArmour | null = null;
+                    let armourSlot;
+                    let armour: LibraryArmour | null = null;
 
-                if (categories.includes(ArmourItemCategories.Helmets)) {
-                    armourSlot = "helmets";
-                    armour = { ...baseArmour, type: "helmet" };
-                } else if (categories.includes(ArmourItemCategories.Arms)) {
-                    armourSlot = "arms";
-                    armour = { ...baseArmour, type: "arms" };
-                } else if (categories.includes(ArmourItemCategories.Chest)) {
-                    armourSlot = "chest";
-                    armour = { ...baseArmour, type: "chest" };
-                } else if (categories.includes(ArmourItemCategories.Legs)) {
-                    armourSlot = "legs";
-                    armour = { ...baseArmour, type: "legs" };
-                } else if (categories.includes(ArmourItemCategories.ClassItems)) {
-                    armourSlot = "classItems";
-                    armour = { ...baseArmour, type: "classItem" };
-                }
+                    if (categories.includes(ArmourItemCategories.Helmets)) {
+                        armourSlot = "helmets";
+                        armour = { ...baseArmour, type: "helmet" };
+                    } else if (categories.includes(ArmourItemCategories.Arms)) {
+                        armourSlot = "arms";
+                        armour = { ...baseArmour, type: "arms" };
+                    } else if (categories.includes(ArmourItemCategories.Chest)) {
+                        armourSlot = "chest";
+                        armour = { ...baseArmour, type: "chest" };
+                    } else if (categories.includes(ArmourItemCategories.Legs)) {
+                        armourSlot = "legs";
+                        armour = { ...baseArmour, type: "legs" };
+                    } else if (categories.includes(ArmourItemCategories.ClassItems)) {
+                        armourSlot = "classItems";
+                        armour = { ...baseArmour, type: "classItem" };
+                    }
 
-                if (armour && categories.includes(ArmourItemCategories.WarlockArmour)) {
-                    library.armour.warlock[armourSlot][manifestEntry.hash] = armour;
-                } else if (armour && categories.includes(ArmourItemCategories.HunterArmour)) {
-                    library.armour.hunter[armourSlot][manifestEntry.hash] = armour;
-                } else if (armour && categories.includes(ArmourItemCategories.TitanArmour)) {
-                    library.armour.titan[armourSlot][manifestEntry.hash] = armour;
-                }
-            } else if (categories.includes(GeneralItemCategories.Ghosts)) {
-                const ghost = {
-                    ...baseItem,
-                    ...this.mapSockets(
-                        GhostShellSocketCategories.Perks,
-                        GhostShellSocketCategories.Mods,
-                        manifestEntry.sockets
-                    )
-                };
+                    if (armour && categories.includes(ArmourItemCategories.WarlockArmour)) {
+                        library.armour.warlock[armourSlot][manifestEntry.hash] = armour;
+                    } else if (armour && categories.includes(ArmourItemCategories.HunterArmour)) {
+                        library.armour.hunter[armourSlot][manifestEntry.hash] = armour;
+                    } else if (armour && categories.includes(ArmourItemCategories.TitanArmour)) {
+                        library.armour.titan[armourSlot][manifestEntry.hash] = armour;
+                    }
+                } else if (categories.includes(GeneralItemCategories.Ghosts)) {
+                    const ghost = {
+                        ...baseItem,
+                        ...this.mapSockets(
+                            GhostShellSocketCategories.Perks,
+                            GhostShellSocketCategories.Mods,
+                            manifestEntry.sockets
+                        )
+                    };
 
-                library.ghosts[manifestEntry.hash] = ghost;
-            } else if (isArmour2Mod(manifestEntry)) {
-                let armourSlot;
-                if (categories.includes(ArmourModCategories.Helmets)) {
-                    armourSlot = "helmets";
-                } else if (categories.includes(ArmourModCategories.Arms)) {
-                    armourSlot = "arms";
-                } else if (categories.includes(ArmourModCategories.Chest)) {
-                    armourSlot = "chest";
-                } else if (categories.includes(ArmourModCategories.Legs)) {
-                    armourSlot = "legs";
-                } else if (categories.includes(ArmourModCategories.ClassItems)) {
-                    armourSlot = "classItems";
-                } else {
-                    armourSlot = "generic";
-                }
-                if (armourSlot) {
-                    library.mods.armour[armourSlot].push(
+                    library.ghosts[manifestEntry.hash] = ghost;
+                } else if (isArmour2Mod(manifestEntry)) {
+                    let armourSlot;
+                    if (categories.includes(ArmourModCategories.Helmets)) {
+                        armourSlot = "helmets";
+                    } else if (categories.includes(ArmourModCategories.Arms)) {
+                        armourSlot = "arms";
+                    } else if (categories.includes(ArmourModCategories.Chest)) {
+                        armourSlot = "chest";
+                    } else if (categories.includes(ArmourModCategories.Legs)) {
+                        armourSlot = "legs";
+                    } else if (categories.includes(ArmourModCategories.ClassItems)) {
+                        armourSlot = "classItems";
+                    } else {
+                        armourSlot = "generic";
+                    }
+                    if (armourSlot) {
+                        library.mods.armour[armourSlot].push(
+                            mapMod(
+                                this.statsManifest,
+                                this.energyTypeManifest,
+                                manifestEntry,
+                                false
+                            )
+                        );
+                    }
+                } else if (
+                    categories.includes(WeaponModCategories.WeaponMods) &&
+                    !categories.includes(WeaponModCategories.Ornaments) &&
+                    manifestEntry.plug.plugCategoryIdentifier.startsWith("v400")
+                ) {
+                    library.mods.weapons.push(
                         mapMod(this.statsManifest, this.energyTypeManifest, manifestEntry, false)
                     );
                 }
-            } else if (
-                categories.includes(WeaponModCategories.WeaponMods) &&
-                !categories.includes(WeaponModCategories.Ornaments) &&
-                manifestEntry.plug.plugCategoryIdentifier.startsWith("v400")
-            ) {
-                library.mods.weapons.push(
-                    mapMod(this.statsManifest, this.energyTypeManifest, manifestEntry, false)
-                );
             }
         }
 
