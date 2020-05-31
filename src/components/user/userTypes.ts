@@ -1,10 +1,10 @@
 export enum GamePlatform {
-    Xbox = "Xbox",
-    Psn = "Psn",
-    Steam = "Steam",
-    Blizzard = "Blizzard",
-    Stadia = "Stadia",
-    Unknown = "Unknown"
+    Xbox = 'Xbox',
+    Psn = 'Psn',
+    Steam = 'Steam',
+    Blizzard = 'Blizzard',
+    Stadia = 'Stadia',
+    Unknown = 'Unknown'
 }
 
 export interface UserMembership {

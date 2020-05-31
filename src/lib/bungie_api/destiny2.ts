@@ -1,6 +1,6 @@
-import { DestinyManifest, DestinyProfileResponse } from "bungie-api-ts/destiny2";
+import { DestinyManifest, DestinyProfileResponse } from 'bungie-api-ts/destiny2';
 
-import { bungieApiGet } from "./bungieApi";
+import { bungieApiGet } from './bungieApi';
 
 export interface DestinyManifestComplete extends DestinyManifest {
     jsonWorldComponentContentPaths: {
@@ -12,7 +12,7 @@ export interface DestinyManifestComplete extends DestinyManifest {
 
 export const getManifest = async (accessToken: string): Promise<DestinyManifestComplete> => {
     const bungieResponse = await bungieApiGet<DestinyManifestComplete>(
-        "/Destiny2/Manifest/",
+        '/Destiny2/Manifest/',
         accessToken
     );
     return bungieResponse.Response;

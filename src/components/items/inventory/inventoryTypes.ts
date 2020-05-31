@@ -1,5 +1,5 @@
-import { Stat, Damage, Stats, Mod, ArmourSlot, CharacterClass } from "../commonItemTypes";
-import { Manifest } from "components/manifest/manifestTypes";
+import { Stat, Damage, Stats, Mod, ArmourSlot, CharacterClass } from '../commonItemTypes';
+import { Manifest } from 'components/manifest/manifestTypes';
 
 export interface InventoryItem {
     hash: number;

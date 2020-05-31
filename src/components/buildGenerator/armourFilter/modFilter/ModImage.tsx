@@ -1,9 +1,9 @@
-import React, { FC } from "react";
+import React, { FC } from 'react';
 
-import { Mod } from "components/items/commonItemTypes";
-import BungieImage from "components/bungieImage/BungieImage";
-import { useClickAndEnterKey } from "hooks/useClickAndEnterKey";
-import styles from "./ModImage.module.scss";
+import { Mod } from 'components/items/commonItemTypes';
+import BungieImage from 'components/bungieImage/BungieImage';
+import { useClickAndEnterKey } from 'hooks/useClickAndEnterKey';
+import styles from './ModImage.module.scss';
 
 interface Props {
     mod: Mod;

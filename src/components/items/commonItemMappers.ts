@@ -6,19 +6,19 @@ import {
     DestinyInventoryItemDefinition,
     DestinyEnergyTypeDefinition,
     DestinyEnergyCostEntry
-} from "bungie-api-ts/destiny2";
+} from 'bungie-api-ts/destiny2';
 
-import { Damage, Stats, Mod, EnergyCost } from "./commonItemTypes";
-import { preloadImage } from "util/imageUtils";
-import { Manifest } from "components/manifest/manifestTypes";
+import { Damage, Stats, Mod, EnergyCost } from './commonItemTypes';
+import { preloadImage } from 'util/imageUtils';
+import { Manifest } from 'components/manifest/manifestTypes';
 
 export const plugCategoryIdToSeason = {
-    "enhancements.season_outlaw": 4,
-    "enhancements.season_forge": 5,
-    "enhancements.season_opulence": 7,
-    "enhancements.season_maverick": 8, // undying
-    "enhancements.season_v470": 9, //dawn
-    "enhancements.season_v480": 10 //worthy
+    'enhancements.season_outlaw': 4,
+    'enhancements.season_forge': 5,
+    'enhancements.season_opulence': 7,
+    'enhancements.season_maverick': 8, // undying
+    'enhancements.season_v470': 9, //dawn
+    'enhancements.season_v480': 10 //worthy
 };
 
 export const EmptyModSocketsToSeason = {

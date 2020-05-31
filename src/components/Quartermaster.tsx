@@ -1,13 +1,13 @@
-import React, { FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchManifest } from "./manifest/manifestReducer";
-import { fetchUserMembershipData, fetchProfileData } from "./user/userReducer";
-import { RootState } from "rootReducer";
-import withAuth from "./auth/withAuth";
-import AccountSelection from "./user/AccountSelection";
-import BuildGenerator from "./buildGenerator/BuildGenerator";
-import LoadingMask from "components/loadingMask/LoadingMask";
+import { fetchManifest } from './manifest/manifestReducer';
+import { fetchUserMembershipData, fetchProfileData } from './user/userReducer';
+import { RootState } from 'rootReducer';
+import withAuth from './auth/withAuth';
+import AccountSelection from './user/AccountSelection';
+import BuildGenerator from './buildGenerator/BuildGenerator';
+import LoadingMask from 'components/loadingMask/LoadingMask';
 
 const Quartermaster: FC = () => {
     const dispatch = useDispatch();

@@ -1,8 +1,8 @@
-import { createSlice, PayloadAction, CaseReducer } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
 
-import { CharacterClass, Mod, ArmourType } from "./../../items/commonItemTypes";
-import { ArmourStat } from "./armourFilterTypes";
-import { LibraryArmour } from "components/items/library/libraryTypes";
+import { CharacterClass, Mod, ArmourType } from './../../items/commonItemTypes';
+import { ArmourStat } from './armourFilterTypes';
+import { LibraryArmour } from 'components/items/library/libraryTypes';
 
 interface ArmourFilterState {
     stats: {
@@ -83,7 +83,7 @@ const updateRequiredArmourReducer: CaseReducer<ArmourFilterState, UpdateRequired
 };
 
 const { actions, reducer } = createSlice({
-    name: "armourFilter",
+    name: 'armourFilter',
     initialState,
     reducers: {
         saveStatFilter: saveStatFilterReducer,

@@ -1,14 +1,14 @@
-import { StoreDispatch } from "rootReducer";
+import { StoreDispatch } from 'rootReducer';
 import {
     getTokenTimeFromLocalStorage,
     getTokenFromLocalStorage,
     deleteAuthTokenFromLocalStorage,
     putTokenInLocalStorage
-} from "./authStorage";
-import { AuthToken } from "./authTypes";
-import { mapAuthToken } from "./authMappers";
-import { refreshOAuthToken } from "lib/bungie_api/auth";
-import { saveAuthToken } from "./authReducer";
+} from './authStorage';
+import { AuthToken } from './authTypes';
+import { mapAuthToken } from './authMappers';
+import { refreshOAuthToken } from 'lib/bungie_api/auth';
+import { saveAuthToken } from './authReducer';
 
 /**
  * Checks whether the auth token has run out of life, either in regards to token life or reauth life.

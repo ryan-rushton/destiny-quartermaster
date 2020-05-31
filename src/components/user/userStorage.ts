@@ -1,4 +1,4 @@
-const LAST_USED_PROFILE = "LAST_USED_PROFILE";
+const LAST_USED_PROFILE = 'LAST_USED_PROFILE';
 
 export const storeLastUsedProfileInLocalStorage = (id: string, membershipType: number): void => {
     const { localStorage } = window;

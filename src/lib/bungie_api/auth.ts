@@ -1,4 +1,4 @@
-import { post } from "./rest";
+import { post } from './rest';
 
 export interface JsonAuthToken {
     access_token: string;
@@ -10,12 +10,12 @@ export interface JsonAuthToken {
 }
 
 const appOauthToken = async (body: string): Promise<JsonAuthToken> => {
-    const token = await post("https://www.bungie.net/platform/app/oauth/token/", body, {
+    const token = await post('https://www.bungie.net/platform/app/oauth/token/', body, {
         headers: {
             Authorization: `Basic ${btoa(
                 `${process.env.REACT_APP_BUNGIE_API_CLIENT_ID}:${process.env.REACT_APP_BUNGIE_API_CLIENT_SECRET}`
             )}`,
-            "Content-Type": "application/x-www-form-urlencoded"
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     });
 

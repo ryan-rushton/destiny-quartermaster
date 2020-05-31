@@ -1,6 +1,6 @@
-import { get, JsonObject } from "./rest";
+import { get, JsonObject } from './rest';
 
-const BUNGIE_URL = "https://www.bungie.net";
+const BUNGIE_URL = 'https://www.bungie.net';
 
 /**
  * Fetches bungie assets and returns their parsed json from. Manifest definitions are a good example.

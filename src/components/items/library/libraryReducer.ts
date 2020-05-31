@@ -1,18 +1,18 @@
-import { createSlice, PayloadAction, CaseReducer } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
 import {
     DestinyInventoryItemDefinition,
     DestinyStatDefinition,
     DestinyDamageTypeDefinition,
     DestinyPlugSetDefinition,
     DestinyEnergyTypeDefinition
-} from "bungie-api-ts/destiny2";
+} from 'bungie-api-ts/destiny2';
 
-import { StoreDispatch } from "rootReducer";
-import { Library } from "./libraryTypes";
-import LibraryMapper from "./LibraryMapper";
-import { Manifest } from "components/manifest/manifestTypes";
-import { Mod, CharacterClass, ArmourSlot } from "../commonItemTypes";
-import { compareLibraryArmour } from "./libraryUtils";
+import { StoreDispatch } from 'rootReducer';
+import { Library } from './libraryTypes';
+import LibraryMapper from './LibraryMapper';
+import { Manifest } from 'components/manifest/manifestTypes';
+import { Mod, CharacterClass, ArmourSlot } from '../commonItemTypes';
+import { compareLibraryArmour } from './libraryUtils';
 
 type SaveLibraryAction = PayloadAction<Library>;
 type LibraryState = Library | null;
@@ -50,8 +50,8 @@ const armourModCompare = (a: Mod, b: Mod): number => {
 
 const saveLibraryReducer: CaseReducer<LibraryState, SaveLibraryAction> = (state, action) => {
     const library = action.payload;
-    const classes: CharacterClass[] = ["warlock", "hunter", "titan"];
-    const slots: ArmourSlot[] = ["helmets", "arms", "chest", "legs", "classItems"];
+    const classes: CharacterClass[] = ['warlock', 'hunter', 'titan'];
+    const slots: ArmourSlot[] = ['helmets', 'arms', 'chest', 'legs', 'classItems'];
 
     for (const c of classes) {
         for (const s of slots) {
@@ -69,7 +69,7 @@ const saveLibraryReducer: CaseReducer<LibraryState, SaveLibraryAction> = (state,
 };
 
 const { actions, reducer } = createSlice({
-    name: "library",
+    name: 'library',
     initialState,
     reducers: {
         saveLibrary: saveLibraryReducer

@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import React, { FC } from 'react';
 
-import { getFullImagePath } from "util/imageUtils";
-import styles from "./BungieImage.module.scss";
+import { getFullImagePath } from 'util/imageUtils';
+import styles from './BungieImage.module.scss';
 
 interface Props {
     url: string;

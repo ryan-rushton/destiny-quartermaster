@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, CaseReducer } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
 
 type SelectedCharacterState = string | null;
 type SetLoadingAction = PayloadAction<boolean>;
@@ -40,7 +40,7 @@ const setSelectedProfileReducer: CaseReducer<AppState, SetSelectedProfile> = (st
 });
 
 const { actions, reducer } = createSlice({
-    name: "app",
+    name: 'app',
     initialState,
     reducers: {
         setLoadingProfile: setLoadingProfileReducer,

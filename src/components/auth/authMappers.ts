@@ -1,5 +1,5 @@
-import { JsonAuthToken } from "lib/bungie_api/auth";
-import { AuthToken } from "./authTypes";
+import { JsonAuthToken } from 'lib/bungie_api/auth';
+import { AuthToken } from './authTypes';
 
 export const mapAuthToken = (jsonToken: JsonAuthToken): AuthToken => {
     return {

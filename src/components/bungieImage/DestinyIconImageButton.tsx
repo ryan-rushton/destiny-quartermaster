@@ -1,7 +1,7 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC, ReactNode } from 'react';
 
-import styles from "./DestinyIconImageButton.module.scss";
-import { useClickAndEnterKey } from "hooks/useClickAndEnterKey";
+import styles from './DestinyIconImageButton.module.scss';
+import { useClickAndEnterKey } from 'hooks/useClickAndEnterKey';
 
 interface Props {
     url: ReactNode;

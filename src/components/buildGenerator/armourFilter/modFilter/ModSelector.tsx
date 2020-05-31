@@ -1,13 +1,13 @@
-import React, { FC, useState, useRef, MutableRefObject } from "react";
-import _ from "lodash";
-import { useTranslation } from "react-i18next";
+import React, { FC, useState, useRef, MutableRefObject } from 'react';
+import _ from 'lodash';
+import { useTranslation } from 'react-i18next';
 
-import { Mod } from "components/items/commonItemTypes";
-import styles from "./ModSelector.module.scss";
-import BungieImageButton from "components/bungieImage/BungieImageButton";
-import useClickOutside from "hooks/useClickOutside";
-import ModImage from "./ModImage";
-import { preloadImages } from "util/imageUtils";
+import { Mod } from 'components/items/commonItemTypes';
+import styles from './ModSelector.module.scss';
+import BungieImageButton from 'components/bungieImage/BungieImageButton';
+import useClickOutside from 'hooks/useClickOutside';
+import ModImage from './ModImage';
+import { preloadImages } from 'util/imageUtils';
 
 interface Props {
     mods: Mod[];
@@ -23,16 +23,16 @@ const ModSelector: FC<Props> = ({ mods, onModSelected }) => {
 
     preloadImages(mods);
 
-    const groupedMods = _.groupBy(mods, mod => (mod.collectibleHash ? "equipable" : "default"));
+    const groupedMods = _.groupBy(mods, mod => (mod.collectibleHash ? 'equipable' : 'default'));
     const equipableMods = groupedMods.equipable;
     const defaultMod = (groupedMods.default?.length && groupedMods.default[0]) || equipableMods[0];
 
     const numberOfModColumns = 8;
     let modColumn = 0;
-    let gridTemplateColumns = "";
+    let gridTemplateColumns = '';
 
     for (let i = 0; i < numberOfModColumns; i++) {
-        gridTemplateColumns += "50px ";
+        gridTemplateColumns += '50px ';
     }
 
     return (
@@ -40,7 +40,7 @@ const ModSelector: FC<Props> = ({ mods, onModSelected }) => {
             <div className={styles.button}>
                 <BungieImageButton
                     url={defaultMod.iconPath}
-                    title={t("armourFilter.clickToAddMod")}
+                    title={t('armourFilter.clickToAddMod')}
                     onClick={(): void => setOpen(!open)}
                 />
             </div>

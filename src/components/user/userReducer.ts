@@ -1,15 +1,15 @@
-import { createSlice, PayloadAction, CaseReducer, ThunkAction, Action } from "@reduxjs/toolkit";
-import { DestinyProfileResponse } from "bungie-api-ts/destiny2";
+import { createSlice, PayloadAction, CaseReducer, ThunkAction, Action } from '@reduxjs/toolkit';
+import { DestinyProfileResponse } from 'bungie-api-ts/destiny2';
 
-import { RootState, StoreDispatch } from "./../../rootReducer";
-import { getProfile } from "lib/bungie_api/destiny2";
-import { getValidToken } from "../auth/authToken";
-import { getMembershipDataForCurrentUser } from "lib/bungie_api/user";
-import { mapUserMembership } from "./userMappers";
-import { UserMembership } from "./userTypes";
-import { mapCharactersFromProfileData } from "../characters/characterReducer";
-import { mapInventoryFromInventoryData } from "../items/inventory/inventoryReducer";
-import { buildLibrary } from "../items/library/libraryReducer";
+import { RootState, StoreDispatch } from './../../rootReducer';
+import { getProfile } from 'lib/bungie_api/destiny2';
+import { getValidToken } from '../auth/authToken';
+import { getMembershipDataForCurrentUser } from 'lib/bungie_api/user';
+import { mapUserMembership } from './userMappers';
+import { UserMembership } from './userTypes';
+import { mapCharactersFromProfileData } from '../characters/characterReducer';
+import { mapInventoryFromInventoryData } from '../items/inventory/inventoryReducer';
+import { buildLibrary } from '../items/library/libraryReducer';
 import {
     WeaponItemCategories,
     ArmourItemCategories,
@@ -17,15 +17,15 @@ import {
     WeaponModCategories,
     ArmourModCategories,
     GhostModCategories
-} from "../items/commonItemTypes";
+} from '../items/commonItemTypes';
 import {
     getInventoryItemManifestByCategory,
     getCompleteStatManifest,
     getCompleteDamageTypeManifest,
     getCompletePlugSetManifest,
     getCompleteEnergyTypeManifest
-} from "../manifest/manifestStorage";
-import { setLoadingProfile } from "appReducer";
+} from '../manifest/manifestStorage';
+import { setLoadingProfile } from 'appReducer';
 
 type SaveUserMembershipAction = PayloadAction<UserMembership>;
 type SaveProfileAction = PayloadAction<DestinyProfileResponse>;
@@ -45,7 +45,7 @@ const initialState: UserState = {
 };
 
 const { actions, reducer } = createSlice({
-    name: "user",
+    name: 'user',
     initialState,
     reducers: {
         saveUserMembership: saveUserMembershipReducer

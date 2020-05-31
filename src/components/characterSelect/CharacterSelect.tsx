@@ -1,10 +1,10 @@
-import React, { FC, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { FC, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { RootState } from "rootReducer";
-import styles from "./CharacterSelect.module.scss";
-import { Character } from "../characters/characterTypes";
-import { setSelectedCharacter } from "appReducer";
+import { RootState } from 'rootReducer';
+import styles from './CharacterSelect.module.scss';
+import { Character } from '../characters/characterTypes';
+import { setSelectedCharacter } from 'appReducer';
 
 interface EmblemProps {
     character: Character;
@@ -26,7 +26,7 @@ const Emblem: FC<EmblemProps> = ({ character, isSelected, onClick }) => {
             tabIndex={0}
             onClick={(): void => onClick(character.id)}
             onKeyPress={(e): void => {
-                e.key === "Enter" && onClick(character.id);
+                e.key === 'Enter' && onClick(character.id);
             }}
         >
             <img

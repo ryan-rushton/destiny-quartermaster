@@ -1,7 +1,7 @@
 const getHashesFromEnum = (anEnum: object): number[] => {
     const hashes: number[] = [];
     for (const val of Object.values(anEnum)) {
-        if (typeof val === "number") {
+        if (typeof val === 'number') {
             hashes.push(val);
         }
     }
@@ -97,9 +97,9 @@ export enum GhostShellSocketCategories {
 
 export const GeneralItemCategoryHashes = getHashesFromEnum(GeneralItemCategories);
 
-export type CharacterClass = "warlock" | "hunter" | "titan";
-export type ArmourSlot = "helmets" | "arms" | "chest" | "legs" | "classItems";
-export type ArmourType = "helmet" | "arms" | "chest" | "legs" | "classItem";
+export type CharacterClass = 'warlock' | 'hunter' | 'titan';
+export type ArmourSlot = 'helmets' | 'arms' | 'chest' | 'legs' | 'classItems';
+export type ArmourType = 'helmet' | 'arms' | 'chest' | 'legs' | 'classItem';
 
 export interface Damage {
     hash: number;

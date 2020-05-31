@@ -1,11 +1,11 @@
-import React, { FC } from "react";
+import React, { FC } from 'react';
 
-import styles from "./NavBar.module.scss";
+import styles from './NavBar.module.scss';
 
 const NavBar: FC = () => {
     return (
         <div className={styles.navBar}>
-            <div className={styles.appName}>{"Quartermaster"}</div>
+            <div className={styles.appName}>{'Quartermaster'}</div>
         </div>
     );
 };

@@ -1,5 +1,5 @@
-import { Damage, Stats, Mod, CharacterClass, ArmourSlot, ArmourType } from "../commonItemTypes";
-import { Manifest } from "components/manifest/manifestTypes";
+import { Damage, Stats, Mod, CharacterClass, ArmourSlot, ArmourType } from '../commonItemTypes';
+import { Manifest } from 'components/manifest/manifestTypes';
 
 export interface LibraryItem {
     hash: number;
@@ -32,7 +32,7 @@ export interface LibraryGhostShell extends LibraryItem {
     mods?: Mod[];
 }
 
-export type LibraryArmourModState = { [key in ArmourSlot | "generic"]: Mod[] };
+export type LibraryArmourModState = { [key in ArmourSlot | 'generic']: Mod[] };
 
 export interface Library {
     weapons: {

@@ -1,11 +1,11 @@
-import React, { FC } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { faXbox, faPlaystation, faSteam, faWindows } from "@fortawesome/free-brands-svg-icons";
-import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
+import React, { FC } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faXbox, faPlaystation, faSteam, faWindows } from '@fortawesome/free-brands-svg-icons';
+import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 
-import { Account, GamePlatform, isCrossSavePrimary } from "./userTypes";
-import styles from "./AccountSelectionButton.module.scss";
+import { Account, GamePlatform, isCrossSavePrimary } from './userTypes';
+import styles from './AccountSelectionButton.module.scss';
 
 const getIcon = (gamePlatform: GamePlatform): IconDefinition => {
     switch (gamePlatform) {

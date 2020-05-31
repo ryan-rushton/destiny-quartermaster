@@ -1,11 +1,11 @@
-import React, { FC } from "react";
-import { useTranslation } from "react-i18next";
+import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import ModImage from "./ModImage";
-import ModSelector from "./ModSelector";
-import styles from "./ModFilter.module.scss";
-import { LibraryArmourModState } from "components/items/library/libraryTypes";
-import { Mod } from "components/items/commonItemTypes";
+import ModImage from './ModImage';
+import ModSelector from './ModSelector';
+import styles from './ModFilter.module.scss';
+import { LibraryArmourModState } from 'components/items/library/libraryTypes';
+import { Mod } from 'components/items/commonItemTypes';
 
 interface Props {
     selectedMods: Mod[];
@@ -17,7 +17,7 @@ const ModFilter: FC<Props> = ({ selectedMods, armourMods, onModSelected }) => {
     const { t } = useTranslation();
     return (
         <div className={styles.modFilter}>
-            <div className={styles.title}>{t("armourFilter.requiredMods")}</div>
+            <div className={styles.title}>{t('armourFilter.requiredMods')}</div>
             <div className={styles.selected}>
                 {selectedMods.map(mod => (
                     <ModImage

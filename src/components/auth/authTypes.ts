@@ -1,5 +1,5 @@
-const isString = (val): boolean => typeof val === "string";
-const isNumber = (val): boolean => typeof val === "number";
+const isString = (val): boolean => typeof val === 'string';
+const isNumber = (val): boolean => typeof val === 'number';
 
 export interface AuthToken {
     accessToken: string;

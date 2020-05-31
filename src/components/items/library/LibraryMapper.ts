@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 import {
     DestinyInventoryItemDefinition,
     DestinyStatDefinition,
@@ -6,7 +6,7 @@ import {
     DestinyItemSocketBlockDefinition,
     DestinyPlugSetDefinition,
     DestinyEnergyTypeDefinition
-} from "bungie-api-ts/destiny2";
+} from 'bungie-api-ts/destiny2';
 
 import {
     WeaponItemCategories,
@@ -18,11 +18,11 @@ import {
     GhostShellSocketCategories,
     ArmourModCategories,
     WeaponModCategories
-} from "../commonItemTypes";
-import { Library, LibraryItem, LibraryArmour } from "./libraryTypes";
-import { mapDamageTypes, mapInventoryStats, mapMod, mapArmourSeason } from "../commonItemMappers";
-import { isArmour2, isArmour2Mod } from "./libraryUtils";
-import { Manifest } from "components/manifest/manifestTypes";
+} from '../commonItemTypes';
+import { Library, LibraryItem, LibraryArmour } from './libraryTypes';
+import { mapDamageTypes, mapInventoryStats, mapMod, mapArmourSeason } from '../commonItemMappers';
+import { isArmour2, isArmour2Mod } from './libraryUtils';
+import { Manifest } from 'components/manifest/manifestTypes';
 
 class LibraryMapper {
     itemsManifest: Manifest<DestinyInventoryItemDefinition>;
@@ -121,7 +121,7 @@ class LibraryMapper {
     }
 
     map = (): Library => {
-        const timerLabel = "Mapping Library";
+        const timerLabel = 'Mapping Library';
         console.time(timerLabel);
 
         const library: Library = {
@@ -183,7 +183,7 @@ class LibraryMapper {
                             this.statsManifest,
                             manifestEntry.investmentStats
                         ),
-                        exotic: manifestEntry.equippingBlock.uniqueLabel === "exotic_weapon",
+                        exotic: manifestEntry.equippingBlock.uniqueLabel === 'exotic_weapon',
                         ...this.mapSockets(
                             WeaponSocketCategories.Perks,
                             WeaponSocketCategories.Mods,
@@ -206,7 +206,7 @@ class LibraryMapper {
                             this.statsManifest,
                             manifestEntry.investmentStats
                         ),
-                        exotic: manifestEntry.equippingBlock.uniqueLabel === "exotic_armor",
+                        exotic: manifestEntry.equippingBlock.uniqueLabel === 'exotic_armor',
                         season: mapArmourSeason(manifestEntry),
                         ...this.mapSockets(
                             ArmourSocketCategories.Perks,
@@ -220,20 +220,20 @@ class LibraryMapper {
                     let armour: LibraryArmour | null = null;
 
                     if (categories.includes(ArmourItemCategories.Helmets)) {
-                        armourSlot = "helmets";
-                        armour = { ...baseArmour, type: "helmet" };
+                        armourSlot = 'helmets';
+                        armour = { ...baseArmour, type: 'helmet' };
                     } else if (categories.includes(ArmourItemCategories.Arms)) {
-                        armourSlot = "arms";
-                        armour = { ...baseArmour, type: "arms" };
+                        armourSlot = 'arms';
+                        armour = { ...baseArmour, type: 'arms' };
                     } else if (categories.includes(ArmourItemCategories.Chest)) {
-                        armourSlot = "chest";
-                        armour = { ...baseArmour, type: "chest" };
+                        armourSlot = 'chest';
+                        armour = { ...baseArmour, type: 'chest' };
                     } else if (categories.includes(ArmourItemCategories.Legs)) {
-                        armourSlot = "legs";
-                        armour = { ...baseArmour, type: "legs" };
+                        armourSlot = 'legs';
+                        armour = { ...baseArmour, type: 'legs' };
                     } else if (categories.includes(ArmourItemCategories.ClassItems)) {
-                        armourSlot = "classItems";
-                        armour = { ...baseArmour, type: "classItem" };
+                        armourSlot = 'classItems';
+                        armour = { ...baseArmour, type: 'classItem' };
                     }
 
                     if (armour && categories.includes(ArmourItemCategories.WarlockArmour)) {
@@ -257,17 +257,17 @@ class LibraryMapper {
                 } else if (isArmour2Mod(manifestEntry)) {
                     let armourSlot;
                     if (categories.includes(ArmourModCategories.Helmets)) {
-                        armourSlot = "helmets";
+                        armourSlot = 'helmets';
                     } else if (categories.includes(ArmourModCategories.Arms)) {
-                        armourSlot = "arms";
+                        armourSlot = 'arms';
                     } else if (categories.includes(ArmourModCategories.Chest)) {
-                        armourSlot = "chest";
+                        armourSlot = 'chest';
                     } else if (categories.includes(ArmourModCategories.Legs)) {
-                        armourSlot = "legs";
+                        armourSlot = 'legs';
                     } else if (categories.includes(ArmourModCategories.ClassItems)) {
-                        armourSlot = "classItems";
+                        armourSlot = 'classItems';
                     } else {
-                        armourSlot = "generic";
+                        armourSlot = 'generic';
                     }
                     if (armourSlot) {
                         library.mods.armour[armourSlot].push(
@@ -282,7 +282,7 @@ class LibraryMapper {
                 } else if (
                     categories.includes(WeaponModCategories.WeaponMods) &&
                     !categories.includes(WeaponModCategories.Ornaments) &&
-                    manifestEntry.plug.plugCategoryIdentifier.startsWith("v400")
+                    manifestEntry.plug.plugCategoryIdentifier.startsWith('v400')
                 ) {
                     library.mods.weapons.push(
                         mapMod(this.statsManifest, this.energyTypeManifest, manifestEntry, false)

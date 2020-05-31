@@ -1,7 +1,7 @@
-import { AuthToken, isAuthToken } from "./authTypes";
+import { AuthToken, isAuthToken } from './authTypes';
 
-const AUTH_TOKEN = "AUTH_TOKEN";
-const AUTH_TIME = "AUTH_TIME";
+const AUTH_TOKEN = 'AUTH_TOKEN';
+const AUTH_TIME = 'AUTH_TIME';
 
 export const putTokenInLocalStorage = (token: AuthToken, timeAcquired: number): void => {
     const { localStorage } = window;

@@ -1,5 +1,5 @@
-import _ from "lodash";
-import Dexie from "dexie";
+import _ from 'lodash';
+import Dexie from 'dexie';
 import {
     DestinyClassDefinition,
     DestinyGenderDefinition,
@@ -9,24 +9,24 @@ import {
     DestinyDamageTypeDefinition,
     DestinyPlugSetDefinition,
     DestinyEnergyTypeDefinition
-} from "bungie-api-ts/destiny2";
+} from 'bungie-api-ts/destiny2';
 
-import { JsonObject } from "lib/bungie_api/rest";
-import { DefinitionManifests, DefinitionManifestsEnum, Manifest } from "./manifestTypes";
+import { JsonObject } from 'lib/bungie_api/rest';
+import { DefinitionManifests, DefinitionManifestsEnum, Manifest } from './manifestTypes';
 
 // DB Setup ---------------
 
-const MANIFEST_VERSION = "MANIFEST_VERSION";
-const DB_NAME = "Quartermaster";
+const MANIFEST_VERSION = 'MANIFEST_VERSION';
+const DB_NAME = 'Quartermaster';
 const DB = new Dexie(DB_NAME);
 
 const schema: Record<string, string> = {};
 
 for (const tableName of DefinitionManifests) {
     if (tableName === DefinitionManifestsEnum.DestinyInventoryItemDefinition) {
-        schema[tableName] = "&hash, data, *itemCategoryHashes";
+        schema[tableName] = '&hash, data, *itemCategoryHashes';
     } else {
-        schema[tableName] = "&hash, data";
+        schema[tableName] = '&hash, data';
     }
 }
 
@@ -49,7 +49,7 @@ const getDefinitionManifestFromIndexDB = async (
     hashes: number[]
 ): Promise<Manifest<any>> => {
     const result = await DB.table(manifestName)
-        .where("hash")
+        .where('hash')
         .anyOf(hashes)
         .toArray();
 
@@ -95,7 +95,7 @@ export const getInventoryItemManifestByCategory = async (
     categories: number[]
 ): Promise<Manifest<DestinyInventoryItemDefinition>> => {
     const result = await DB.table(DefinitionManifestsEnum.DestinyInventoryItemDefinition)
-        .where("itemCategoryHashes")
+        .where('itemCategoryHashes')
         .anyOf(categories)
         .and(item => !item.itemCategoryHashes.includes(3109687656))
         .toArray();
@@ -150,11 +150,11 @@ export const freshSaveOfAllDefinitionManifests = async (
     manifestResponseWrappers: ManifestResponseWrapper[]
 ): Promise<void> => {
     if (!window.indexedDB) {
-        console.error("This browser does not support indexedDB your manifests will not be cached.");
+        console.error('This browser does not support indexedDB your manifests will not be cached.');
     }
 
     if (manifestResponseWrappers.length !== DefinitionManifests.length) {
-        console.error("Not all definition manifests are present please reload");
+        console.error('Not all definition manifests are present please reload');
     }
 
     try {

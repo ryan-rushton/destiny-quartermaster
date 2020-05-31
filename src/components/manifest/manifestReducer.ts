@@ -1,16 +1,16 @@
-import { PayloadAction, createSlice, CaseReducer } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice, CaseReducer } from '@reduxjs/toolkit';
 
-import { getManifest, DestinyManifestComplete } from "lib/bungie_api/destiny2";
-import { StoreDispatch } from "rootReducer";
-import { getValidToken } from "../auth/authToken";
-import { DefinitionManifests } from "./manifestTypes";
-import { getCommonJsonAsset } from "lib/bungie_api/common";
+import { getManifest, DestinyManifestComplete } from 'lib/bungie_api/destiny2';
+import { StoreDispatch } from 'rootReducer';
+import { getValidToken } from '../auth/authToken';
+import { DefinitionManifests } from './manifestTypes';
+import { getCommonJsonAsset } from 'lib/bungie_api/common';
 import {
     getManifestVersionInLocalStorage,
     putManifestVersionInLocalStorage,
     freshSaveOfAllDefinitionManifests,
     ManifestResponseWrapper
-} from "./manifestStorage";
+} from './manifestStorage';
 
 type DestinyManifestState = DestinyManifestComplete | null;
 type SaveManifestAction = PayloadAction<DestinyManifestState>;
@@ -28,7 +28,7 @@ const initialState: ManifestState = {
 };
 
 const { actions, reducer } = createSlice({
-    name: "config",
+    name: 'config',
     initialState,
     reducers: {
         saveManifest: saveManifestReducer
@@ -71,7 +71,7 @@ export const fetchManifest = () => {
         const token = await dispatch(getValidToken());
         if (token) {
             return getManifest(token.accessToken)
-                .then(manifest => fetchDefinitionManifestsIfRequired("en", manifest))
+                .then(manifest => fetchDefinitionManifestsIfRequired('en', manifest))
                 .then(manifest => dispatch(saveManifest(manifest)));
         }
     };

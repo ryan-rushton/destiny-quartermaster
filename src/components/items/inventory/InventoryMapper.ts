@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 import {
     DestinyInventoryComponent,
     DestinyItemComponent,
@@ -13,9 +13,9 @@ import {
     DestinyItemSocketState,
     DestinyStat,
     DestinyEnergyTypeDefinition
-} from "bungie-api-ts/destiny2";
+} from 'bungie-api-ts/destiny2';
 
-import { Inventory, InventoryItem } from "./inventoryTypes";
+import { Inventory, InventoryItem } from './inventoryTypes';
 import {
     WeaponItemCategories,
     ArmourItemCategories,
@@ -29,9 +29,9 @@ import {
     ArmourSocketCategories,
     GhostShellSocketCategories,
     Stat
-} from "../commonItemTypes";
-import { mapDamageTypes, mapInventoryStats, mapMod } from "../commonItemMappers";
-import { Manifest } from "components/manifest/manifestTypes";
+} from '../commonItemTypes';
+import { mapDamageTypes, mapInventoryStats, mapMod } from '../commonItemMappers';
+import { Manifest } from 'components/manifest/manifestTypes';
 
 class InventoryMapper {
     itemsManifest: Manifest<DestinyInventoryItemDefinition>;
@@ -280,7 +280,7 @@ class InventoryMapper {
         allSockets?: Manifest<DestinyItemSocketsComponent>,
         allReusablePlugs?: Manifest<DestinyItemReusablePlugsComponent>
     ): Inventory => {
-        const timerLabel = "Mapping Inventory";
+        const timerLabel = 'Mapping Inventory';
         console.time(timerLabel);
 
         const profileValues = (profileInventory && Object.values(profileInventory.items)) || [];
@@ -364,7 +364,7 @@ class InventoryMapper {
                                     manifestEntry.investmentStats
                                 ),
                                 exotic:
-                                    manifestEntry.equippingBlock.uniqueLabel === "exotic_weapon",
+                                    manifestEntry.equippingBlock.uniqueLabel === 'exotic_weapon',
                                 ...this.mapWeaponSockets(
                                     manifestEntry.sockets.socketCategories,
                                     sockets,
@@ -390,7 +390,7 @@ class InventoryMapper {
                                     this.statsManifest,
                                     manifestEntry.investmentStats
                                 ),
-                                exotic: manifestEntry.equippingBlock.uniqueLabel === "exotic_armor",
+                                exotic: manifestEntry.equippingBlock.uniqueLabel === 'exotic_armor',
                                 ...this.mapArmourSockets(
                                     manifestEntry.sockets.socketCategories,
                                     sockets,
@@ -401,15 +401,15 @@ class InventoryMapper {
                             let armourSlot;
 
                             if (categories.includes(ArmourItemCategories.Helmets)) {
-                                armourSlot = "helmets";
+                                armourSlot = 'helmets';
                             } else if (categories.includes(ArmourItemCategories.Arms)) {
-                                armourSlot = "arms";
+                                armourSlot = 'arms';
                             } else if (categories.includes(ArmourItemCategories.Chest)) {
-                                armourSlot = "chest";
+                                armourSlot = 'chest';
                             } else if (categories.includes(ArmourItemCategories.Legs)) {
-                                armourSlot = "legs";
+                                armourSlot = 'legs';
                             } else if (categories.includes(ArmourItemCategories.ClassItems)) {
-                                armourSlot = "classItems";
+                                armourSlot = 'classItems';
                             }
 
                             if (categories.includes(ArmourItemCategories.WarlockArmour)) {

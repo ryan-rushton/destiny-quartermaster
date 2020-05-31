@@ -1,4 +1,4 @@
-import { useCallback, KeyboardEvent } from "react";
+import { useCallback, KeyboardEvent } from 'react';
 
 export const useClickAndEnterKey = (
     callback: () => void
@@ -6,7 +6,7 @@ export const useClickAndEnterKey = (
     const onClick = useCallback(callback, [callback]);
     const onEnter = useCallback(
         (event: KeyboardEvent<HTMLElement>) => {
-            if (event.key === "Enter") {
+            if (event.key === 'Enter') {
                 callback();
             }
         },

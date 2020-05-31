@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, CaseReducer } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
 import {
     DestinyInventoryComponent,
     DictionaryComponentResponse,
@@ -8,12 +8,12 @@ import {
     DestinyStatDefinition,
     DestinyDamageTypeDefinition,
     DestinyEnergyTypeDefinition
-} from "bungie-api-ts/destiny2";
+} from 'bungie-api-ts/destiny2';
 
-import { Inventory } from "./inventoryTypes";
-import { StoreDispatch } from "rootReducer";
-import InventoryMapper from "./InventoryMapper";
-import { Manifest } from "components/manifest/manifestTypes";
+import { Inventory } from './inventoryTypes';
+import { StoreDispatch } from 'rootReducer';
+import InventoryMapper from './InventoryMapper';
+import { Manifest } from 'components/manifest/manifestTypes';
 
 type SaveInventoryAction = PayloadAction<Inventory>;
 type InventoryState = Inventory | null;
@@ -23,7 +23,7 @@ const saveInventoryReducer: CaseReducer<InventoryState, SaveInventoryAction> = (
     action.payload;
 
 const { actions, reducer } = createSlice({
-    name: "inventory",
+    name: 'inventory',
     initialState,
     reducers: {
         saveInventory: saveInventoryReducer

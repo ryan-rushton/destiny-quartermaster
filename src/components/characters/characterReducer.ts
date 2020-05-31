@@ -1,9 +1,9 @@
-import { PayloadAction, createSlice, CaseReducer } from "@reduxjs/toolkit";
-import { DictionaryComponentResponse, DestinyCharacterComponent } from "bungie-api-ts/destiny2";
+import { PayloadAction, createSlice, CaseReducer } from '@reduxjs/toolkit';
+import { DictionaryComponentResponse, DestinyCharacterComponent } from 'bungie-api-ts/destiny2';
 
-import { Character } from "./characterTypes";
-import { StoreDispatch } from "rootReducer";
-import { mapCharacters } from "./characterMappers";
+import { Character } from './characterTypes';
+import { StoreDispatch } from 'rootReducer';
+import { mapCharacters } from './characterMappers';
 
 type CharacterState = Character | null;
 type SaveCharactersAction = PayloadAction<Character[]>;
@@ -28,7 +28,7 @@ const saveCharactersReducer: CaseReducer<CharactersState, SaveCharactersAction> 
 const initialState = {} as CharactersState;
 
 const { actions, reducer } = createSlice({
-    name: "characters",
+    name: 'characters',
     initialState,
     reducers: {
         saveCharacters: saveCharactersReducer

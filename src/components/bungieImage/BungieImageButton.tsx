@@ -1,8 +1,8 @@
-import React, { FC } from "react";
+import React, { FC } from 'react';
 
-import { getFullImagePath } from "util/imageUtils";
-import styles from "./BungieImage.module.scss";
-import { useClickAndEnterKey } from "hooks/useClickAndEnterKey";
+import { getFullImagePath } from 'util/imageUtils';
+import styles from './BungieImage.module.scss';
+import { useClickAndEnterKey } from 'hooks/useClickAndEnterKey';
 
 interface Props {
     url: string;

@@ -1,12 +1,12 @@
-import React, { FC } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { FC } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { RootState } from "rootReducer";
-import withAuth from "../auth/withAuth";
-import AccountSelectionButton from "./AccountSelectionButton";
-import styles from "./AccountSelection.module.scss";
-import { setSelectedProfile } from "appReducer";
-import { storeLastUsedProfileInLocalStorage } from "./userStorage";
+import { RootState } from 'rootReducer';
+import withAuth from '../auth/withAuth';
+import AccountSelectionButton from './AccountSelectionButton';
+import styles from './AccountSelection.module.scss';
+import { setSelectedProfile } from 'appReducer';
+import { storeLastUsedProfileInLocalStorage } from './userStorage';
 
 const AccountSelection: FC = () => {
     const dispatch = useDispatch();

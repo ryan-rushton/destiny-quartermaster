@@ -1,15 +1,15 @@
-import React, { FC, useState, ReactNode, useRef } from "react";
-import { useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
+import React, { FC, useState, ReactNode, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
-import { LibraryArmour } from "components/items/library/libraryTypes";
-import BungieImageButton from "components/bungieImage/BungieImageButton";
-import { updateRequiredArmour } from "../armourFilterReducer";
-import DestinyIconImageButton from "components/bungieImage/DestinyIconImageButton";
-import styles from "./ArmourSelector.module.scss";
-import useClickOutside from "hooks/useClickOutside";
-import { preloadImages } from "util/imageUtils";
-import { CharacterClass } from "components/items/commonItemTypes";
+import { LibraryArmour } from 'components/items/library/libraryTypes';
+import BungieImageButton from 'components/bungieImage/BungieImageButton';
+import { updateRequiredArmour } from '../armourFilterReducer';
+import DestinyIconImageButton from 'components/bungieImage/DestinyIconImageButton';
+import styles from './ArmourSelector.module.scss';
+import useClickOutside from 'hooks/useClickOutside';
+import { preloadImages } from 'util/imageUtils';
+import { CharacterClass } from 'components/items/commonItemTypes';
 
 interface Props {
     libraryArmours: LibraryArmour[] | null;
@@ -37,15 +37,15 @@ const ArmourSelector: FC<Props> = ({
 
     const numberOfArmourColumns = 8;
     let armourColumn = 0;
-    let gridTemplateColumns = "";
+    let gridTemplateColumns = '';
 
     for (let i = 0; i < numberOfArmourColumns; i++) {
-        gridTemplateColumns += "54px ";
+        gridTemplateColumns += '54px ';
     }
 
     const buttonTitle = libraryArmours
-        ? t("armourFilter.selectRequiredArmour")
-        : t("armourFilter.selectCharacter");
+        ? t('armourFilter.selectRequiredArmour')
+        : t('armourFilter.selectCharacter');
 
     const getOnArmourClick = (armour: LibraryArmour) => (): void => {
         if (selectedClass) {

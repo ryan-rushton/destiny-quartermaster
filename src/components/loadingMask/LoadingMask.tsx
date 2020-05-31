@@ -1,6 +1,6 @@
-import React, { FC } from "react";
+import React, { FC } from 'react';
 
-import styles from "./LoadingMask.module.scss";
+import styles from './LoadingMask.module.scss';
 
 const SIZE = 44;
 const THICKNESS = 4;

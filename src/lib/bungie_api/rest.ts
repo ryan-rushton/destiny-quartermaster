@@ -13,11 +13,11 @@ export const get = async (
     requestInfo: RequestInfo,
     requestInit?: RequestInit
 ): Promise<JsonObject> =>
-    await fetch(requestInfo, { method: "GET", ...requestInit }).then(handleResponse);
+    await fetch(requestInfo, { method: 'GET', ...requestInit }).then(handleResponse);
 
 export const post = async (
     requestInfo: RequestInfo,
     body: BodyInit,
     requestInit?: RequestInit
 ): Promise<JsonObject> =>
-    await fetch(requestInfo, { method: "POST", ...requestInit, body }).then(handleResponse);
+    await fetch(requestInfo, { method: 'POST', ...requestInit, body }).then(handleResponse);
