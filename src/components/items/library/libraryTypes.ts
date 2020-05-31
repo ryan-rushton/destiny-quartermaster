@@ -24,6 +24,7 @@ export interface LibraryArmour extends LibraryItem {
     mods?: Mod[];
     cosmetics?: Mod[];
     exotic: boolean;
+    season: number;
 }
 
 export interface LibraryGhostShell extends LibraryItem {
@@ -41,7 +42,7 @@ export interface Library {
     };
     armour: {
         [key in CharacterClass]: {
-            [key in ArmourSlot]: Manifest<LibraryArmour>;
+            [key in ArmourSlot]: LibraryArmour[];
         };
     };
     ghosts: Manifest<LibraryItem>;

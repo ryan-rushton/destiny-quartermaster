@@ -40,7 +40,7 @@ const ArmourSelector: FC<Props> = ({
     let gridTemplateColumns = "";
 
     for (let i = 0; i < numberOfArmourColumns; i++) {
-        gridTemplateColumns += "50px ";
+        gridTemplateColumns += "54px ";
     }
 
     const buttonTitle = libraryArmours
@@ -84,6 +84,7 @@ const ArmourSelector: FC<Props> = ({
                     {libraryArmours.map(armour => (
                         <div
                             key={armour.hash}
+                            className={styles.item}
                             style={{
                                 gridColumnStart: (armourColumn++ % numberOfArmourColumns) + 1
                             }}

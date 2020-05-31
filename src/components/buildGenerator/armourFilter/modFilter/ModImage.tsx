@@ -10,6 +10,13 @@ interface Props {
     onModClick(): void;
 }
 
+const createTitle = (mod: Mod): string => {
+    if (mod.name && mod.description) {
+        return `${mod.name}\n\n${mod.description}`;
+    }
+
+    return mod.name;
+};
 const ModImage: FC<Props> = ({ mod, onModClick }) => {
     const [onClick, onEnter] = useClickAndEnterKey(onModClick);
 
@@ -26,7 +33,7 @@ const ModImage: FC<Props> = ({ mod, onModClick }) => {
                 <BungieImage
                     className={styles.energy}
                     url={mod.energyType.iconPath}
-                    title={mod.energyType.name}
+                    title={createTitle(mod)}
                 />
             )}
         </div>

@@ -134,4 +134,5 @@ export interface Mod {
     stats: Stats;
     collectibleHash?: number;
     energyType?: EnergyCost;
+    season: number;
 }

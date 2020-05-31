@@ -14,5 +14,13 @@
     padding: 6px;
     position: absolute;
     text-align: center;
+    justify-items: center;
+    align-items: center;
     z-index: 10;
+}
+
+.item {
+    margin: 2px;
+    border: 1px solid $qm-grey;
+    position: relative;
 }

@@ -1,5 +1,6 @@
 import { DestinyInventoryItemDefinition } from "bungie-api-ts/destiny2";
 
+import { LibraryArmour } from "components/items/library/libraryTypes";
 import {
     ArmourItemCategories,
     GeneralItemCategories,
@@ -14,7 +15,8 @@ export const isArmour2 = (item: DestinyInventoryItemDefinition): boolean =>
     item.sockets?.socketCategories.some(cat => cat.socketCategoryHash === 760375309) &&
     !item.itemCategoryHashes.includes(GeneralItemCategories.Subclass) &&
     item.inventory.tierType !== 4 && // ignore rare items
-    item.inventory.tierType !== 3; // ignore common items
+    item.inventory.tierType !== 3 && // ignore common items
+    item.inventory.tierType !== 2;
 
 export const isArmour2Mod = (item: DestinyInventoryItemDefinition): boolean =>
     item.hash !== ParagonModHash &&
@@ -22,3 +24,19 @@ export const isArmour2Mod = (item: DestinyInventoryItemDefinition): boolean =>
     item.plug?.plugCategoryIdentifier !== "enhancements.season_penumbra" &&
     (item.plug?.plugCategoryIdentifier.startsWith("enhancements.v2") ||
         item.plug?.plugCategoryIdentifier.startsWith("enhancements.season"));
+
+export const compareLibraryArmour = (a: LibraryArmour, b: LibraryArmour): number => {
+    if (a.exotic && !b.exotic) {
+        return -1;
+    }
+
+    if (!a.exotic && b.exotic) {
+        return 1;
+    }
+
+    if (a.season !== b.season) {
+        return b.season - a.season;
+    }
+
+    return a.name.localeCompare(b.name);
+};

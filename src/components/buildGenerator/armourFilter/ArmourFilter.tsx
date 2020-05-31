@@ -6,7 +6,7 @@ import { ArmourStats } from "./armourFilterTypes";
 import styles from "./ArmourFilter.module.scss";
 import { saveStatFilter, updateArmourMods } from "./armourFilterReducer";
 import { RootState } from "rootReducer";
-import { Mod } from "components/items/commonItemTypes";
+import { Mod, ArmourSlot } from "components/items/commonItemTypes";
 import ArmourSelector from "./armoutSelector/ArmourSelector";
 import { ReactComponent as HelmetIcon } from "destiny-icons/armor_types/helmet.svg";
 import { ReactComponent as ArmsIcon } from "destiny-icons/armor_types/gloves.svg";
@@ -29,12 +29,16 @@ const ArmourFilter: FC = () => {
 
     const selectedClass = (selectedCharacter && selectedCharacter.classType) || null;
 
+    if (!selectedClass) {
+        return null;
+    }
+
     const onModSelected = (mod: Mod): void => {
         dispatch(updateArmourMods(mod));
     };
 
-    const getArmourItems = (type: string): LibraryArmour[] | null =>
-        selectedClass && armour ? Object.values(armour[selectedClass][type]) : null;
+    const getArmourItems = (type: ArmourSlot): LibraryArmour[] =>
+        (selectedClass && armour?.[selectedClass][type]) || [];
 
     return (
         <div className={styles.armourFilter}>

@@ -20,7 +20,7 @@ import {
     WeaponModCategories
 } from "../commonItemTypes";
 import { Library, LibraryItem, LibraryArmour } from "./libraryTypes";
-import { mapDamageTypes, mapInventoryStats, mapMod } from "../commonItemMappers";
+import { mapDamageTypes, mapInventoryStats, mapMod, mapArmourSeason } from "../commonItemMappers";
 import { isArmour2, isArmour2Mod } from "./libraryUtils";
 import { Manifest } from "components/manifest/manifestTypes";
 
@@ -132,25 +132,25 @@ class LibraryMapper {
             },
             armour: {
                 warlock: {
-                    helmets: {},
-                    arms: {},
-                    chest: {},
-                    legs: {},
-                    classItems: {}
+                    helmets: [],
+                    arms: [],
+                    chest: [],
+                    legs: [],
+                    classItems: []
                 },
                 hunter: {
-                    helmets: {},
-                    arms: {},
-                    chest: {},
-                    legs: {},
-                    classItems: {}
+                    helmets: [],
+                    arms: [],
+                    chest: [],
+                    legs: [],
+                    classItems: []
                 },
                 titan: {
-                    helmets: {},
-                    arms: {},
-                    chest: {},
-                    legs: {},
-                    classItems: {}
+                    helmets: [],
+                    arms: [],
+                    chest: [],
+                    legs: [],
+                    classItems: []
                 }
             },
             ghosts: {},
@@ -207,6 +207,7 @@ class LibraryMapper {
                             manifestEntry.investmentStats
                         ),
                         exotic: manifestEntry.equippingBlock.uniqueLabel === "exotic_armor",
+                        season: mapArmourSeason(manifestEntry),
                         ...this.mapSockets(
                             ArmourSocketCategories.Perks,
                             ArmourSocketCategories.Mods,
@@ -236,11 +237,11 @@ class LibraryMapper {
                     }
 
                     if (armour && categories.includes(ArmourItemCategories.WarlockArmour)) {
-                        library.armour.warlock[armourSlot][manifestEntry.hash] = armour;
+                        library.armour.warlock[armourSlot].push(armour);
                     } else if (armour && categories.includes(ArmourItemCategories.HunterArmour)) {
-                        library.armour.hunter[armourSlot][manifestEntry.hash] = armour;
+                        library.armour.hunter[armourSlot].push(armour);
                     } else if (armour && categories.includes(ArmourItemCategories.TitanArmour)) {
-                        library.armour.titan[armourSlot][manifestEntry.hash] = armour;
+                        library.armour.titan[armourSlot].push(armour);
                     }
                 } else if (categories.includes(GeneralItemCategories.Ghosts)) {
                     const ghost = {
