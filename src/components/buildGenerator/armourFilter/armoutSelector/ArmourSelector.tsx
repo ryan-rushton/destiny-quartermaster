@@ -2,14 +2,14 @@ import React, { FC, useState, ReactNode, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { LibraryArmour } from 'components/items/library/libraryTypes';
+import { LibraryArmour } from 'state/items/library/libraryTypes';
 import BungieImageButton from 'components/bungieImage/BungieImageButton';
 import { updateRequiredArmour } from '../armourFilterReducer';
 import DestinyIconImageButton from 'components/bungieImage/DestinyIconImageButton';
 import styles from './ArmourSelector.module.scss';
 import useClickOutside from 'hooks/useClickOutside';
 import { preloadImages } from 'util/imageUtils';
-import { CharacterClass } from 'components/items/commonItemTypes';
+import { CharacterClass } from 'state/items/commonItemTypes';
 
 interface Props {
     libraryArmours: LibraryArmour[] | null;

@@ -10,7 +10,7 @@ import {
 
 import { Damage, Stats, Mod, EnergyCost } from './commonItemTypes';
 import { preloadImage } from 'util/imageUtils';
-import { Manifest } from 'components/manifest/manifestTypes';
+import { Manifest } from 'state/manifest/manifestTypes';
 
 export const plugCategoryIdToSeason = {
     'enhancements.season_outlaw': 4,

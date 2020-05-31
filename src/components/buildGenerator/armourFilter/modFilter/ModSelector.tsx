@@ -2,7 +2,7 @@ import React, { FC, useState, useRef, MutableRefObject } from 'react';
 import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
 
-import { Mod } from 'components/items/commonItemTypes';
+import { Mod } from 'state/items/commonItemTypes';
 import styles from './ModSelector.module.scss';
 import BungieImageButton from 'components/bungieImage/BungieImageButton';
 import useClickOutside from 'hooks/useClickOutside';

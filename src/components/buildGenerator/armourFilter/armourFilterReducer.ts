@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
 
-import { CharacterClass, Mod, ArmourType } from './../../items/commonItemTypes';
+import { CharacterClass, Mod, ArmourType } from '../../../state/items/commonItemTypes';
 import { ArmourStat } from './armourFilterTypes';
-import { LibraryArmour } from 'components/items/library/libraryTypes';
+import { LibraryArmour } from 'state/items/library/libraryTypes';
 
 interface ArmourFilterState {
     stats: {

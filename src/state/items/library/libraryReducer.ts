@@ -10,7 +10,7 @@ import {
 import { StoreDispatch } from 'rootReducer';
 import { Library } from './libraryTypes';
 import LibraryMapper from './LibraryMapper';
-import { Manifest } from 'components/manifest/manifestTypes';
+import { Manifest } from 'state/manifest/manifestTypes';
 import { Mod, CharacterClass, ArmourSlot } from '../commonItemTypes';
 import { compareLibraryArmour } from './libraryUtils';
 

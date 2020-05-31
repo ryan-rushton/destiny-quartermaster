@@ -3,9 +3,9 @@ import { Redirect } from 'react-router-dom';
 import { parse } from 'query-string';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { saveToken } from 'state/auth/authReducer';
 import { getOAuthToken } from 'lib/bungie_api/auth';
-import { saveToken } from '../auth/authToken';
-import { mapAuthToken } from '../auth/authMappers';
+import { mapAuthToken } from 'state/auth/authMappers';
 import { RootState, StoreDispatch } from 'rootReducer';
 
 const getCodeFromQueryParam = (): string | undefined => {

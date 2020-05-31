@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from 'rootReducer';
-import withAuth from '../auth/withAuth';
+import withAuth from '../withAuth';
 import AccountSelectionButton from './AccountSelectionButton';
 import styles from './AccountSelection.module.scss';
 import { setSelectedProfile } from 'appReducer';
-import { storeLastUsedProfileInLocalStorage } from './userStorage';
+import { storeLastUsedProfileInLocalStorage } from '../../state/user/userStorage';
 
 const AccountSelection: FC = () => {
     const dispatch = useDispatch();

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from 'rootReducer';
 import styles from './CharacterSelect.module.scss';
-import { Character } from '../characters/characterTypes';
+import { Character } from '../../state/characters/characterTypes';
 import { setSelectedCharacter } from 'appReducer';
 
 interface EmblemProps {

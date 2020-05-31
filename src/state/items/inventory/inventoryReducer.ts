@@ -13,7 +13,7 @@ import {
 import { Inventory } from './inventoryTypes';
 import { StoreDispatch } from 'rootReducer';
 import InventoryMapper from './InventoryMapper';
-import { Manifest } from 'components/manifest/manifestTypes';
+import { Manifest } from 'state/manifest/manifestTypes';
 
 type SaveInventoryAction = PayloadAction<Inventory>;
 type InventoryState = Inventory | null;

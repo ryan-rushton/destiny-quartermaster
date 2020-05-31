@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import ModImage from './ModImage';
 import ModSelector from './ModSelector';
 import styles from './ModFilter.module.scss';
-import { LibraryArmourModState } from 'components/items/library/libraryTypes';
-import { Mod } from 'components/items/commonItemTypes';
+import { LibraryArmourModState } from 'state/items/library/libraryTypes';
+import { Mod } from 'state/items/commonItemTypes';
 
 interface Props {
     selectedMods: Mod[];

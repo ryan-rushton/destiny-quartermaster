@@ -1,4 +1,4 @@
-import { isTokenValid } from './authToken';
+import { isTokenValid } from './authReducer';
 
 /**
  * There is a 120 second buffer in the token being alive so make sure that is accounted for.

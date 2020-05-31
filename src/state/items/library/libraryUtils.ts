@@ -1,11 +1,11 @@
 import { DestinyInventoryItemDefinition } from 'bungie-api-ts/destiny2';
 
-import { LibraryArmour } from 'components/items/library/libraryTypes';
+import { LibraryArmour } from 'state/items/library/libraryTypes';
 import {
     ArmourItemCategories,
     GeneralItemCategories,
     ArmourModCategories
-} from 'components/items/commonItemTypes';
+} from 'state/items/commonItemTypes';
 
 // This has been deprecated so filter it out
 const ParagonModHash = 926084009;

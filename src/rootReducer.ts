@@ -1,15 +1,15 @@
 import { combineReducers, configureStore, getDefaultMiddleware, Action } from '@reduxjs/toolkit';
 
+import authReducer from 'state/auth/authReducer';
+import manifestReducer from 'state/manifest/manifestReducer';
 import appReducer from 'appReducer';
 import armourFilterReducer from 'components/buildGenerator/armourFilter/armourFilterReducer';
-import authReducer from 'components/auth/authReducer';
-import characterReducer from 'components/characters/characterReducer';
-import manifestReducer from 'components/manifest/manifestReducer';
-import inventoryReducer from 'components/items/inventory/inventoryReducer';
-import libraryReducer from 'components/items/library/libraryReducer';
-import userReducer from 'components/user/userReducer';
-import { getTokenFromLocalStorage } from 'components/auth/authStorage';
-import { getLastUsedProfileFromLocalStorage } from 'components/user/userStorage';
+import characterReducer from 'state/characters/characterReducer';
+import inventoryReducer from 'state/items/inventory/inventoryReducer';
+import libraryReducer from 'state/items/library/libraryReducer';
+import userReducer from 'state/user/userReducer';
+import { getTokenFromLocalStorage } from 'state/auth/authStorage';
+import { getLastUsedProfileFromLocalStorage } from 'state/user/userStorage';
 
 const rootReducer = combineReducers({
     app: appReducer,

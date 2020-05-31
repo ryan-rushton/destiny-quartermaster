@@ -22,7 +22,7 @@ import {
 import { Library, LibraryItem, LibraryArmour } from './libraryTypes';
 import { mapDamageTypes, mapInventoryStats, mapMod, mapArmourSeason } from '../commonItemMappers';
 import { isArmour2, isArmour2Mod } from './libraryUtils';
-import { Manifest } from 'components/manifest/manifestTypes';
+import { Manifest } from 'state/manifest/manifestTypes';
 
 class LibraryMapper {
     itemsManifest: Manifest<DestinyInventoryItemDefinition>;

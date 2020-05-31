@@ -6,14 +6,14 @@ import { ArmourStats } from './armourFilterTypes';
 import styles from './ArmourFilter.module.scss';
 import { saveStatFilter, updateArmourMods } from './armourFilterReducer';
 import { RootState } from 'rootReducer';
-import { Mod, ArmourSlot } from 'components/items/commonItemTypes';
+import { Mod, ArmourSlot } from 'state/items/commonItemTypes';
 import ArmourSelector from './armoutSelector/ArmourSelector';
 import { ReactComponent as HelmetIcon } from 'destiny-icons/armor_types/helmet.svg';
 import { ReactComponent as ArmsIcon } from 'destiny-icons/armor_types/gloves.svg';
 import { ReactComponent as ChestIcon } from 'destiny-icons/armor_types/chest.svg';
 import { ReactComponent as LegsIcon } from 'destiny-icons/armor_types/boots.svg';
 import { ReactComponent as ClassIcon } from 'destiny-icons/armor_types/class.svg';
-import { LibraryArmour } from 'components/items/library/libraryTypes';
+import { LibraryArmour } from 'state/items/library/libraryTypes';
 import ModFilter from './modFilter/ModFilter';
 
 const ArmourFilter: FC = () => {

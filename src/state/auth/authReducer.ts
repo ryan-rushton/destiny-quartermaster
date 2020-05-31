@@ -1,3 +1,5 @@
+import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
+
 import { StoreDispatch } from 'rootReducer';
 import {
     getTokenTimeFromLocalStorage,
@@ -8,7 +10,22 @@ import {
 import { AuthToken } from './authTypes';
 import { mapAuthToken } from './authMappers';
 import { refreshOAuthToken } from 'lib/bungie_api/auth';
-import { saveAuthToken } from './authReducer';
+
+type AuthState = AuthToken | null;
+type SaveAuthAction = PayloadAction<AuthState>;
+
+const saveAuthTokenReducer: CaseReducer<AuthState, SaveAuthAction> = (state, action) =>
+    action.payload;
+
+const { actions, reducer } = createSlice({
+    name: 'authToken',
+    initialState: null as AuthState,
+    reducers: {
+        saveAuthToken: saveAuthTokenReducer
+    }
+});
+
+export const { saveAuthToken } = actions;
 
 /**
  * Checks whether the auth token has run out of life, either in regards to token life or reauth life.
@@ -76,3 +93,5 @@ export const getValidToken = () => async (
         dispatch(saveAuthToken(null));
     }
 };
+
+export default reducer;

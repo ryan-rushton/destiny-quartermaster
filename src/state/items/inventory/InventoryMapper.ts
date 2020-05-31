@@ -31,7 +31,7 @@ import {
     Stat
 } from '../commonItemTypes';
 import { mapDamageTypes, mapInventoryStats, mapMod } from '../commonItemMappers';
-import { Manifest } from 'components/manifest/manifestTypes';
+import { Manifest } from 'state/manifest/manifestTypes';
 
 class InventoryMapper {
     itemsManifest: Manifest<DestinyInventoryItemDefinition>;

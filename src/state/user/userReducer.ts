@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction, CaseReducer, ThunkAction, Action } from '@reduxjs/toolkit';
 import { DestinyProfileResponse } from 'bungie-api-ts/destiny2';
 
-import { RootState, StoreDispatch } from './../../rootReducer';
+import { getValidToken } from 'state/auth/authReducer';
+import { RootState, StoreDispatch } from '../../rootReducer';
 import { getProfile } from 'lib/bungie_api/destiny2';
-import { getValidToken } from '../auth/authToken';
 import { getMembershipDataForCurrentUser } from 'lib/bungie_api/user';
 import { mapUserMembership } from './userMappers';
 import { UserMembership } from './userTypes';

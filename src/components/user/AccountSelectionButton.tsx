@@ -4,7 +4,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faXbox, faPlaystation, faSteam, faWindows } from '@fortawesome/free-brands-svg-icons';
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 
-import { Account, GamePlatform, isCrossSavePrimary } from './userTypes';
+import { Account, GamePlatform, isCrossSavePrimary } from '../../state/user/userTypes';
 import styles from './AccountSelectionButton.module.scss';
 
 const getIcon = (gamePlatform: GamePlatform): IconDefinition => {

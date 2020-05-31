@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchManifest } from './manifest/manifestReducer';
-import { fetchUserMembershipData, fetchProfileData } from './user/userReducer';
+import { fetchManifest } from 'state/manifest/manifestReducer';
+import { fetchUserMembershipData, fetchProfileData } from '../state/user/userReducer';
 import { RootState } from 'rootReducer';
-import withAuth from './auth/withAuth';
+import withAuth from './withAuth';
 import AccountSelection from './user/AccountSelection';
 import BuildGenerator from './buildGenerator/BuildGenerator';
 import LoadingMask from 'components/loadingMask/LoadingMask';

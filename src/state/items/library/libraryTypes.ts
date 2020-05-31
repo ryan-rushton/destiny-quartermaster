@@ -1,5 +1,5 @@
 import { Damage, Stats, Mod, CharacterClass, ArmourSlot, ArmourType } from '../commonItemTypes';
-import { Manifest } from 'components/manifest/manifestTypes';
+import { Manifest } from 'state/manifest/manifestTypes';
 
 export interface LibraryItem {
     hash: number;
