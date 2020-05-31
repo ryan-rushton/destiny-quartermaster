@@ -16,15 +16,23 @@
     grid-column-start: 1;
 }
 
-.categoryButton {
-    border-radius: 2px;
-    margin: auto;
+.categoryButtons {
+    display: flex;
     padding: 6px 20px;
+    flex-direction: column;
+    width: 260px;
+}
+
+.categoryButton {
     text-align: left;
 
     &:hover {
-        background-color: $qm-grey-2;
+        background-color: $qm-grey-4;
         cursor: pointer;
+    }
+
+    &:focus {
+        outline: none;
     }
 }
 

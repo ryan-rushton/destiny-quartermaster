@@ -3,10 +3,10 @@ module.exports = {
     parser: '@typescript-eslint/parser',
     parserOptions: {
         ecmaFeatures: {
-            jsx: true
+            jsx: true,
         },
         sourceType: 'module',
-        project: ['./tsconfig.json']
+        project: ['./tsconfig.json'],
     },
     extends: [
         'eslint:recommended',
@@ -22,31 +22,31 @@ module.exports = {
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:prettier/recommended',
         'prettier/react',
-        'prettier/@typescript-eslint'
+        'prettier/@typescript-eslint',
     ],
     settings: {
         'import/resolver': {
             node: {
-                extensions: ['.js', '.jsx']
-            }
-        }
+                extensions: ['.js', '.jsx'],
+            },
+        },
     },
     env: {
         browser: true,
         commonjs: true,
         es2020: true,
         jest: true,
-        node: true
+        node: true,
     },
     settings: {
         'import/resolver': {
             typescript: {
-                alwaysTryTypes: true
-            }
+                alwaysTryTypes: true,
+            },
         },
         react: {
-            version: 'detect'
-        }
+            version: 'detect',
+        },
     },
     rules: {
         'import/default': 'off',
@@ -58,6 +58,6 @@ module.exports = {
         'no-unused-vars': ['warn', { vars: 'all', args: 'after-used', ignoreRestSiblings: false }],
         'prettier/prettier': 'error',
         'react/prop-types': 'off',
-        'react/self-closing-comp': 'warn'
-    }
+        'react/self-closing-comp': 'warn',
+    },
 };

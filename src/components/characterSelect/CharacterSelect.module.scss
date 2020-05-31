@@ -12,6 +12,9 @@
     cursor: pointer;
     margin: 2px auto;
     position: relative;
+
+    outline: 1px solid $qm-grey-2;
+    outline-offset: 1px;
 }
 
 .emblem {
@@ -47,5 +50,12 @@
 }
 
 .disabled {
-    opacity: 0.3;
+    opacity: 0.4;
+    outline: none;
+    outline-offset: 0;
+
+    &:focus {
+        outline: none;
+        outline-offset: 0;
+    }
 }

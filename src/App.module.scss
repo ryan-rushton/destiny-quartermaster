@@ -1,3 +1,5 @@
+@import './styleVariables.scss';
+
 .app {
     background: rgb(239, 239, 239);
     background: radial-gradient(
@@ -12,6 +14,11 @@
     min-height: 100vh;
     min-width: 100vw;
     text-align: center;
+
+    :focus {
+        outline: 1px ridge $qm-grey-2;
+        outline-offset: 1px;
+    }
 }
 
 .body {

@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import clsx from 'clsx';
 
 import { RootState } from 'rootReducer';
 import styles from './CharacterSelect.module.scss';
@@ -14,14 +15,11 @@ interface EmblemProps {
 
 const Emblem: FC<EmblemProps> = ({ character, isSelected, onClick }) => {
     const [emblemLoaded, setEmblemLoaded] = useState(false);
-    const className = isSelected
-        ? styles.emblemButton
-        : `${styles.emblemButton} ${styles.disabled}`;
 
     return (
         <div
             key={character.id}
-            className={className}
+            className={clsx(styles.emblemButton, !isSelected && styles.disabled)}
             role="button"
             tabIndex={0}
             onClick={(): void => onClick(character.id)}

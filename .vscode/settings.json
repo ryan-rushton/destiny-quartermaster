@@ -3,6 +3,7 @@
         "BUNGIE",
         "Playstation",
         "Setup",
+        "clsx",
         "devtools",
         "dexie",
         "equipable",
@@ -16,5 +17,6 @@
         "rushton",
         "toolkit"
     ],
-    "eslint.enable": true
+    "eslint.enable": true,
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

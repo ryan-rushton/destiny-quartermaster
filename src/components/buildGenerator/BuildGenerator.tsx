@@ -1,5 +1,6 @@
 import React, { FC, useState, KeyboardEvent } from 'react';
 import { useSelector } from 'react-redux';
+import clsx from 'clsx';
 
 import { RootState } from 'rootReducer';
 import styles from './BuildGenerator.module.scss';
@@ -25,11 +26,9 @@ const CategoryButton: FC<CategoryButtonProps> = ({ text, selected, onClick }) =>
         }
     };
 
-    const selectedClass = selected ? ` ${styles.selected}` : '';
-
     return (
         <div
-            className={`${styles.categoryButton}${selectedClass}`}
+            className={clsx(styles.categoryButton, selected && styles.selected)}
             onClick={onClick}
             onKeyPress={getOnEnter(onClick)}
             role="button"
@@ -53,21 +52,23 @@ const BuildGenerator: FC = () => {
         <div className={styles.buildGenerator}>
             <div className={styles.categorySelector}>
                 <CharacterSelect />
-                <CategoryButton
-                    text={'Armour'}
-                    selected={category === Category.Armour}
-                    onClick={(): void => setCategory(Category.Armour)}
-                />
-                <CategoryButton
-                    text={'Weapons'}
-                    selected={category === Category.Weapons}
-                    onClick={(): void => setCategory(Category.Weapons)}
-                />
-                <CategoryButton
-                    text={'Ghosts'}
-                    selected={category === Category.Ghosts}
-                    onClick={(): void => setCategory(Category.Ghosts)}
-                />
+                <div className={styles.categoryButtons}>
+                    <CategoryButton
+                        text={'Armour'}
+                        selected={category === Category.Armour}
+                        onClick={(): void => setCategory(Category.Armour)}
+                    />
+                    <CategoryButton
+                        text={'Weapons'}
+                        selected={category === Category.Weapons}
+                        onClick={(): void => setCategory(Category.Weapons)}
+                    />
+                    <CategoryButton
+                        text={'Ghosts'}
+                        selected={category === Category.Ghosts}
+                        onClick={(): void => setCategory(Category.Ghosts)}
+                    />
+                </div>
             </div>
             <div className={styles.categoryFilter}>
                 {category === Category.Armour && <ArmourFilter />}
