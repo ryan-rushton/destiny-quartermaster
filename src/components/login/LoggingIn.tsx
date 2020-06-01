@@ -26,7 +26,7 @@ const LoggingIn: FC = () => {
     const code = getCodeFromQueryParam();
     if (code) {
         getOAuthToken(code).then(
-            token => token && dispatch(saveToken(Date.now(), mapAuthToken(token)))
+            (token) => token && dispatch(saveToken(Date.now(), mapAuthToken(token)))
         );
         return <div>{'Logging in'}</div>;
     }

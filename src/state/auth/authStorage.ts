@@ -3,17 +3,21 @@ import { AuthToken, isAuthToken } from './authTypes';
 const AUTH_TOKEN = 'AUTH_TOKEN';
 const AUTH_TIME = 'AUTH_TIME';
 
-export const putTokenInLocalStorage = (token: AuthToken, timeAcquired: number): void => {
-    const { localStorage } = window;
-    localStorage.setItem(AUTH_TOKEN, JSON.stringify(token));
-    localStorage.setItem(AUTH_TIME, JSON.stringify(timeAcquired));
+export const putTokenInLocalStorage = (token: AuthToken | null, timeAcquired: number): void => {
+    if (!token) {
+        deleteAuthTokenFromLocalStorage();
+    } else {
+        const { localStorage } = window;
+        localStorage.setItem(AUTH_TOKEN, JSON.stringify(token));
+        localStorage.setItem(AUTH_TIME, JSON.stringify(timeAcquired));
+    }
 };
 
 export const getTokenFromLocalStorage = (): AuthToken | undefined => {
     const { localStorage } = window;
     const savedToken = localStorage.getItem(AUTH_TOKEN);
     if (savedToken) {
-        const jsonToken = JSON.parse(savedToken);
+        const jsonToken = JSON.parse(savedToken) as unknown;
         if (isAuthToken(jsonToken)) {
             return jsonToken;
         }

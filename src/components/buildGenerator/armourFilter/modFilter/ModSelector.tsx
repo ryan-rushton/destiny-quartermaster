@@ -23,7 +23,7 @@ const ModSelector: FC<Props> = ({ mods, onModSelected }) => {
 
     preloadImages(mods);
 
-    const groupedMods = _.groupBy(mods, mod => (mod.collectibleHash ? 'equipable' : 'default'));
+    const groupedMods = _.groupBy(mods, (mod) => (mod.collectibleHash ? 'equipable' : 'default'));
     const equipableMods = groupedMods.equipable;
     const defaultMod = (groupedMods.default?.length && groupedMods.default[0]) || equipableMods[0];
 
@@ -46,7 +46,7 @@ const ModSelector: FC<Props> = ({ mods, onModSelected }) => {
             </div>
             {open && (
                 <div className={styles.modPanel} style={{ gridTemplateColumns }}>
-                    {equipableMods.map(mod => (
+                    {equipableMods.map((mod) => (
                         <div
                             key={mod.hash}
                             style={{ gridColumnStart: (modColumn++ % numberOfModColumns) + 1 }}

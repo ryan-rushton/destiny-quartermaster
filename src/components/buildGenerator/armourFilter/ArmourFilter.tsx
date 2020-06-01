@@ -45,7 +45,7 @@ const ArmourFilter: FC = () => {
             <div className={styles.statsFilter}>
                 <div className={styles.sectionTitle}>{t('armourFilter.statsFilter')}</div>
                 <div>
-                    {ArmourStats.map(stat => (
+                    {ArmourStats.map((stat) => (
                         <span className={styles.stat} key={stat}>
                             <label>
                                 {t(`armourFilter.${stat}`)}{' '}
@@ -58,7 +58,7 @@ const ArmourFilter: FC = () => {
                                         dispatch(
                                             saveStatFilter({
                                                 stat,
-                                                value: Number.parseInt(event.target.value)
+                                                value: Number.parseInt(event.target.value),
                                             })
                                         );
                                     }}

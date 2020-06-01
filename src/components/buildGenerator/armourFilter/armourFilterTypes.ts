@@ -12,5 +12,5 @@ export const ArmourStats: ArmourStat[] = [
     'strength',
     'mobility',
     'resilience',
-    'recovery'
+    'recovery',
 ];

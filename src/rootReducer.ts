@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 import { combineReducers, configureStore, getDefaultMiddleware, Action } from '@reduxjs/toolkit';
 
 import authReducer from 'state/auth/authReducer';
 import manifestReducer from 'state/manifest/manifestReducer';
-import appReducer from 'appReducer';
+import appReducer from 'state/appReducer';
 import armourFilterReducer from 'components/buildGenerator/armourFilter/armourFilterReducer';
 import characterReducer from 'state/characters/characterReducer';
 import inventoryReducer from 'state/items/inventory/inventoryReducer';
@@ -19,7 +20,7 @@ const rootReducer = combineReducers({
     manifest: manifestReducer,
     inventory: inventoryReducer,
     library: libraryReducer,
-    user: userReducer
+    user: userReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
@@ -27,15 +28,15 @@ export type RootState = ReturnType<typeof rootReducer>;
 const middleware = [
     ...getDefaultMiddleware({
         immutableCheck: false,
-        serializableCheck: false
-    })
+        serializableCheck: false,
+    }),
 ];
 
 const store = configureStore({
     reducer: rootReducer,
     middleware,
     devTools: {
-        actionSanitizer: <A extends Action<any>>(action: A): A => {
+        actionSanitizer: <A extends Action<unknown>>(action: A): A => {
             const message = 'This action has been sanitized to improve performance';
             if (action.type === 'library/saveLibrary') {
                 return { ...action, payload: message };
@@ -45,30 +46,31 @@ const store = configureStore({
 
             return action;
         },
+        // eslint-disable-next-line
         stateSanitizer: (state: any): any => {
             let sanitised = state;
-            if (sanitised.library) {
+            if (sanitised?.library) {
                 sanitised = {
                     ...sanitised,
-                    library: 'The library has been sanitised for redux dev tools performance.'
+                    library: 'The library has been sanitised for redux dev tools performance.',
                 };
             }
-            if (sanitised.inventory) {
+            if (sanitised?.inventory) {
                 sanitised = {
                     ...sanitised,
-                    inventory: 'The inventory has been sanitised for redux dev tools performance.'
+                    inventory: 'The inventory has been sanitised for redux dev tools performance.',
                 };
             }
 
             return sanitised;
-        }
+        },
     },
     preloadedState: {
         authToken: getTokenFromLocalStorage(),
         app: {
-            selectedProfile: getLastUsedProfileFromLocalStorage()
-        }
-    }
+            selectedProfile: getLastUsedProfileFromLocalStorage(),
+        },
+    },
 });
 
 export type StoreDispatch = typeof store.dispatch;

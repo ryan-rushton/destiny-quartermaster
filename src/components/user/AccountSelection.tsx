@@ -5,7 +5,7 @@ import { RootState } from 'rootReducer';
 import withAuth from '../withAuth';
 import AccountSelectionButton from './AccountSelectionButton';
 import styles from './AccountSelection.module.scss';
-import { setSelectedProfile } from 'appReducer';
+import { setSelectedProfile } from 'state/appReducer';
 import { storeLastUsedProfileInLocalStorage } from '../../state/user/userStorage';
 
 const AccountSelection: FC = () => {
@@ -21,7 +21,7 @@ const AccountSelection: FC = () => {
     return (
         <div className={styles.accountSelection}>
             <div className={styles.buttons}>
-                {userMembership?.accounts.map(account => (
+                {userMembership?.accounts.map((account) => (
                     <AccountSelectionButton
                         key={account.id}
                         account={account}

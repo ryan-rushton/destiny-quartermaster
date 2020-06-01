@@ -1,22 +1,19 @@
+import _ from 'lodash';
 import { ServerResponse } from 'bungie-api-ts/common';
 
 import { get } from './rest';
 
 const BUNGIE_URL = 'https://www.bungie.net/Platform';
 
-const isString = (val): boolean => typeof val === 'string';
-const isNumber = (val): boolean => typeof val === 'number';
-const isObject = (val): boolean => typeof val === 'object';
-
-const isServerResponse = <T>(val): val is ServerResponse<T> => {
-    if (val) {
+const isServerResponse = <T>(val: unknown): val is ServerResponse<T> => {
+    if (_.isObject(val)) {
         return (
-            val.Response &&
-            isNumber(val.ErrorCode) &&
-            isNumber(val.ThrottleSeconds) &&
-            isString(val.ErrorStatus) &&
-            isString(val.Message) &&
-            isObject(val.MessageData)
+            val['Response'] &&
+            _.isNumber(val['ErrorCode']) &&
+            _.isNumber(val['ThrottleSeconds']) &&
+            _.isString(val['ErrorStatus']) &&
+            _.isString(val['Message']) &&
+            _.isObject(val['MessageData'])
         );
     }
 
@@ -30,8 +27,8 @@ export const bungieApiGet = async <T>(
     const response = await get(`${BUNGIE_URL}${relativeUrl}`, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
-            'X-API-Key': process.env.REACT_APP_BUNGIE_API_KEY as string
-        }
+            'X-API-Key': process.env.REACT_APP_BUNGIE_API_KEY as string,
+        },
     });
 
     if (!isServerResponse<T>(response)) {

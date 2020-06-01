@@ -22,7 +22,7 @@ const ArmourSelector: FC<Props> = ({
     libraryArmours,
     defaultImage,
     selectedClass,
-    selectedArmour
+    selectedArmour,
 }) => {
     const [open, setOpen] = useState(false);
     const { t } = useTranslation();
@@ -52,7 +52,7 @@ const ArmourSelector: FC<Props> = ({
             dispatch(
                 updateRequiredArmour({
                     armour,
-                    characterClass: selectedClass
+                    characterClass: selectedClass,
                 })
             );
         }
@@ -81,12 +81,12 @@ const ArmourSelector: FC<Props> = ({
             )}
             {open && libraryArmours && (
                 <div className={styles.armourPanel} style={{ gridTemplateColumns }}>
-                    {libraryArmours.map(armour => (
+                    {libraryArmours.map((armour) => (
                         <div
                             key={armour.hash}
                             className={styles.item}
                             style={{
-                                gridColumnStart: (armourColumn++ % numberOfArmourColumns) + 1
+                                gridColumnStart: (armourColumn++ % numberOfArmourColumns) + 1,
                             }}
                         >
                             <BungieImageButton

@@ -21,7 +21,7 @@ const armourSlotState: { [key in ArmourType]: LibraryArmour | null } = {
     arms: null,
     chest: null,
     legs: null,
-    classItem: null
+    classItem: null,
 };
 
 const initialState: ArmourFilterState = {
@@ -31,14 +31,14 @@ const initialState: ArmourFilterState = {
         strength: NaN,
         mobility: NaN,
         resilience: NaN,
-        recovery: NaN
+        recovery: NaN,
     },
     mods: [] as Mod[],
     armour: {
         warlock: armourSlotState,
         hunter: armourSlotState,
-        titan: armourSlotState
-    }
+        titan: armourSlotState,
+    },
 };
 
 type UpdateArmourMods = PayloadAction<Mod>;
@@ -61,8 +61,8 @@ const updateArmourModsReducer: CaseReducer<ArmourFilterState, UpdateArmourMods> 
     state,
     action
 ) => {
-    if (state.mods.some(mod => mod.hash === action.payload.hash)) {
-        state.mods = state.mods.filter(mod => mod.hash !== action.payload.hash);
+    if (state.mods.some((mod) => mod.hash === action.payload.hash)) {
+        state.mods = state.mods.filter((mod) => mod.hash !== action.payload.hash);
     } else {
         state.mods.push(action.payload);
     }
@@ -88,8 +88,8 @@ const { actions, reducer } = createSlice({
     reducers: {
         saveStatFilter: saveStatFilterReducer,
         updateArmourMods: updateArmourModsReducer,
-        updateRequiredArmour: updateRequiredArmourReducer
-    }
+        updateRequiredArmour: updateRequiredArmourReducer,
+    },
 });
 
 export const { saveStatFilter, updateArmourMods, updateRequiredArmour } = actions;

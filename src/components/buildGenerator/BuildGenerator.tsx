@@ -10,7 +10,7 @@ import CharacterSelect from 'components/characterSelect/CharacterSelect';
 enum Category {
     Armour = 'armour',
     Weapons = 'weapons',
-    Ghosts = 'ghosts'
+    Ghosts = 'ghosts',
 }
 
 interface CategoryButtonProps {

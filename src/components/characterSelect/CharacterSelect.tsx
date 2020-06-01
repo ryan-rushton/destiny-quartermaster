@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { RootState } from 'rootReducer';
 import styles from './CharacterSelect.module.scss';
 import { Character } from '../../state/characters/characterTypes';
-import { setSelectedCharacter } from 'appReducer';
+import { setSelectedCharacter } from 'state/appReducer';
 
 interface EmblemProps {
     character: Character;
@@ -65,7 +65,7 @@ const CharacterSelect: FC = () => {
         <>
             <div className={styles.characterSelect}>
                 {characters &&
-                    Object.values(characters).map(character => (
+                    Object.values(characters).map((character) => (
                         <Emblem
                             key={character.id}
                             character={character}

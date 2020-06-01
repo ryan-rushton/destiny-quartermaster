@@ -1,8 +1,12 @@
-const getHashesFromEnum = (anEnum: object): number[] => {
+import _ from 'lodash';
+
+const getHashesFromEnum = (anEnum: unknown): number[] => {
     const hashes: number[] = [];
-    for (const val of Object.values(anEnum)) {
-        if (typeof val === 'number') {
-            hashes.push(val);
+    if (_.isObject(anEnum)) {
+        for (const val of Object.values(anEnum)) {
+            if (typeof val === 'number') {
+                hashes.push(val);
+            }
         }
     }
 
@@ -31,7 +35,7 @@ export enum WeaponItemCategories {
     TraceRifle = 2489664120,
     GrenadeLaunchers = 153950757,
     SubmachineGuns = 3954685534,
-    LinearFusionRifles = 1504945536
+    LinearFusionRifles = 1504945536,
 }
 
 export const WeaponItemCategoryHashes = getHashesFromEnum(WeaponItemCategories);
@@ -39,7 +43,7 @@ export const WeaponItemCategoryHashes = getHashesFromEnum(WeaponItemCategories);
 export enum WeaponSocketCategories {
     Perks = 4241085061,
     Mods = 2685412949,
-    Cosmetics = 2048875504
+    Cosmetics = 2048875504,
 }
 
 export enum ArmourItemCategories {
@@ -52,7 +56,7 @@ export enum ArmourItemCategories {
     Chest = 47,
     Legs = 48,
     ClassItems = 49,
-    Masks = 55
+    Masks = 55,
 }
 
 export const ArmourItemCategoryHashes = getHashesFromEnum(ArmourItemCategories);
@@ -61,7 +65,7 @@ export enum ArmourSocketCategories {
     Tier = 760375309,
     Perks = 2518356196,
     Mods = 590099826,
-    Cosmetics = 1926152773
+    Cosmetics = 1926152773,
 }
 
 export enum GeneralItemCategories {
@@ -69,12 +73,12 @@ export enum GeneralItemCategories {
     Ghosts = 39,
     Shaders = 41,
     Subclass = 50,
-    Ornaments = 56
+    Ornaments = 56,
 }
 
 export enum WeaponModCategories {
     WeaponMods = 610365472,
-    Ornaments = 3124752623
+    Ornaments = 3124752623,
 }
 
 export enum ArmourModCategories {
@@ -83,16 +87,16 @@ export enum ArmourModCategories {
     Arms = 3872696960,
     Chest = 3723676689,
     Legs = 3607371986,
-    ClassItems = 3196106184
+    ClassItems = 3196106184,
 }
 
 export enum GhostModCategories {
-    GhostMods = 1449602859
+    GhostMods = 1449602859,
 }
 
 export enum GhostShellSocketCategories {
     Perks = 3301318876,
-    Mods = 3379164649
+    Mods = 3379164649,
 }
 
 export const GeneralItemCategoryHashes = getHashesFromEnum(GeneralItemCategories);

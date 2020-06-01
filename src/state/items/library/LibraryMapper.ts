@@ -5,7 +5,7 @@ import {
     DestinyDamageTypeDefinition,
     DestinyItemSocketBlockDefinition,
     DestinyPlugSetDefinition,
-    DestinyEnergyTypeDefinition
+    DestinyEnergyTypeDefinition,
 } from 'bungie-api-ts/destiny2';
 
 import {
@@ -17,7 +17,8 @@ import {
     ArmourSocketCategories,
     GhostShellSocketCategories,
     ArmourModCategories,
-    WeaponModCategories
+    WeaponModCategories,
+    ArmourSlot,
 } from '../commonItemTypes';
 import { Library, LibraryItem, LibraryArmour } from './libraryTypes';
 import { mapDamageTypes, mapInventoryStats, mapMod, mapArmourSeason } from '../commonItemMappers';
@@ -32,11 +33,11 @@ class LibraryMapper {
     energyTypeManifest: Manifest<DestinyEnergyTypeDefinition>;
 
     constructor(
-        itemsManifest,
-        statsManifest,
-        damageTypeManifests,
-        plugSetsManifest,
-        energyTypeManifest
+        itemsManifest: Manifest<DestinyInventoryItemDefinition>,
+        statsManifest: Manifest<DestinyStatDefinition>,
+        damageTypeManifests: Manifest<DestinyDamageTypeDefinition>,
+        plugSetsManifest: Manifest<DestinyPlugSetDefinition>,
+        energyTypeManifest: Manifest<DestinyEnergyTypeDefinition>
     ) {
         this.itemsManifest = itemsManifest || {};
         this.statsManifest = statsManifest || {};
@@ -50,7 +51,7 @@ class LibraryMapper {
             hash: manifestEntry.hash,
             name: manifestEntry.displayProperties.name,
             iconPath: manifestEntry.displayProperties.icon,
-            categories: manifestEntry.itemCategoryHashes
+            categories: manifestEntry.itemCategoryHashes,
         };
     }
 
@@ -66,7 +67,7 @@ class LibraryMapper {
 
         const categoriesByHash = _.keyBy(
             socketBlock?.socketCategories,
-            def => def.socketCategoryHash
+            (def) => def.socketCategoryHash
         );
 
         if (socketBlock?.socketEntries) {
@@ -128,7 +129,7 @@ class LibraryMapper {
             weapons: {
                 kinetic: {},
                 energy: {},
-                heavy: {}
+                heavy: {},
             },
             armour: {
                 warlock: {
@@ -136,22 +137,22 @@ class LibraryMapper {
                     arms: [],
                     chest: [],
                     legs: [],
-                    classItems: []
+                    classItems: [],
                 },
                 hunter: {
                     helmets: [],
                     arms: [],
                     chest: [],
                     legs: [],
-                    classItems: []
+                    classItems: [],
                 },
                 titan: {
                     helmets: [],
                     arms: [],
                     chest: [],
                     legs: [],
-                    classItems: []
-                }
+                    classItems: [],
+                },
             },
             ghosts: {},
             mods: {
@@ -162,9 +163,9 @@ class LibraryMapper {
                     chest: [],
                     legs: [],
                     classItems: [],
-                    generic: []
-                }
-            }
+                    generic: [],
+                },
+            },
         };
 
         for (const manifestEntry of Object.values(this.itemsManifest)) {
@@ -189,7 +190,7 @@ class LibraryMapper {
                             WeaponSocketCategories.Mods,
                             manifestEntry.sockets,
                             WeaponSocketCategories.Cosmetics
-                        )
+                        ),
                     };
 
                     if (categories.includes(WeaponItemCategories.KineticWeapons)) {
@@ -213,10 +214,10 @@ class LibraryMapper {
                             ArmourSocketCategories.Mods,
                             manifestEntry.sockets,
                             ArmourSocketCategories.Cosmetics
-                        )
+                        ),
                     };
 
-                    let armourSlot;
+                    let armourSlot: ArmourSlot | null = null;
                     let armour: LibraryArmour | null = null;
 
                     if (categories.includes(ArmourItemCategories.Helmets)) {
@@ -236,11 +237,23 @@ class LibraryMapper {
                         armour = { ...baseArmour, type: 'classItem' };
                     }
 
-                    if (armour && categories.includes(ArmourItemCategories.WarlockArmour)) {
+                    if (
+                        armour &&
+                        armourSlot &&
+                        categories.includes(ArmourItemCategories.WarlockArmour)
+                    ) {
                         library.armour.warlock[armourSlot].push(armour);
-                    } else if (armour && categories.includes(ArmourItemCategories.HunterArmour)) {
+                    } else if (
+                        armour &&
+                        armourSlot &&
+                        categories.includes(ArmourItemCategories.HunterArmour)
+                    ) {
                         library.armour.hunter[armourSlot].push(armour);
-                    } else if (armour && categories.includes(ArmourItemCategories.TitanArmour)) {
+                    } else if (
+                        armour &&
+                        armourSlot &&
+                        categories.includes(ArmourItemCategories.TitanArmour)
+                    ) {
                         library.armour.titan[armourSlot].push(armour);
                     }
                 } else if (categories.includes(GeneralItemCategories.Ghosts)) {
@@ -250,12 +263,12 @@ class LibraryMapper {
                             GhostShellSocketCategories.Perks,
                             GhostShellSocketCategories.Mods,
                             manifestEntry.sockets
-                        )
+                        ),
                     };
 
                     library.ghosts[manifestEntry.hash] = ghost;
                 } else if (isArmour2Mod(manifestEntry)) {
-                    let armourSlot;
+                    let armourSlot: ArmourSlot | 'generic' = 'generic';
                     if (categories.includes(ArmourModCategories.Helmets)) {
                         armourSlot = 'helmets';
                     } else if (categories.includes(ArmourModCategories.Arms)) {
@@ -266,9 +279,8 @@ class LibraryMapper {
                         armourSlot = 'legs';
                     } else if (categories.includes(ArmourModCategories.ClassItems)) {
                         armourSlot = 'classItems';
-                    } else {
-                        armourSlot = 'generic';
                     }
+
                     if (armourSlot) {
                         library.mods.armour[armourSlot].push(
                             mapMod(

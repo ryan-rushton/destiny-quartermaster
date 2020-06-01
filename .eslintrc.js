@@ -52,6 +52,7 @@ module.exports = {
         'import/default': 'off',
         'import/named': 'off',
         'import/newline-after-import': 'warn',
+        'import/no-named-as-default': 'off',
         'import/no-named-as-default-member': 'off',
         'import/order': ['warn', { 'newlines-between': 'always', groups: ['builtin', 'external'] }],
         'no-undef': 'warn',
@@ -59,5 +60,8 @@ module.exports = {
         'prettier/prettier': 'error',
         'react/prop-types': 'off',
         'react/self-closing-comp': 'warn',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
+        '@typescript-eslint/no-floating-promises': 'off',
+        '@typescript-eslint/restrict-template-expressions': 'off',
     },
 };

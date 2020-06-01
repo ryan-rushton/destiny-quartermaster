@@ -4,7 +4,7 @@ export enum GamePlatform {
     Steam = 'Steam',
     Blizzard = 'Blizzard',
     Stadia = 'Stadia',
-    Unknown = 'Unknown'
+    Unknown = 'Unknown',
 }
 
 export interface UserMembership {

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {
     DestinyStatDefinition,
     DestinyDamageTypeDefinition,
@@ -5,7 +6,7 @@ import {
     DestinyItemInvestmentStatDefinition,
     DestinyInventoryItemDefinition,
     DestinyEnergyTypeDefinition,
-    DestinyEnergyCostEntry
+    DestinyEnergyCostEntry,
 } from 'bungie-api-ts/destiny2';
 
 import { Damage, Stats, Mod, EnergyCost } from './commonItemTypes';
@@ -18,8 +19,8 @@ export const plugCategoryIdToSeason = {
     'enhancements.season_opulence': 7,
     'enhancements.season_maverick': 8, // undying
     'enhancements.season_v470': 9, //dawn
-    'enhancements.season_v480': 10 //worthy
-};
+    'enhancements.season_v480': 10, //worthy
+} as const;
 
 export const EmptyModSocketsToSeason = {
     3625698764: 4,
@@ -27,8 +28,8 @@ export const EmptyModSocketsToSeason = {
     4106547009: 7,
     2620967748: 8,
     2357307006: 9,
-    2655746324: 10
-};
+    2655746324: 10,
+} as const;
 
 export const mapInventoryStats = (
     statsManifest: Manifest<DestinyStatDefinition>,
@@ -43,7 +44,7 @@ export const mapInventoryStats = (
                 mappedStats[statTypeHash] = {
                     statHash: statTypeHash,
                     value,
-                    name: manifestEntry.displayProperties.name
+                    name: manifestEntry.displayProperties.name,
                 };
             }
         }
@@ -87,7 +88,7 @@ const mapEnergyCost = (
         name,
         iconPath: statCost?.displayProperties.icon || icon,
         description,
-        cost: instance.energyCost
+        cost: instance.energyCost,
     };
 };
 
@@ -95,12 +96,14 @@ export const mapMod = (
     statsManifest: Manifest<DestinyStatDefinition>,
     energyTypeManifest: Manifest<DestinyEnergyTypeDefinition>,
     plug: DestinyInventoryItemDefinition,
-    enabled
+    enabled: boolean
 ): Mod => {
     const { displayProperties, hash, itemCategoryHashes, collectibleHash } = plug;
     if (displayProperties.icon) {
         preloadImage(displayProperties.icon);
     }
+    const mappedSeason = plugCategoryIdToSeason[plug.plug.plugCategoryIdentifier] as unknown;
+    const season = _.isNumber(mappedSeason) ? mappedSeason : 0;
     return {
         name: displayProperties.name,
         description: displayProperties.description,
@@ -110,10 +113,10 @@ export const mapMod = (
         categories: itemCategoryHashes,
         stats: mapInventoryStats(statsManifest, plug.investmentStats),
         collectibleHash,
-        season: plugCategoryIdToSeason[plug.plug.plugCategoryIdentifier] || 0,
+        season,
         energyType:
             plug?.plug?.energyCost &&
-            mapEnergyCost(plug.plug.energyCost, energyTypeManifest, statsManifest)
+            mapEnergyCost(plug.plug.energyCost, energyTypeManifest, statsManifest),
     };
 };
 
@@ -123,8 +126,8 @@ export const mapMod = (
  */
 export const mapArmourSeason = (def: DestinyInventoryItemDefinition): number => {
     for (const socket of def.sockets.socketEntries) {
-        const season = EmptyModSocketsToSeason[socket.singleInitialItemHash];
-        if (season) {
+        const season = EmptyModSocketsToSeason[socket.singleInitialItemHash] as unknown;
+        if (_.isNumber(season)) {
             return season;
         }
     }

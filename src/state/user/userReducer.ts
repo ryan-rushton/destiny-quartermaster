@@ -16,16 +16,16 @@ import {
     GeneralItemCategoryHashes,
     WeaponModCategories,
     ArmourModCategories,
-    GhostModCategories
+    GhostModCategories,
 } from '../items/commonItemTypes';
 import {
     getInventoryItemManifestByCategory,
     getCompleteStatManifest,
     getCompleteDamageTypeManifest,
     getCompletePlugSetManifest,
-    getCompleteEnergyTypeManifest
+    getCompleteEnergyTypeManifest,
 } from '../manifest/manifestStorage';
-import { setLoadingProfile } from 'appReducer';
+import { setLoadingProfile } from 'state/appReducer';
 
 type SaveUserMembershipAction = PayloadAction<UserMembership>;
 type SaveProfileAction = PayloadAction<DestinyProfileResponse>;
@@ -41,15 +41,15 @@ const saveUserMembershipReducer: CaseReducer<UserState, SaveUserMembershipAction
 ) => ({ ...state, userMembership: action.payload });
 
 const initialState: UserState = {
-    userMembership: null as UserMembership | null
+    userMembership: null as UserMembership | null,
 };
 
 const { actions, reducer } = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        saveUserMembership: saveUserMembershipReducer
-    }
+        saveUserMembership: saveUserMembershipReducer,
+    },
 });
 
 export const { saveUserMembership } = actions;
@@ -87,20 +87,20 @@ export const fetchProfileData = (
                     ...GeneralItemCategoryHashes,
                     WeaponModCategories.WeaponMods,
                     ArmourModCategories.ArmourMods,
-                    GhostModCategories.GhostMods
+                    GhostModCategories.GhostMods,
                 ];
                 const [
                     itemsManifest,
                     statsManifest,
                     damageTypeManifests,
                     plugSetDefinition,
-                    energyTypeManifest
+                    energyTypeManifest,
                 ] = await Promise.all([
                     getInventoryItemManifestByCategory(allCategories),
                     getCompleteStatManifest(),
                     getCompleteDamageTypeManifest(),
                     getCompletePlugSetManifest(),
-                    getCompleteEnergyTypeManifest()
+                    getCompleteEnergyTypeManifest(),
                 ]);
 
                 dispatch(

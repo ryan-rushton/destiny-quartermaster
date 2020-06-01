@@ -9,7 +9,7 @@ import {
     getManifestVersionInLocalStorage,
     putManifestVersionInLocalStorage,
     freshSaveOfAllDefinitionManifests,
-    ManifestResponseWrapper
+    ManifestResponseWrapper,
 } from './manifestStorage';
 
 type DestinyManifestState = DestinyManifestComplete | null;
@@ -24,15 +24,15 @@ const saveManifestReducer: CaseReducer<ManifestState, SaveManifestAction> = (sta
 };
 
 const initialState: ManifestState = {
-    manifest: null as DestinyManifestState
+    manifest: null as DestinyManifestState,
 };
 
 const { actions, reducer } = createSlice({
     name: 'config',
     initialState,
     reducers: {
-        saveManifest: saveManifestReducer
-    }
+        saveManifest: saveManifestReducer,
+    },
 });
 
 export const { saveManifest } = actions;
@@ -54,13 +54,13 @@ const fetchDefinitionManifestsIfRequired = (
         const promises: Promise<ManifestResponseWrapper>[] = [];
         for (const manifestName of DefinitionManifests) {
             promises.push(
-                getCommonJsonAsset(localisedDefs[manifestName]).then(response => ({
+                getCommonJsonAsset(localisedDefs[manifestName]).then((response) => ({
                     name: manifestName,
-                    data: response
+                    data: response,
                 }))
             );
         }
-        Promise.all(promises).then(results => freshSaveOfAllDefinitionManifests(results));
+        Promise.all(promises).then((results) => freshSaveOfAllDefinitionManifests(results));
     }
 
     return manifest;
@@ -71,8 +71,8 @@ export const fetchManifest = () => {
         const token = await dispatch(getValidToken());
         if (token) {
             return getManifest(token.accessToken)
-                .then(manifest => fetchDefinitionManifestsIfRequired('en', manifest))
-                .then(manifest => dispatch(saveManifest(manifest)));
+                .then((manifest) => fetchDefinitionManifestsIfRequired('en', manifest))
+                .then((manifest) => dispatch(saveManifest(manifest)));
         }
     };
 };

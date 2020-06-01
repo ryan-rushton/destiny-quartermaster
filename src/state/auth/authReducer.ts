@@ -5,7 +5,7 @@ import {
     getTokenTimeFromLocalStorage,
     getTokenFromLocalStorage,
     deleteAuthTokenFromLocalStorage,
-    putTokenInLocalStorage
+    putTokenInLocalStorage,
 } from './authStorage';
 import { AuthToken } from './authTypes';
 import { mapAuthToken } from './authMappers';
@@ -21,8 +21,8 @@ const { actions, reducer } = createSlice({
     name: 'authToken',
     initialState: null as AuthState,
     reducers: {
-        saveAuthToken: saveAuthTokenReducer
-    }
+        saveAuthToken: saveAuthTokenReducer,
+    },
 });
 
 export const { saveAuthToken } = actions;
@@ -43,7 +43,7 @@ export const isTokenValid = (
     return tokenTime - timeAlive > 120;
 };
 
-export const saveToken = (startAuth: number, token: AuthToken) => (
+export const saveToken = (startAuth: number, token: AuthToken | null) => (
     dispatch: StoreDispatch
 ): void => {
     putTokenInLocalStorage(token, startAuth);
@@ -64,7 +64,7 @@ const renewToken = async (
     if (token && canReAuth) {
         const newToken = mapAuthToken(await refreshOAuthToken(token.refreshToken));
         dispatch(saveToken(startAuth, newToken));
-        return newToken;
+        return newToken || undefined;
     }
 };
 

@@ -12,7 +12,7 @@ import {
     DestinyItemReusablePlugsComponent,
     DestinyItemSocketState,
     DestinyStat,
-    DestinyEnergyTypeDefinition
+    DestinyEnergyTypeDefinition,
 } from 'bungie-api-ts/destiny2';
 
 import { Inventory, InventoryItem } from './inventoryTypes';
@@ -28,7 +28,8 @@ import {
     WeaponSocketCategories,
     ArmourSocketCategories,
     GhostShellSocketCategories,
-    Stat
+    Stat,
+    ArmourSlot,
 } from '../commonItemTypes';
 import { mapDamageTypes, mapInventoryStats, mapMod } from '../commonItemMappers';
 import { Manifest } from 'state/manifest/manifestTypes';
@@ -39,7 +40,12 @@ class InventoryMapper {
     damageTypeManifests: Manifest<DestinyDamageTypeDefinition>;
     energyTypeManifest: Manifest<DestinyEnergyTypeDefinition>;
 
-    constructor(itemsManifest, statsManifest, damageTypeManifests, energyTypeManifest) {
+    constructor(
+        itemsManifest: Manifest<DestinyInventoryItemDefinition>,
+        statsManifest: Manifest<DestinyStatDefinition>,
+        damageTypeManifests: Manifest<DestinyDamageTypeDefinition>,
+        energyTypeManifest: Manifest<DestinyEnergyTypeDefinition>
+    ) {
         this.itemsManifest = itemsManifest || {};
         this.statsManifest = statsManifest || {};
         this.damageTypeManifests = damageTypeManifests || {};
@@ -52,7 +58,7 @@ class InventoryMapper {
             return {
                 statHash,
                 value,
-                name: statDef.displayProperties.name
+                name: statDef.displayProperties.name,
             };
         }
     }
@@ -110,7 +116,7 @@ class InventoryMapper {
         const perks: Mod[][] = [];
         const cosmetics: Mod[] = [];
 
-        const categoriesByHash = _.keyBy(categoryDefinitions, def => def.socketCategoryHash);
+        const categoriesByHash = _.keyBy(categoryDefinitions, (def) => def.socketCategoryHash);
         const { Perks, Mods, Cosmetics } = WeaponSocketCategories;
 
         if (sockets?.sockets) {
@@ -160,7 +166,7 @@ class InventoryMapper {
         const tier: Mod[] = [];
 
         if (sockets?.sockets && categoryDefinitions) {
-            const categoriesByHash = _.keyBy(categoryDefinitions, def => def.socketCategoryHash);
+            const categoriesByHash = _.keyBy(categoryDefinitions, (def) => def.socketCategoryHash);
             const { Tier, Perks, Mods, Cosmetics } = ArmourSocketCategories;
             let index = 0;
 
@@ -209,7 +215,7 @@ class InventoryMapper {
         const perks: Mod[][] = [];
 
         if (sockets?.sockets && categoryDefinitions) {
-            const categoriesByHash = _.keyBy(categoryDefinitions, def => def.socketCategoryHash);
+            const categoriesByHash = _.keyBy(categoryDefinitions, (def) => def.socketCategoryHash);
             const { Perks, Mods } = GhostShellSocketCategories;
             let index = 0;
 
@@ -255,7 +261,7 @@ class InventoryMapper {
             name: manifestEntry.displayProperties.name,
             iconPath: manifestEntry.displayProperties.icon,
             primaryStat: instance.primaryStat && this.mapStat(instance.primaryStat),
-            categories: manifestEntry.itemCategoryHashes
+            categories: manifestEntry.itemCategoryHashes,
         };
     }
 
@@ -263,7 +269,7 @@ class InventoryMapper {
         const categoriesOfInterest = [
             ...WeaponItemCategoryHashes,
             ...ArmourItemCategoryHashes,
-            ...GeneralItemCategoryHashes
+            ...GeneralItemCategoryHashes,
         ];
 
         const itemCategories = manifestEntry?.itemCategoryHashes || [];
@@ -307,7 +313,7 @@ class InventoryMapper {
             weapons: {
                 kinetic: {},
                 energy: {},
-                heavy: {}
+                heavy: {},
             },
             armour: {
                 warlock: {
@@ -315,25 +321,25 @@ class InventoryMapper {
                     arms: {},
                     chest: {},
                     legs: {},
-                    classItems: {}
+                    classItems: {},
                 },
                 hunter: {
                     helmets: {},
                     arms: {},
                     chest: {},
                     legs: {},
-                    classItems: {}
+                    classItems: {},
                 },
                 titan: {
                     helmets: {},
                     arms: {},
                     chest: {},
                     legs: {},
-                    classItems: {}
-                }
+                    classItems: {},
+                },
             },
             ghosts: {},
-            other: {}
+            other: {},
         };
 
         for (const item of allItems) {
@@ -369,7 +375,7 @@ class InventoryMapper {
                                     manifestEntry.sockets.socketCategories,
                                     sockets,
                                     reusablePlugs
-                                )
+                                ),
                             };
 
                             if (categories.includes(WeaponItemCategories.KineticWeapons)) {
@@ -395,10 +401,10 @@ class InventoryMapper {
                                     manifestEntry.sockets.socketCategories,
                                     sockets,
                                     reusablePlugs
-                                )
+                                ),
                             };
 
-                            let armourSlot;
+                            let armourSlot: ArmourSlot | undefined;
 
                             if (categories.includes(ArmourItemCategories.Helmets)) {
                                 armourSlot = 'helmets';
@@ -412,11 +418,20 @@ class InventoryMapper {
                                 armourSlot = 'classItems';
                             }
 
-                            if (categories.includes(ArmourItemCategories.WarlockArmour)) {
+                            if (
+                                armourSlot &&
+                                categories.includes(ArmourItemCategories.WarlockArmour)
+                            ) {
                                 inventory.armour.warlock[armourSlot][itemHash] = armour;
-                            } else if (categories.includes(ArmourItemCategories.HunterArmour)) {
+                            } else if (
+                                armourSlot &&
+                                categories.includes(ArmourItemCategories.HunterArmour)
+                            ) {
                                 inventory.armour.hunter[armourSlot][itemHash] = armour;
-                            } else if (categories.includes(ArmourItemCategories.TitanArmour)) {
+                            } else if (
+                                armourSlot &&
+                                categories.includes(ArmourItemCategories.TitanArmour)
+                            ) {
                                 inventory.armour.titan[armourSlot][itemHash] = armour;
                             }
                         } else if (categories.includes(GeneralItemCategories.Ghosts)) {
@@ -426,7 +441,7 @@ class InventoryMapper {
                                     manifestEntry.sockets?.socketCategories,
                                     sockets,
                                     reusablePlugs
-                                )
+                                ),
                             };
 
                             inventory.ghosts[itemHash] = ghost;

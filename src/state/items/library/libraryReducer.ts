@@ -4,7 +4,7 @@ import {
     DestinyStatDefinition,
     DestinyDamageTypeDefinition,
     DestinyPlugSetDefinition,
-    DestinyEnergyTypeDefinition
+    DestinyEnergyTypeDefinition,
 } from 'bungie-api-ts/destiny2';
 
 import { StoreDispatch } from 'rootReducer';
@@ -22,7 +22,7 @@ const energyOrder = {
     Any: 0,
     Void: 1,
     Arc: 2,
-    Solar: 3
+    Solar: 3,
 };
 
 const armourModCompare = (a: Mod, b: Mod): number => {
@@ -72,8 +72,8 @@ const { actions, reducer } = createSlice({
     name: 'library',
     initialState,
     reducers: {
-        saveLibrary: saveLibraryReducer
-    }
+        saveLibrary: saveLibraryReducer,
+    },
 });
 
 export const { saveLibrary } = actions;

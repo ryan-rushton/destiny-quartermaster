@@ -31,8 +31,8 @@ const { actions, reducer } = createSlice({
     name: 'characters',
     initialState,
     reducers: {
-        saveCharacters: saveCharactersReducer
-    }
+        saveCharacters: saveCharactersReducer,
+    },
 });
 
 export const { saveCharacters } = actions;

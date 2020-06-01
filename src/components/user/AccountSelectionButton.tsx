@@ -43,7 +43,7 @@ const AccountSelectionButton: FC<Props> = ({ account, profileIsLoading, getProfi
                 <FontAwesomeIcon icon={getIcon(gamePlatform)} />
             </button>
             {isCrossSavePrimary(account) &&
-                account.overriddenAccounts.map(overridden => (
+                account.overriddenAccounts.map((overridden) => (
                     <button
                         key={overridden.id}
                         className={styles.button}

@@ -15,7 +15,7 @@ export enum DefinitionManifestsEnum {
     DestinySocketTypeDefinition = 'DestinySocketTypeDefinition',
     DestinyStatDefinition = 'DestinyStatDefinition',
     DestinyStatGroupDefinition = 'DestinyStatGroupDefinition',
-    DestinyUnlockDefinition = 'DestinyUnlockDefinition'
+    DestinyUnlockDefinition = 'DestinyUnlockDefinition',
 }
 
 export const DefinitionManifests = Object.keys(DefinitionManifestsEnum);

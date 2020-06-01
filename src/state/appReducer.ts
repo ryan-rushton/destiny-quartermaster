@@ -21,12 +21,12 @@ interface AppState {
 const initialState: AppState = {
     loadingProfile: false,
     selectedCharacter: null as SelectedCharacterState,
-    selectedProfile: null as SelectedProfileState
+    selectedProfile: null as SelectedProfileState,
 };
 
 const setLoadingProfileReducer: CaseReducer<AppState, SetLoadingAction> = (state, action) => ({
     ...state,
-    loadingProfile: action.payload
+    loadingProfile: action.payload,
 });
 
 const setSelectedCharacterReducer: CaseReducer<AppState, SetSelectedCharacter> = (
@@ -36,7 +36,7 @@ const setSelectedCharacterReducer: CaseReducer<AppState, SetSelectedCharacter> =
 
 const setSelectedProfileReducer: CaseReducer<AppState, SetSelectedProfile> = (state, action) => ({
     ...state,
-    selectedProfile: action.payload
+    selectedProfile: action.payload,
 });
 
 const { actions, reducer } = createSlice({
@@ -45,8 +45,8 @@ const { actions, reducer } = createSlice({
     reducers: {
         setLoadingProfile: setLoadingProfileReducer,
         setSelectedCharacter: setSelectedCharacterReducer,
-        setSelectedProfile: setSelectedProfileReducer
-    }
+        setSelectedProfile: setSelectedProfileReducer,
+    },
 });
 
 export const { setLoadingProfile, setSelectedCharacter, setSelectedProfile } = actions;

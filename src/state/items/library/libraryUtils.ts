@@ -4,7 +4,7 @@ import { LibraryArmour } from 'state/items/library/libraryTypes';
 import {
     ArmourItemCategories,
     GeneralItemCategories,
-    ArmourModCategories
+    ArmourModCategories,
 } from 'state/items/commonItemTypes';
 
 // This has been deprecated so filter it out
@@ -12,7 +12,7 @@ const ParagonModHash = 926084009;
 
 export const isArmour2 = (item: DestinyInventoryItemDefinition): boolean =>
     item.itemCategoryHashes.includes(ArmourItemCategories.Armour) &&
-    item.sockets?.socketCategories.some(cat => cat.socketCategoryHash === 760375309) &&
+    item.sockets?.socketCategories.some((cat) => cat.socketCategoryHash === 760375309) &&
     !item.itemCategoryHashes.includes(GeneralItemCategories.Subclass) &&
     item.inventory.tierType !== 4 && // ignore rare items
     item.inventory.tierType !== 3 && // ignore common items

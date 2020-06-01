@@ -7,7 +7,7 @@ import {
     DestinyInventoryItemDefinition,
     DestinyStatDefinition,
     DestinyDamageTypeDefinition,
-    DestinyEnergyTypeDefinition
+    DestinyEnergyTypeDefinition,
 } from 'bungie-api-ts/destiny2';
 
 import { Inventory } from './inventoryTypes';
@@ -26,8 +26,8 @@ const { actions, reducer } = createSlice({
     name: 'inventory',
     initialState,
     reducers: {
-        saveInventory: saveInventoryReducer
-    }
+        saveInventory: saveInventoryReducer,
+    },
 });
 
 export const { saveInventory } = actions;

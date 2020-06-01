@@ -4,7 +4,7 @@ import { CharacterClass } from '../items/commonItemTypes';
 import {
     getClassManifest,
     getGenderManifest,
-    getRaceManifest
+    getRaceManifest,
 } from 'state/manifest/manifestStorage';
 import { Character } from './characterTypes';
 import { getFullImagePath } from 'util/imageUtils';
@@ -12,15 +12,15 @@ import { getFullImagePath } from 'util/imageUtils';
 const classHashMap: { [hash: number]: CharacterClass } = {
     671679327: 'hunter',
     2271682572: 'warlock',
-    3655393761: 'titan'
+    3655393761: 'titan',
 };
 
 export const mapCharacters = (characters: DestinyCharacterComponent[]): Promise<Character[]> => {
-    const classPromise = getClassManifest(characters.map(c => c.classHash));
+    const classPromise = getClassManifest(characters.map((c) => c.classHash));
 
-    const genderPromise = getGenderManifest(characters.map(c => c.genderHash));
+    const genderPromise = getGenderManifest(characters.map((c) => c.genderHash));
 
-    const racePromise = getRaceManifest(characters.map(c => c.raceHash));
+    const racePromise = getRaceManifest(characters.map((c) => c.raceHash));
 
     return Promise.all([classPromise, genderPromise, racePromise]).then(
         ([classManifest, genderManifest, raceManifest]) => {
@@ -36,7 +36,7 @@ export const mapCharacters = (characters: DestinyCharacterComponent[]): Promise<
                     gender: genderManifest[character.genderHash]?.displayProperties?.name,
                     level: character.levelProgression.level,
                     emblemPath: getFullImagePath(character.emblemPath),
-                    emblemBackgroundPath: getFullImagePath(character.emblemBackgroundPath)
+                    emblemBackgroundPath: getFullImagePath(character.emblemBackgroundPath),
                 });
             }
 

@@ -19,7 +19,7 @@ const ModFilter: FC<Props> = ({ selectedMods, armourMods, onModSelected }) => {
         <div className={styles.modFilter}>
             <div className={styles.title}>{t('armourFilter.requiredMods')}</div>
             <div className={styles.selected}>
-                {selectedMods.map(mod => (
+                {selectedMods.map((mod) => (
                     <ModImage
                         key={mod.hash}
                         mod={mod}

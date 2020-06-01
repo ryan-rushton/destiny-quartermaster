@@ -1,5 +1,4 @@
-const isString = (val): boolean => typeof val === 'string';
-const isNumber = (val): boolean => typeof val === 'number';
+import _ from 'lodash';
 
 export interface AuthToken {
     accessToken: string;
@@ -11,23 +10,14 @@ export interface AuthToken {
 }
 
 export const isAuthToken = (val): val is AuthToken => {
-    if (val && val instanceof Object) {
-        const {
-            accessToken,
-            tokenType,
-            expiresIn,
-            refreshToken,
-            refreshExpiresIn,
-            membershipId
-        } = val;
-
+    if (_.isObject(val)) {
         return (
-            isString(accessToken) &&
-            isString(tokenType) &&
-            isNumber(expiresIn) &&
-            isString(refreshToken) &&
-            isNumber(refreshExpiresIn) &&
-            isString(membershipId)
+            _.isString(val['accessToken']) &&
+            _.isString(val['tokenType']) &&
+            _.isNumber(val['expiresIn']) &&
+            _.isString(val['refreshToken']) &&
+            _.isNumber(val['refreshExpiresIn']) &&
+            _.isString(val['membershipId'])
         );
     }
     return false;
