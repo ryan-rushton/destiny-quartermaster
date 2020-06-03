@@ -24,7 +24,7 @@ const ArmourFilter: FC = () => {
     const armour = useSelector((state: RootState) => state.library?.armour);
     const selectedCharacter = useSelector(
         (state: RootState) =>
-            state.app.selectedCharacter && state.characters?.[state.app.selectedCharacter]
+            state.characters.selected && state.characters.characters?.[state.characters.selected]
     );
 
     const selectedClass = (selectedCharacter && selectedCharacter.classType) || null;

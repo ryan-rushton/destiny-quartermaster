@@ -4,12 +4,22 @@ import { DictionaryComponentResponse, DestinyCharacterComponent } from 'bungie-a
 import { Character } from './characterTypes';
 import { StoreDispatch } from 'rootReducer';
 import { mapCharacters } from './characterMappers';
+import {
+    saveSelectedCharacterToLocalStorage,
+    getSelectedCharacterFromLocalStorage,
+    removeSelectedCharacterFromLocalStorage,
+} from './characterStorage';
 
-type CharacterState = Character | null;
+type SelectedCharacterState = string | null;
+
 type SaveCharactersAction = PayloadAction<Character[]>;
+type SetSelectedCharacter = PayloadAction<SelectedCharacterState>;
 
 interface CharactersState {
-    [id: string]: Character;
+    characters: {
+        [id: string]: Character;
+    };
+    selected: SelectedCharacterState;
 }
 
 const saveCharactersReducer: CaseReducer<CharactersState, SaveCharactersAction> = (
@@ -22,20 +32,42 @@ const saveCharactersReducer: CaseReducer<CharactersState, SaveCharactersAction> 
         characters[character.id] = character;
     }
 
-    return { ...state, ...characters };
+    const selected = getSelectedCharacterFromLocalStorage();
+
+    if (Object.keys(characters).some((id: string): boolean => id === selected)) {
+        return { ...state, characters, selected };
+    }
+
+    return { ...state, characters };
 };
 
-const initialState = {} as CharactersState;
+const setSelectedCharacterReducer: CaseReducer<CharactersState, SetSelectedCharacter> = (
+    state,
+    action
+) => {
+    const selected = action.payload;
+    if (selected) {
+        saveSelectedCharacterToLocalStorage(selected);
+    } else {
+        removeSelectedCharacterFromLocalStorage();
+    }
+    return { ...state, selected };
+};
+
+const initialState = {
+    selected: null as SelectedCharacterState,
+} as CharactersState;
 
 const { actions, reducer } = createSlice({
     name: 'characters',
     initialState,
     reducers: {
         saveCharacters: saveCharactersReducer,
+        setSelectedCharacter: setSelectedCharacterReducer,
     },
 });
 
-export const { saveCharacters } = actions;
+export const { saveCharacters, setSelectedCharacter } = actions;
 
 export const mapCharactersFromProfileData = (
     characterResponse: DictionaryComponentResponse<DestinyCharacterComponent>

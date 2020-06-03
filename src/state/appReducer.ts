@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
 
-type SelectedCharacterState = string | null;
 type SetLoadingAction = PayloadAction<boolean>;
-type SetSelectedCharacter = PayloadAction<SelectedCharacterState>;
 
 interface SelectedProfile {
     id: string;
@@ -14,13 +12,11 @@ type SetSelectedProfile = PayloadAction<SelectedProfileState>;
 
 interface AppState {
     loadingProfile: boolean;
-    selectedCharacter: SelectedCharacterState;
     selectedProfile: SelectedProfileState;
 }
 
 const initialState: AppState = {
     loadingProfile: false,
-    selectedCharacter: null as SelectedCharacterState,
     selectedProfile: null as SelectedProfileState,
 };
 
@@ -28,11 +24,6 @@ const setLoadingProfileReducer: CaseReducer<AppState, SetLoadingAction> = (state
     ...state,
     loadingProfile: action.payload,
 });
-
-const setSelectedCharacterReducer: CaseReducer<AppState, SetSelectedCharacter> = (
-    state,
-    action
-) => ({ ...state, selectedCharacter: action.payload });
 
 const setSelectedProfileReducer: CaseReducer<AppState, SetSelectedProfile> = (state, action) => ({
     ...state,
@@ -44,11 +35,10 @@ const { actions, reducer } = createSlice({
     initialState,
     reducers: {
         setLoadingProfile: setLoadingProfileReducer,
-        setSelectedCharacter: setSelectedCharacterReducer,
         setSelectedProfile: setSelectedProfileReducer,
     },
 });
 
-export const { setLoadingProfile, setSelectedCharacter, setSelectedProfile } = actions;
+export const { setLoadingProfile, setSelectedProfile } = actions;
 
 export default reducer;

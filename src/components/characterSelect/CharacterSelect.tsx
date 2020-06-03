@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { RootState } from 'rootReducer';
 import styles from './CharacterSelect.module.scss';
 import { Character } from '../../state/characters/characterTypes';
-import { setSelectedCharacter } from 'state/appReducer';
+import { setSelectedCharacter } from 'state/characters/characterReducer';
 
 interface EmblemProps {
     character: Character;
@@ -50,8 +50,8 @@ const Emblem: FC<EmblemProps> = ({ character, isSelected, onClick }) => {
 
 const CharacterSelect: FC = () => {
     const dispatch = useDispatch();
-    const characters = useSelector((state: RootState) => state.characters);
-    const selectedCharacter = useSelector((state: RootState) => state.app.selectedCharacter);
+    const characters = useSelector((state: RootState) => state.characters.characters);
+    const selectedCharacter = useSelector((state: RootState) => state.characters.selected);
 
     const dispatchSelectedCharacter = (id: string): void => {
         if (id === selectedCharacter) {
