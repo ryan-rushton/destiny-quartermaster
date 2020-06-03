@@ -33,6 +33,7 @@ import {
 } from '../commonItemTypes';
 import { mapDamageTypes, mapInventoryStats, mapMod } from '../commonItemMappers';
 import { Manifest } from 'state/manifest/manifestTypes';
+import { preloadImage } from 'util/imageUtils';
 
 class InventoryMapper {
     itemsManifest: Manifest<DestinyInventoryItemDefinition>;
@@ -256,6 +257,7 @@ class InventoryMapper {
         manifestEntry: DestinyInventoryItemDefinition,
         instance: DestinyItemInstanceComponent
     ): InventoryItem {
+        preloadImage(manifestEntry.displayProperties.icon);
         return {
             hash: bungieItem.itemHash,
             name: manifestEntry.displayProperties.name,

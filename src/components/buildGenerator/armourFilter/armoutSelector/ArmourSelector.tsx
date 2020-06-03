@@ -8,13 +8,14 @@ import { updateRequiredArmour } from '../armourFilterReducer';
 import DestinyIconImageButton from 'components/bungieImage/DestinyIconImageButton';
 import styles from './ArmourSelector.module.scss';
 import useClickOutside from 'hooks/useClickOutside';
-import { preloadImages } from 'util/imageUtils';
 import { CharacterClass } from 'state/items/commonItemTypes';
+import Modal from 'components/modal/Modal';
 
 interface Props {
-    libraryArmours: LibraryArmour[] | null;
+    libraryArmours: LibraryArmour[];
     defaultImage: ReactNode;
-    selectedClass: CharacterClass | null;
+    selectedClass: CharacterClass;
+    title: string;
     selectedArmour: LibraryArmour | null;
 }
 
@@ -22,6 +23,7 @@ const ArmourSelector: FC<Props> = ({
     libraryArmours,
     defaultImage,
     selectedClass,
+    title,
     selectedArmour,
 }) => {
     const [open, setOpen] = useState(false);
@@ -30,10 +32,6 @@ const ArmourSelector: FC<Props> = ({
     const ref = useRef(null);
 
     useClickOutside(ref, () => setOpen(false));
-
-    if (libraryArmours) {
-        preloadImages(libraryArmours);
-    }
 
     const numberOfArmourColumns = 8;
     let armourColumn = 0;
@@ -67,7 +65,7 @@ const ArmourSelector: FC<Props> = ({
                     title={buttonTitle}
                     onClick={(): void => {
                         if (libraryArmours) {
-                            setOpen(!open);
+                            setOpen(true);
                         }
                     }}
                 />
@@ -79,7 +77,11 @@ const ArmourSelector: FC<Props> = ({
                     onClick={getOnArmourClick(selectedArmour)}
                 />
             )}
-            {open && libraryArmours && (
+            <Modal
+                open={Boolean(open && libraryArmours)}
+                title={title}
+                onClose={() => setOpen(false)}
+            >
                 <div className={styles.armourPanel} style={{ gridTemplateColumns }}>
                     {libraryArmours.map((armour) => (
                         <div
@@ -97,7 +99,7 @@ const ArmourSelector: FC<Props> = ({
                         </div>
                     ))}
                 </div>
-            )}
+            </Modal>
         </div>
     );
 };

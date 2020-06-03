@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ArmourStats } from './armourFilterTypes';
 import styles from './ArmourFilter.module.scss';
-import { saveStatFilter, updateArmourMods } from './armourFilterReducer';
+import { saveStatFilter, addArmourMod } from './armourFilterReducer';
 import { RootState } from 'rootReducer';
 import { Mod, ArmourSlot } from 'state/items/commonItemTypes';
 import ArmourSelector from './armoutSelector/ArmourSelector';
@@ -34,7 +34,7 @@ const ArmourFilter: FC = () => {
     }
 
     const onModSelected = (mod: Mod): void => {
-        dispatch(updateArmourMods(mod));
+        dispatch(addArmourMod(mod));
     };
 
     const getArmourItems = (type: ArmourSlot): LibraryArmour[] =>
@@ -80,30 +80,35 @@ const ArmourFilter: FC = () => {
                 <ArmourSelector
                     defaultImage={<HelmetIcon />}
                     libraryArmours={getArmourItems('helmets')}
+                    title={t('armourFilter.helmets')}
                     selectedClass={selectedClass}
                     selectedArmour={selectedClass && armourFilter.armour[selectedClass].helmet}
                 />
                 <ArmourSelector
                     defaultImage={<ArmsIcon />}
                     libraryArmours={getArmourItems('arms')}
+                    title={t('armourFilter.gauntlets')}
                     selectedClass={selectedClass}
                     selectedArmour={selectedClass && armourFilter.armour[selectedClass].arms}
                 />
                 <ArmourSelector
                     defaultImage={<ChestIcon />}
                     libraryArmours={getArmourItems('chest')}
+                    title={t('armourFilter.chest')}
                     selectedClass={selectedClass}
                     selectedArmour={selectedClass && armourFilter.armour[selectedClass].chest}
                 />
                 <ArmourSelector
                     defaultImage={<LegsIcon />}
                     libraryArmours={getArmourItems('legs')}
+                    title={t('armourFilter.boots')}
                     selectedClass={selectedClass}
                     selectedArmour={selectedClass && armourFilter.armour[selectedClass].legs}
                 />
                 <ArmourSelector
                     defaultImage={<ClassIcon />}
                     libraryArmours={getArmourItems('classItems')}
+                    title={t('armourFilter.classItems')}
                     selectedClass={selectedClass}
                     selectedArmour={selectedClass && armourFilter.armour[selectedClass].classItem}
                 />

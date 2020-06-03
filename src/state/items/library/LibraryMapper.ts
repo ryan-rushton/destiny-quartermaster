@@ -20,7 +20,7 @@ import {
     WeaponModCategories,
     ArmourSlot,
 } from '../commonItemTypes';
-import { Library, LibraryItem, LibraryArmour } from './libraryTypes';
+import { Library, LibraryItem, LibraryArmour, ModSlots } from './libraryTypes';
 import { mapDamageTypes, mapInventoryStats, mapMod, mapArmourSeason } from '../commonItemMappers';
 import { isArmour2, isArmour2Mod } from './libraryUtils';
 import { Manifest } from 'state/manifest/manifestTypes';
@@ -158,12 +158,13 @@ class LibraryMapper {
             mods: {
                 weapons: [],
                 armour: {
+                    general: [],
                     helmets: [],
                     arms: [],
                     chest: [],
                     legs: [],
                     classItems: [],
-                    generic: [],
+                    seasonal: [],
                 },
             },
         };
@@ -268,7 +269,15 @@ class LibraryMapper {
 
                     library.ghosts[manifestEntry.hash] = ghost;
                 } else if (isArmour2Mod(manifestEntry)) {
-                    let armourSlot: ArmourSlot | 'generic' = 'generic';
+                    const mod = mapMod(
+                        this.statsManifest,
+                        this.energyTypeManifest,
+                        manifestEntry,
+                        false
+                    );
+
+                    let armourSlot: ModSlots | null = null;
+
                     if (categories.includes(ArmourModCategories.Helmets)) {
                         armourSlot = 'helmets';
                     } else if (categories.includes(ArmourModCategories.Arms)) {
@@ -279,17 +288,14 @@ class LibraryMapper {
                         armourSlot = 'legs';
                     } else if (categories.includes(ArmourModCategories.ClassItems)) {
                         armourSlot = 'classItems';
+                    } else if (mod.season === 0) {
+                        armourSlot = 'general';
+                    } else if (mod.season > 0) {
+                        armourSlot = 'seasonal';
                     }
 
                     if (armourSlot) {
-                        library.mods.armour[armourSlot].push(
-                            mapMod(
-                                this.statsManifest,
-                                this.energyTypeManifest,
-                                manifestEntry,
-                                false
-                            )
-                        );
+                        library.mods.armour[armourSlot].push(mod);
                     }
                 } else if (
                     categories.includes(WeaponModCategories.WeaponMods) &&

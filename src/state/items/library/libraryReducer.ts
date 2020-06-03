@@ -63,7 +63,8 @@ const saveLibraryReducer: CaseReducer<LibraryState, SaveLibraryAction> = (state,
         library.mods.armour[s].sort(armourModCompare);
     }
 
-    library.mods.armour.generic.sort(armourModCompare);
+    library.mods.armour.general.sort(armourModCompare);
+    library.mods.armour.seasonal.sort(armourModCompare);
 
     return library;
 };

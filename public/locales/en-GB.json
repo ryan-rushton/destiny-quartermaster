@@ -11,6 +11,18 @@
         "selectCharacter": "You need to select a character before you can select armour",
         "selectRequiredArmour": "Click to select your required armour",
         "statsFilter": "Stats Filter",
-        "strength": "Strength"
+        "strength": "Strength",
+        "helmets": "Helmets",
+        "gauntlets": "Gauntlets",
+        "chest": "Chest",
+        "boots": "Boots",
+        "classItems": "Class Items",
+        "helmetMods": "Helmet Mods",
+        "gauntletMods": "Gauntlet Mods",
+        "chestMods": "Chest Mods",
+        "bootMods": "Boot Mods",
+        "classItemMods": "Class Item Mods",
+        "seasonalMods": "Seasonal Mods",
+        "generalMods": "General Mods"
     }
 }

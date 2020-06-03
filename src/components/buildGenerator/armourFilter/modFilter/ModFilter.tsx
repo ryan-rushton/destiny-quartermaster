@@ -29,12 +29,41 @@ const ModFilter: FC<Props> = ({ selectedMods, armourMods, onModSelected }) => {
             </div>
             {armourMods && (
                 <>
-                    <ModSelector mods={armourMods.helmets} onModSelected={onModSelected} />
-                    <ModSelector mods={armourMods.arms} onModSelected={onModSelected} />
-                    <ModSelector mods={armourMods.chest} onModSelected={onModSelected} />
-                    <ModSelector mods={armourMods.legs} onModSelected={onModSelected} />
-                    <ModSelector mods={armourMods.classItems} onModSelected={onModSelected} />
-                    <ModSelector mods={armourMods.generic} onModSelected={onModSelected} />
+                    <ModSelector
+                        mods={armourMods.general}
+                        title={t('armourFilter.generalMods')}
+                        onModSelected={onModSelected}
+                    />
+                    <ModSelector
+                        mods={armourMods.helmets}
+                        title={t('armourFilter.helmetMods')}
+                        onModSelected={onModSelected}
+                    />
+                    <ModSelector
+                        mods={armourMods.arms}
+                        title={t('armourFilter.gauntletMods')}
+                        onModSelected={onModSelected}
+                    />
+                    <ModSelector
+                        mods={armourMods.chest}
+                        title={t('armourFilter.chestMods')}
+                        onModSelected={onModSelected}
+                    />
+                    <ModSelector
+                        mods={armourMods.legs}
+                        title={t('armourFilter.bootMods')}
+                        onModSelected={onModSelected}
+                    />
+                    <ModSelector
+                        mods={armourMods.classItems}
+                        title={t('armourFilter.classItemMods')}
+                        onModSelected={onModSelected}
+                    />
+                    <ModSelector
+                        mods={armourMods.seasonal}
+                        title={t('armourFilter.seasonalMods')}
+                        onModSelected={onModSelected}
+                    />
                 </>
             )}
         </div>

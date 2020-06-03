@@ -57,10 +57,7 @@ const saveStatFilterReducer: CaseReducer<ArmourFilterState, SaveStatFilterAction
     state.stats[stat] = value;
 };
 
-const updateArmourModsReducer: CaseReducer<ArmourFilterState, UpdateArmourMods> = (
-    state,
-    action
-) => {
+const addArmourModReducer: CaseReducer<ArmourFilterState, UpdateArmourMods> = (state, action) => {
     if (state.mods.some((mod) => mod.hash === action.payload.hash)) {
         state.mods = state.mods.filter((mod) => mod.hash !== action.payload.hash);
     } else {
@@ -87,11 +84,11 @@ const { actions, reducer } = createSlice({
     initialState,
     reducers: {
         saveStatFilter: saveStatFilterReducer,
-        updateArmourMods: updateArmourModsReducer,
+        addArmourMod: addArmourModReducer,
         updateRequiredArmour: updateRequiredArmourReducer,
     },
 });
 
-export const { saveStatFilter, updateArmourMods, updateRequiredArmour } = actions;
+export const { saveStatFilter, addArmourMod, updateRequiredArmour } = actions;
 
 export default reducer;

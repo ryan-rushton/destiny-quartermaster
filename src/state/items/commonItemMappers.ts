@@ -10,7 +10,6 @@ import {
 } from 'bungie-api-ts/destiny2';
 
 import { Damage, Stats, Mod, EnergyCost } from './commonItemTypes';
-import { preloadImage } from 'util/imageUtils';
 import { Manifest } from 'state/manifest/manifestTypes';
 
 export const plugCategoryIdToSeason = {
@@ -99,9 +98,6 @@ export const mapMod = (
     enabled: boolean
 ): Mod => {
     const { displayProperties, hash, itemCategoryHashes, collectibleHash } = plug;
-    if (displayProperties.icon) {
-        preloadImage(displayProperties.icon);
-    }
     const mappedSeason = plugCategoryIdToSeason[plug.plug.plugCategoryIdentifier] as unknown;
     const season = _.isNumber(mappedSeason) ? mappedSeason : 0;
     return {

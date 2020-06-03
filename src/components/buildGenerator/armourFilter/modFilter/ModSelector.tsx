@@ -7,21 +7,20 @@ import styles from './ModSelector.module.scss';
 import BungieImageButton from 'components/bungieImage/BungieImageButton';
 import useClickOutside from 'hooks/useClickOutside';
 import ModImage from './ModImage';
-import { preloadImages } from 'util/imageUtils';
+import Modal from 'components/modal/Modal';
 
 interface Props {
     mods: Mod[];
+    title: string;
     onModSelected(mod: Mod): void;
 }
 
-const ModSelector: FC<Props> = ({ mods, onModSelected }) => {
+const ModSelector: FC<Props> = ({ mods, title, onModSelected }) => {
     const [open, setOpen] = useState(false);
     const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
     const { t } = useTranslation();
 
     useClickOutside(ref, () => setOpen(false));
-
-    preloadImages(mods);
 
     const groupedMods = _.groupBy(mods, (mod) => (mod.collectibleHash ? 'equipable' : 'default'));
     const equipableMods = groupedMods.equipable;
@@ -44,7 +43,7 @@ const ModSelector: FC<Props> = ({ mods, onModSelected }) => {
                     onClick={(): void => setOpen(!open)}
                 />
             </div>
-            {open && (
+            <Modal open={open} title={title} onClose={() => setOpen(false)}>
                 <div className={styles.modPanel} style={{ gridTemplateColumns }}>
                     {equipableMods.map((mod) => (
                         <div
@@ -55,7 +54,7 @@ const ModSelector: FC<Props> = ({ mods, onModSelected }) => {
                         </div>
                     ))}
                 </div>
-            )}
+            </Modal>
         </div>
     );
 };

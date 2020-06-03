@@ -32,7 +32,9 @@ export interface LibraryGhostShell extends LibraryItem {
     mods?: Mod[];
 }
 
-export type LibraryArmourModState = { [key in ArmourSlot | 'generic']: Mod[] };
+export type LibraryArmourModState = { [key in ArmourSlot | 'general' | 'seasonal']: Mod[] };
+
+export type ModSlots = keyof LibraryArmourModState;
 
 export interface Library {
     weapons: {
