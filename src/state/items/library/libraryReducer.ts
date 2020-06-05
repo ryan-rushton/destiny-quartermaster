@@ -11,7 +11,7 @@ import { StoreDispatch } from 'rootReducer';
 import { Library } from './libraryTypes';
 import LibraryMapper from './LibraryMapper';
 import { Manifest } from 'state/manifest/manifestTypes';
-import { Mod, CharacterClass, ArmourSlot } from '../commonItemTypes';
+import { Mod, CharacterClass, ArmourSlots, ModSlots } from '../commonItemTypes';
 import { compareLibraryArmour } from './libraryUtils';
 
 type SaveLibraryAction = PayloadAction<Library>;
@@ -23,7 +23,7 @@ const energyOrder = {
     Void: 1,
     Arc: 2,
     Solar: 3,
-};
+} as const;
 
 const armourModCompare = (a: Mod, b: Mod): number => {
     if (a.season !== b.season) {
@@ -51,20 +51,16 @@ const armourModCompare = (a: Mod, b: Mod): number => {
 const saveLibraryReducer: CaseReducer<LibraryState, SaveLibraryAction> = (state, action) => {
     const library = action.payload;
     const classes: CharacterClass[] = ['warlock', 'hunter', 'titan'];
-    const slots: ArmourSlot[] = ['helmets', 'arms', 'chest', 'legs', 'classItems'];
 
     for (const c of classes) {
-        for (const s of slots) {
+        for (const s of ArmourSlots) {
             library.armour[c][s].sort(compareLibraryArmour);
         }
     }
 
-    for (const s of slots) {
+    for (const s of ModSlots) {
         library.mods.armour[s].sort(armourModCompare);
     }
-
-    library.mods.armour.general.sort(armourModCompare);
-    library.mods.armour.seasonal.sort(armourModCompare);
 
     return library;
 };

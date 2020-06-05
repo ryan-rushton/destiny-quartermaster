@@ -319,25 +319,25 @@ class InventoryMapper {
             },
             armour: {
                 warlock: {
-                    helmets: {},
+                    helmet: {},
                     arms: {},
                     chest: {},
                     legs: {},
-                    classItems: {},
+                    classItem: {},
                 },
                 hunter: {
-                    helmets: {},
+                    helmet: {},
                     arms: {},
                     chest: {},
                     legs: {},
-                    classItems: {},
+                    classItem: {},
                 },
                 titan: {
-                    helmets: {},
+                    helmet: {},
                     arms: {},
                     chest: {},
                     legs: {},
-                    classItems: {},
+                    classItem: {},
                 },
             },
             ghosts: {},
@@ -409,7 +409,7 @@ class InventoryMapper {
                             let armourSlot: ArmourSlot | undefined;
 
                             if (categories.includes(ArmourItemCategories.Helmets)) {
-                                armourSlot = 'helmets';
+                                armourSlot = 'helmet';
                             } else if (categories.includes(ArmourItemCategories.Arms)) {
                                 armourSlot = 'arms';
                             } else if (categories.includes(ArmourItemCategories.Chest)) {
@@ -417,7 +417,7 @@ class InventoryMapper {
                             } else if (categories.includes(ArmourItemCategories.Legs)) {
                                 armourSlot = 'legs';
                             } else if (categories.includes(ArmourItemCategories.ClassItems)) {
-                                armourSlot = 'classItems';
+                                armourSlot = 'classItem';
                             }
 
                             if (

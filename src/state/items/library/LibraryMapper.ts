@@ -19,8 +19,9 @@ import {
     ArmourModCategories,
     WeaponModCategories,
     ArmourSlot,
+    ModSlot,
 } from '../commonItemTypes';
-import { Library, LibraryItem, LibraryArmour, ModSlots } from './libraryTypes';
+import { Library, LibraryItem, LibraryArmour } from './libraryTypes';
 import { mapDamageTypes, mapInventoryStats, mapMod, mapArmourSeason } from '../commonItemMappers';
 import { isArmour2, isArmour2Mod } from './libraryUtils';
 import { Manifest } from 'state/manifest/manifestTypes';
@@ -133,25 +134,25 @@ class LibraryMapper {
             },
             armour: {
                 warlock: {
-                    helmets: [],
+                    helmet: [],
                     arms: [],
                     chest: [],
                     legs: [],
-                    classItems: [],
+                    classItem: [],
                 },
                 hunter: {
-                    helmets: [],
+                    helmet: [],
                     arms: [],
                     chest: [],
                     legs: [],
-                    classItems: [],
+                    classItem: [],
                 },
                 titan: {
-                    helmets: [],
+                    helmet: [],
                     arms: [],
                     chest: [],
                     legs: [],
-                    classItems: [],
+                    classItem: [],
                 },
             },
             ghosts: {},
@@ -159,11 +160,11 @@ class LibraryMapper {
                 weapons: [],
                 armour: {
                     general: [],
-                    helmets: [],
+                    helmet: [],
                     arms: [],
                     chest: [],
                     legs: [],
-                    classItems: [],
+                    classItem: [],
                     seasonal: [],
                 },
             },
@@ -222,7 +223,7 @@ class LibraryMapper {
                     let armour: LibraryArmour | null = null;
 
                     if (categories.includes(ArmourItemCategories.Helmets)) {
-                        armourSlot = 'helmets';
+                        armourSlot = 'helmet';
                         armour = { ...baseArmour, type: 'helmet' };
                     } else if (categories.includes(ArmourItemCategories.Arms)) {
                         armourSlot = 'arms';
@@ -234,7 +235,7 @@ class LibraryMapper {
                         armourSlot = 'legs';
                         armour = { ...baseArmour, type: 'legs' };
                     } else if (categories.includes(ArmourItemCategories.ClassItems)) {
-                        armourSlot = 'classItems';
+                        armourSlot = 'classItem';
                         armour = { ...baseArmour, type: 'classItem' };
                     }
 
@@ -276,10 +277,10 @@ class LibraryMapper {
                         false
                     );
 
-                    let armourSlot: ModSlots | null = null;
+                    let armourSlot: ModSlot | null = null;
 
                     if (categories.includes(ArmourModCategories.Helmets)) {
-                        armourSlot = 'helmets';
+                        armourSlot = 'helmet';
                     } else if (categories.includes(ArmourModCategories.Arms)) {
                         armourSlot = 'arms';
                     } else if (categories.includes(ArmourModCategories.Chest)) {
@@ -287,7 +288,7 @@ class LibraryMapper {
                     } else if (categories.includes(ArmourModCategories.Legs)) {
                         armourSlot = 'legs';
                     } else if (categories.includes(ArmourModCategories.ClassItems)) {
-                        armourSlot = 'classItems';
+                        armourSlot = 'classItem';
                     } else if (mod.season === 0) {
                         armourSlot = 'general';
                     } else if (mod.season > 0) {

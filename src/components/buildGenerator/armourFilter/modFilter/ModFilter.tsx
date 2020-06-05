@@ -5,67 +5,50 @@ import ModImage from './ModImage';
 import ModSelector from './ModSelector';
 import styles from './ModFilter.module.scss';
 import { LibraryArmourModState } from 'state/items/library/libraryTypes';
-import { Mod } from 'state/items/commonItemTypes';
+import { Mod, ModSlot, ModSlots } from 'state/items/commonItemTypes';
+import { ModFilterState } from 'state/filter/filterReducer';
+import Closeable from 'components/utils/Closeable';
+
+const translations: { [key in ModSlot]: string } = {
+    general: 'armourFilter.generalMods',
+    helmet: 'armourFilter.helmetMods',
+    arms: 'armourFilter.gauntletMods',
+    chest: 'armourFilter.chestMods',
+    legs: 'armourFilter.bootMods',
+    classItem: 'armourFilter.classItemMods',
+    seasonal: 'armourFilter.seasonalMods',
+};
 
 interface Props {
-    selectedMods: Mod[];
+    selectedMods: ModFilterState;
     armourMods: LibraryArmourModState;
-    onModSelected(mod: Mod): void;
+    onModSelected(mod: Mod, slot: ModSlot): void;
+    onModRemoved(mod: Mod, slot: ModSlot): void;
 }
 
-const ModFilter: FC<Props> = ({ selectedMods, armourMods, onModSelected }) => {
+const ModFilter: FC<Props> = ({ selectedMods, armourMods, onModSelected, onModRemoved }) => {
     const { t } = useTranslation();
     return (
         <div className={styles.modFilter}>
             <div className={styles.title}>{t('armourFilter.requiredMods')}</div>
-            <div className={styles.selected}>
-                {selectedMods.map((mod) => (
-                    <ModImage
-                        key={mod.hash}
-                        mod={mod}
-                        onModClick={(): void => onModSelected(mod)}
-                    />
-                ))}
-            </div>
-            {armourMods && (
-                <>
-                    <ModSelector
-                        mods={armourMods.general}
-                        title={t('armourFilter.generalMods')}
-                        onModSelected={onModSelected}
-                    />
-                    <ModSelector
-                        mods={armourMods.helmets}
-                        title={t('armourFilter.helmetMods')}
-                        onModSelected={onModSelected}
-                    />
-                    <ModSelector
-                        mods={armourMods.arms}
-                        title={t('armourFilter.gauntletMods')}
-                        onModSelected={onModSelected}
-                    />
-                    <ModSelector
-                        mods={armourMods.chest}
-                        title={t('armourFilter.chestMods')}
-                        onModSelected={onModSelected}
-                    />
-                    <ModSelector
-                        mods={armourMods.legs}
-                        title={t('armourFilter.bootMods')}
-                        onModSelected={onModSelected}
-                    />
-                    <ModSelector
-                        mods={armourMods.classItems}
-                        title={t('armourFilter.classItemMods')}
-                        onModSelected={onModSelected}
-                    />
-                    <ModSelector
-                        mods={armourMods.seasonal}
-                        title={t('armourFilter.seasonalMods')}
-                        onModSelected={onModSelected}
-                    />
-                </>
-            )}
+            {ModSlots.map((slot) => (
+                <div className={styles.selected} key={slot}>
+                    {selectedMods[slot].map((mod, index) => (
+                        <Closeable key={`${slot}-${index}`} onClose={() => onModRemoved(mod, slot)}>
+                            <ModImage mod={mod} onModClick={(): void => onModSelected(mod, slot)} />
+                        </Closeable>
+                    ))}
+                </div>
+            ))}
+            {ModSlots.map((slot) => (
+                <ModSelector
+                    key={slot}
+                    mods={armourMods[slot]}
+                    title={t(translations[slot])}
+                    onModSelected={(mod) => onModSelected(mod, slot)}
+                    onModRemoved={(mod) => onModRemoved(mod, slot)}
+                />
+            ))}
         </div>
     );
 };

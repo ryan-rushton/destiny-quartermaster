@@ -1,4 +1,4 @@
-import { Damage, Stats, Mod, CharacterClass, ArmourSlot, ArmourType } from '../commonItemTypes';
+import { Damage, Stats, Mod, CharacterClass, ArmourSlot, ModSlot } from '../commonItemTypes';
 import { Manifest } from 'state/manifest/manifestTypes';
 
 export interface LibraryItem {
@@ -18,7 +18,7 @@ export interface LibraryWeapon extends LibraryItem {
 }
 
 export interface LibraryArmour extends LibraryItem {
-    type: ArmourType;
+    type: ArmourSlot;
     baseStats: Stats;
     perks?: Mod[][];
     mods?: Mod[];
@@ -32,9 +32,7 @@ export interface LibraryGhostShell extends LibraryItem {
     mods?: Mod[];
 }
 
-export type LibraryArmourModState = { [key in ArmourSlot | 'general' | 'seasonal']: Mod[] };
-
-export type ModSlots = keyof LibraryArmourModState;
+export type LibraryArmourModState = { [key in ModSlot]: Mod[] };
 
 export interface Library {
     weapons: {

@@ -1,0 +1,15 @@
+@import '../../styleVariables.scss';
+
+.container {
+    position: relative;
+}
+
+.close {
+    color: $qm-grey-5;
+    cursor: pointer;
+    font-size: 0.8em;
+    position: absolute;
+    right: 6px;
+    top: 2px;
+    z-index: 2;
+}

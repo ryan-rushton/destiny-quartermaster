@@ -1,27 +1,41 @@
 import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
 
-import { CharacterClass, Mod, ArmourType } from '../../../state/items/commonItemTypes';
-import { ArmourStat } from './armourFilterTypes';
+import { CharacterClass, Mod, ArmourSlot, ModSlot } from '../items/commonItemTypes';
+import { ArmourStat } from './filterTypes';
 import { LibraryArmour } from 'state/items/library/libraryTypes';
+
+export type ModFilterState = {
+    [key in ModSlot]: Mod[];
+};
 
 interface ArmourFilterState {
     stats: {
         [key in ArmourStat]: number;
     };
-    mods: Mod[];
+    mods: ModFilterState;
     armour: {
-        warlock: { [key in ArmourType]: LibraryArmour | null };
-        hunter: { [key in ArmourType]: LibraryArmour | null };
-        titan: { [key in ArmourType]: LibraryArmour | null };
+        warlock: { [key in ArmourSlot]: LibraryArmour | null };
+        hunter: { [key in ArmourSlot]: LibraryArmour | null };
+        titan: { [key in ArmourSlot]: LibraryArmour | null };
     };
 }
 
-const armourSlotState: { [key in ArmourType]: LibraryArmour | null } = {
+const armourSlotState: { [key in ArmourSlot]: LibraryArmour | null } = {
     helmet: null,
     arms: null,
     chest: null,
     legs: null,
     classItem: null,
+};
+
+const modSlotState: ModFilterState = {
+    general: [],
+    helmet: [],
+    arms: [],
+    chest: [],
+    legs: [],
+    classItem: [],
+    seasonal: [],
 };
 
 const initialState: ArmourFilterState = {
@@ -33,7 +47,7 @@ const initialState: ArmourFilterState = {
         resilience: NaN,
         recovery: NaN,
     },
-    mods: [] as Mod[],
+    mods: modSlotState,
     armour: {
         warlock: armourSlotState,
         hunter: armourSlotState,
@@ -41,7 +55,7 @@ const initialState: ArmourFilterState = {
     },
 };
 
-type UpdateArmourMods = PayloadAction<Mod>;
+type UpdateArmourMods = PayloadAction<{ mod: Mod; slot: ModSlot }>;
 type UpdateRequiredArmour = PayloadAction<{
     armour: LibraryArmour;
     characterClass: CharacterClass;
@@ -58,11 +72,19 @@ const saveStatFilterReducer: CaseReducer<ArmourFilterState, SaveStatFilterAction
 };
 
 const addArmourModReducer: CaseReducer<ArmourFilterState, UpdateArmourMods> = (state, action) => {
-    if (state.mods.some((mod) => mod.hash === action.payload.hash)) {
-        state.mods = state.mods.filter((mod) => mod.hash !== action.payload.hash);
-    } else {
-        state.mods.push(action.payload);
-    }
+    const { mod, slot } = action.payload;
+    state.mods[slot].push(mod);
+    return state;
+};
+
+const removeArmourModReducer: CaseReducer<ArmourFilterState, UpdateArmourMods> = (
+    state,
+    action
+) => {
+    const { mod, slot } = action.payload;
+    const index = state.mods[slot].findIndex((ex) => ex.hash === mod.hash);
+    state.mods[slot].splice(index, 1);
+    return state;
 };
 
 const updateRequiredArmourReducer: CaseReducer<ArmourFilterState, UpdateRequiredArmour> = (
@@ -85,10 +107,11 @@ const { actions, reducer } = createSlice({
     reducers: {
         saveStatFilter: saveStatFilterReducer,
         addArmourMod: addArmourModReducer,
+        removeArmourMod: removeArmourModReducer,
         updateRequiredArmour: updateRequiredArmourReducer,
     },
 });
 
-export const { saveStatFilter, addArmourMod, updateRequiredArmour } = actions;
+export const { saveStatFilter, addArmourMod, removeArmourMod, updateRequiredArmour } = actions;
 
 export default reducer;

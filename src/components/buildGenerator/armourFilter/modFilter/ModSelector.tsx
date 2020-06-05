@@ -8,14 +8,16 @@ import BungieImageButton from 'components/bungieImage/BungieImageButton';
 import useClickOutside from 'hooks/useClickOutside';
 import ModImage from './ModImage';
 import Modal from 'components/modal/Modal';
+import Closeable from 'components/utils/Closeable';
 
 interface Props {
     mods: Mod[];
     title: string;
     onModSelected(mod: Mod): void;
+    onModRemoved(mod: Mod): void;
 }
 
-const ModSelector: FC<Props> = ({ mods, title, onModSelected }) => {
+const ModSelector: FC<Props> = ({ mods, title, onModSelected, onModRemoved }) => {
     const [open, setOpen] = useState(false);
     const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
     const { t } = useTranslation();
@@ -31,7 +33,7 @@ const ModSelector: FC<Props> = ({ mods, title, onModSelected }) => {
     let gridTemplateColumns = '';
 
     for (let i = 0; i < numberOfModColumns; i++) {
-        gridTemplateColumns += '50px ';
+        gridTemplateColumns += '52px ';
     }
 
     return (
@@ -50,7 +52,9 @@ const ModSelector: FC<Props> = ({ mods, title, onModSelected }) => {
                             key={mod.hash}
                             style={{ gridColumnStart: (modColumn++ % numberOfModColumns) + 1 }}
                         >
-                            <ModImage mod={mod} onModClick={(): void => onModSelected(mod)} />
+                            <Closeable onClose={() => onModRemoved(mod)}>
+                                <ModImage mod={mod} onModClick={(): void => onModSelected(mod)} />
+                            </Closeable>
                         </div>
                     ))}
                 </div>

@@ -1,12 +1,12 @@
-import React, { FC, ChangeEvent } from 'react';
+import React, { FC, ChangeEvent, ReactNode } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { ArmourStats } from './armourFilterTypes';
+import { ArmourStats } from '../../../state/filter/filterTypes';
 import styles from './ArmourFilter.module.scss';
-import { saveStatFilter, addArmourMod } from './armourFilterReducer';
+import { saveStatFilter, addArmourMod, removeArmourMod } from '../../../state/filter/filterReducer';
 import { RootState } from 'rootReducer';
-import { Mod, ArmourSlot } from 'state/items/commonItemTypes';
+import { Mod, ArmourSlot, ModSlot, ArmourSlots } from 'state/items/commonItemTypes';
 import ArmourSelector from './armoutSelector/ArmourSelector';
 import { ReactComponent as HelmetIcon } from 'destiny-icons/armor_types/helmet.svg';
 import { ReactComponent as ArmsIcon } from 'destiny-icons/armor_types/gloves.svg';
@@ -16,10 +16,26 @@ import { ReactComponent as ClassIcon } from 'destiny-icons/armor_types/class.svg
 import { LibraryArmour } from 'state/items/library/libraryTypes';
 import ModFilter from './modFilter/ModFilter';
 
+const translations: { [key in ArmourSlot]: string } = {
+    helmet: 'armourFilter.helmets',
+    arms: 'armourFilter.gauntlets',
+    chest: 'armourFilter.chest',
+    legs: 'armourFilter.boots',
+    classItem: 'armourFilter.classItems',
+};
+
+const slotIcons: { [key in ArmourSlot]: ReactNode } = {
+    helmet: <HelmetIcon />,
+    arms: <ArmsIcon />,
+    chest: <ChestIcon />,
+    legs: <LegsIcon />,
+    classItem: <ClassIcon />,
+};
+
 const ArmourFilter: FC = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    const armourFilter = useSelector((state: RootState) => state.armourFilter);
+    const armourFilter = useSelector((state: RootState) => state.filter);
     const armourMods = useSelector((state: RootState) => state.library?.mods.armour);
     const armour = useSelector((state: RootState) => state.library?.armour);
     const selectedCharacter = useSelector(
@@ -33,8 +49,12 @@ const ArmourFilter: FC = () => {
         return null;
     }
 
-    const onModSelected = (mod: Mod): void => {
-        dispatch(addArmourMod(mod));
+    const addMod = (mod: Mod, slot: ModSlot): void => {
+        dispatch(addArmourMod({ mod, slot }));
+    };
+
+    const removeMod = (mod: Mod, slot: ModSlot): void => {
+        dispatch(removeArmourMod({ mod, slot }));
     };
 
     const getArmourItems = (type: ArmourSlot): LibraryArmour[] =>
@@ -72,46 +92,22 @@ const ArmourFilter: FC = () => {
                 <ModFilter
                     selectedMods={armourFilter.mods}
                     armourMods={armourMods}
-                    onModSelected={onModSelected}
+                    onModSelected={addMod}
+                    onModRemoved={removeMod}
                 />
             )}
             <div className={styles.modFilter}>
                 <div className={styles.sectionTitle}>{t('armourFilter.requiredArmour')}</div>
-                <ArmourSelector
-                    defaultImage={<HelmetIcon />}
-                    libraryArmours={getArmourItems('helmets')}
-                    title={t('armourFilter.helmets')}
-                    selectedClass={selectedClass}
-                    selectedArmour={selectedClass && armourFilter.armour[selectedClass].helmet}
-                />
-                <ArmourSelector
-                    defaultImage={<ArmsIcon />}
-                    libraryArmours={getArmourItems('arms')}
-                    title={t('armourFilter.gauntlets')}
-                    selectedClass={selectedClass}
-                    selectedArmour={selectedClass && armourFilter.armour[selectedClass].arms}
-                />
-                <ArmourSelector
-                    defaultImage={<ChestIcon />}
-                    libraryArmours={getArmourItems('chest')}
-                    title={t('armourFilter.chest')}
-                    selectedClass={selectedClass}
-                    selectedArmour={selectedClass && armourFilter.armour[selectedClass].chest}
-                />
-                <ArmourSelector
-                    defaultImage={<LegsIcon />}
-                    libraryArmours={getArmourItems('legs')}
-                    title={t('armourFilter.boots')}
-                    selectedClass={selectedClass}
-                    selectedArmour={selectedClass && armourFilter.armour[selectedClass].legs}
-                />
-                <ArmourSelector
-                    defaultImage={<ClassIcon />}
-                    libraryArmours={getArmourItems('classItems')}
-                    title={t('armourFilter.classItems')}
-                    selectedClass={selectedClass}
-                    selectedArmour={selectedClass && armourFilter.armour[selectedClass].classItem}
-                />
+                {ArmourSlots.map((slot) => (
+                    <ArmourSelector
+                        key={slot}
+                        defaultImage={slotIcons[slot]}
+                        libraryArmours={getArmourItems(slot)}
+                        title={t(translations[slot])}
+                        selectedClass={selectedClass}
+                        selectedArmour={selectedClass && armourFilter.armour[selectedClass][slot]}
+                    />
+                ))}
             </div>
         </div>
     );

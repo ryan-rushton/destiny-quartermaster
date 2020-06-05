@@ -4,7 +4,7 @@ import { combineReducers, configureStore, getDefaultMiddleware, Action } from '@
 import authReducer from 'state/auth/authReducer';
 import manifestReducer from 'state/manifest/manifestReducer';
 import appReducer from 'state/appReducer';
-import armourFilterReducer from 'components/buildGenerator/armourFilter/armourFilterReducer';
+import filterReducer from 'state/filter/filterReducer';
 import characterReducer from 'state/characters/characterReducer';
 import inventoryReducer from 'state/items/inventory/inventoryReducer';
 import libraryReducer from 'state/items/library/libraryReducer';
@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
     app: appReducer,
     authToken: authReducer,
     characters: characterReducer,
-    armourFilter: armourFilterReducer,
+    filter: filterReducer,
     manifest: manifestReducer,
     inventory: inventoryReducer,
     library: libraryReducer,

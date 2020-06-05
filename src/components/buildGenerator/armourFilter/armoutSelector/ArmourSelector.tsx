@@ -4,12 +4,12 @@ import { useTranslation } from 'react-i18next';
 
 import { LibraryArmour } from 'state/items/library/libraryTypes';
 import BungieImageButton from 'components/bungieImage/BungieImageButton';
-import { updateRequiredArmour } from '../armourFilterReducer';
 import DestinyIconImageButton from 'components/bungieImage/DestinyIconImageButton';
 import styles from './ArmourSelector.module.scss';
 import useClickOutside from 'hooks/useClickOutside';
 import { CharacterClass } from 'state/items/commonItemTypes';
 import Modal from 'components/modal/Modal';
+import { updateRequiredArmour } from 'state/filter/filterReducer';
 
 interface Props {
     libraryArmours: LibraryArmour[];
