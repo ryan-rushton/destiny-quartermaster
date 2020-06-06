@@ -7,7 +7,7 @@ import styles from './ArmourFilter.module.scss';
 import { saveStatFilter, addArmourMod, removeArmourMod } from '../../../state/filter/filterReducer';
 import { RootState } from 'rootReducer';
 import { Mod, ArmourSlot, ModSlot, ArmourSlots } from 'state/items/commonItemTypes';
-import ArmourSelector from './armoutSelector/ArmourSelector';
+import ArmourSelector from './armourSelector/ArmourSelector';
 import { ReactComponent as HelmetIcon } from 'destiny-icons/armor_types/helmet.svg';
 import { ReactComponent as ArmsIcon } from 'destiny-icons/armor_types/gloves.svg';
 import { ReactComponent as ChestIcon } from 'destiny-icons/armor_types/chest.svg';

@@ -16,6 +16,7 @@
         "redux",
         "reduxjs",
         "rushton",
+        "stat",
         "toolkit"
     ],
     "eslint.enable": true,
