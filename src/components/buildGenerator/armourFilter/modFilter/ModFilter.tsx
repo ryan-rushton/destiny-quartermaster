@@ -19,6 +19,16 @@ const translations: { [key in ModSlot]: string } = {
     seasonal: 'armourFilter.seasonalMods',
 };
 
+const slotToMaximumSelectable: { [key in ModSlot]: number } = {
+    general: 5,
+    helmet: 2,
+    arms: 2,
+    chest: 2,
+    legs: 2,
+    classItem: 2,
+    seasonal: 5,
+};
+
 interface Props {
     selectedMods: ModFilterState;
     armourMods: LibraryArmourModState;
@@ -31,19 +41,23 @@ const ModFilter: FC<Props> = ({ selectedMods, armourMods, onModSelected, onModRe
     return (
         <div className={styles.modFilter}>
             <div className={styles.title}>{t('armourFilter.requiredMods')}</div>
-            {ModSlots.map((slot) => (
-                <div className={styles.selected} key={slot}>
-                    {selectedMods[slot].map((mod, index) => (
+            <div className={styles.selected}>
+                {ModSlots.map((slot) =>
+                    selectedMods[slot].map((mod, index) => (
                         <Closeable key={`${slot}-${index}`} onClose={() => onModRemoved(mod, slot)}>
                             <ModImage mod={mod} onModClick={(): void => onModSelected(mod, slot)} />
                         </Closeable>
-                    ))}
-                </div>
-            ))}
+                    ))
+                )}
+            </div>
+
             {ModSlots.map((slot) => (
                 <ModSelector
                     key={slot}
                     mods={armourMods[slot]}
+                    selectedMods={selectedMods[slot]}
+                    energyMustMatch={slot !== 'general' && slot !== 'seasonal'}
+                    maximumSelectable={slotToMaximumSelectable[slot]}
                     title={t(translations[slot])}
                     onModSelected={(mod) => onModSelected(mod, slot)}
                     onModRemoved={(mod) => onModRemoved(mod, slot)}

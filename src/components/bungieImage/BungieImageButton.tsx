@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 import { getFullImagePath } from 'util/imageUtils';
 import styles from './BungieImage.module.scss';
-import { useClickAndEnterKey } from 'hooks/useClickAndEnterKey';
+import useClickAndEnterKeyDown from 'hooks/useClickAndEnterKeyDown';
 
 interface Props {
     url: string;
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const BungieImageButton: FC<Props> = ({ url, title, onClick }) => {
-    const [onClickHandler, onEnter] = useClickAndEnterKey(onClick);
+    const [onClickHandler, onEnter] = useClickAndEnterKeyDown(onClick);
 
     return (
         <div onClick={onClickHandler} onKeyPress={onEnter} role="button" tabIndex={0}>

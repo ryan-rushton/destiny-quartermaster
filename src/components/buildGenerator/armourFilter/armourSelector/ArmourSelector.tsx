@@ -6,7 +6,6 @@ import { LibraryArmour } from 'state/items/library/libraryTypes';
 import BungieImageButton from 'components/bungieImage/BungieImageButton';
 import DestinyIconImageButton from 'components/bungieImage/DestinyIconImageButton';
 import styles from './ArmourSelector.module.scss';
-import useClickOutside from 'hooks/useClickOutside';
 import { CharacterClass } from 'state/items/commonItemTypes';
 import Modal from 'components/modal/Modal';
 import { updateRequiredArmour } from 'state/filter/filterReducer';
@@ -31,14 +30,12 @@ const ArmourSelector: FC<Props> = ({
     const dispatch = useDispatch();
     const ref = useRef(null);
 
-    useClickOutside(ref, () => setOpen(false));
-
     const numberOfArmourColumns = 8;
     let armourColumn = 0;
     let gridTemplateColumns = '';
 
     for (let i = 0; i < numberOfArmourColumns; i++) {
-        gridTemplateColumns += '54px ';
+        gridTemplateColumns += '58px ';
     }
 
     const buttonTitle = libraryArmours

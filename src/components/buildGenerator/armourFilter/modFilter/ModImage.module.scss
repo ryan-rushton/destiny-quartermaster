@@ -2,12 +2,20 @@
     position: relative;
     height: 52px;
     width: 52px;
+
+    &:focus {
+        outline-offset: -3px;
+    }
 }
 
 .mod {
     position: relative;
     height: 52px;
     width: 52px;
+}
+
+.disabled {
+    opacity: 0.4;
 }
 
 .energy {

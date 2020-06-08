@@ -4,6 +4,9 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './Modal.module.scss';
 import useClickOutside from 'hooks/useClickOutside';
+import useFocusTrap from 'hooks/useFocusTrap';
+import useClickAndEnterKeyDown from 'hooks/useClickAndEnterKeyDown';
+import useGlobalEscKeyDown from 'hooks/useGlobalEscapeKeyDown';
 
 interface Props {
     open: boolean;
@@ -13,11 +16,12 @@ interface Props {
 
 const Modal: FC<Props> = ({ open, title, onClose, children }) => {
     const modalRef = useRef(null);
-    useClickOutside(modalRef, () => {
-        if (open) {
-            onClose();
-        }
-    });
+    const closeRef = useRef(null);
+
+    const [onCloseClick, onCloseEnter] = useClickAndEnterKeyDown(onClose);
+    useClickOutside(modalRef, open, onClose);
+    useGlobalEscKeyDown(open, onClose);
+    useFocusTrap(modalRef, closeRef, open);
 
     if (!open) {
         return null;
@@ -29,11 +33,16 @@ const Modal: FC<Props> = ({ open, title, onClose, children }) => {
                 <div className={styles.modal} ref={modalRef}>
                     <div className={styles.header}>
                         <div className={styles.title}>{title}</div>
-                        <FontAwesomeIcon
-                            icon={faTimes}
+                        <div
                             className={styles.close}
-                            onClick={onClose}
-                        />
+                            role="button"
+                            tabIndex={0}
+                            onClick={onCloseClick}
+                            onKeyDown={onCloseEnter}
+                            ref={closeRef}
+                        >
+                            <FontAwesomeIcon icon={faTimes} />
+                        </div>
                     </div>
                     <div className={styles.content}>{children}</div>
                 </div>

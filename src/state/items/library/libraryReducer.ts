@@ -11,42 +11,13 @@ import { StoreDispatch } from 'rootReducer';
 import { Library } from './libraryTypes';
 import LibraryMapper from './LibraryMapper';
 import { Manifest } from 'state/manifest/manifestTypes';
-import { Mod, CharacterClass, ArmourSlots, ModSlots } from '../commonItemTypes';
+import { CharacterClass, ArmourSlots, ModSlots } from '../commonItemTypes';
 import { compareLibraryArmour } from './libraryUtils';
+import { armourModCompare } from 'state/itemUtils';
 
 type SaveLibraryAction = PayloadAction<Library>;
 type LibraryState = Library | null;
 const initialState = null as LibraryState;
-
-const energyOrder = {
-    Any: 0,
-    Void: 1,
-    Arc: 2,
-    Solar: 3,
-} as const;
-
-const armourModCompare = (a: Mod, b: Mod): number => {
-    if (a.season !== b.season) {
-        return b.season - a.season;
-    }
-
-    if (!a.energyType) {
-        return -1;
-    }
-
-    if (!b.energyType) {
-        return 1;
-    }
-
-    if (a.energyType.name !== b.energyType.name) {
-        return energyOrder[a.energyType.name] - energyOrder[b.energyType.name];
-    }
-
-    const aCost = a.energyType?.cost || 0;
-    const bCost = b.energyType?.cost || 0;
-
-    return aCost - bCost;
-};
 
 const saveLibraryReducer: CaseReducer<LibraryState, SaveLibraryAction> = (state, action) => {
     const library = action.payload;

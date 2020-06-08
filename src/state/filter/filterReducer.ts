@@ -3,6 +3,7 @@ import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
 import { CharacterClass, Mod, ArmourSlot, ModSlot } from '../items/commonItemTypes';
 import { ArmourStat } from './filterTypes';
 import { LibraryArmour } from 'state/items/library/libraryTypes';
+import { armourModCompare } from 'state/itemUtils';
 
 export type ModFilterState = {
     [key in ModSlot]: Mod[];
@@ -74,6 +75,7 @@ const saveStatFilterReducer: CaseReducer<ArmourFilterState, SaveStatFilterAction
 const addArmourModReducer: CaseReducer<ArmourFilterState, UpdateArmourMods> = (state, action) => {
     const { mod, slot } = action.payload;
     state.mods[slot].push(mod);
+    state.mods[slot].sort(armourModCompare);
     return state;
 };
 

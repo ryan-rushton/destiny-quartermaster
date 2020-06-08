@@ -5,24 +5,42 @@ import { useTranslation } from 'react-i18next';
 import { Mod } from 'state/items/commonItemTypes';
 import styles from './ModSelector.module.scss';
 import BungieImageButton from 'components/bungieImage/BungieImageButton';
-import useClickOutside from 'hooks/useClickOutside';
 import ModImage from './ModImage';
 import Modal from 'components/modal/Modal';
 import Closeable from 'components/utils/Closeable';
 
 interface Props {
     mods: Mod[];
+    selectedMods: Mod[];
     title: string;
+    energyMustMatch: boolean;
+    maximumSelectable: number;
     onModSelected(mod: Mod): void;
     onModRemoved(mod: Mod): void;
 }
 
-const ModSelector: FC<Props> = ({ mods, title, onModSelected, onModRemoved }) => {
+const ModSelector: FC<Props> = ({
+    mods,
+    selectedMods,
+    title,
+    energyMustMatch,
+    maximumSelectable,
+    onModSelected,
+    onModRemoved,
+}) => {
     const [open, setOpen] = useState(false);
     const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
     const { t } = useTranslation();
 
-    useClickOutside(ref, () => setOpen(false));
+    const isModDisabled = (mod: Mod): boolean =>
+        selectedMods.length >= maximumSelectable ||
+        (energyMustMatch &&
+            mod.energyType?.type !== 'Any' &&
+            selectedMods.some(
+                (selected) =>
+                    selected.energyType?.type !== 'Any' &&
+                    selected.energyType?.type !== mod.energyType?.type
+            ));
 
     const groupedMods = _.groupBy(mods, (mod) => (mod.collectibleHash ? 'equipable' : 'default'));
     const equipableMods = groupedMods.equipable;
@@ -53,9 +71,21 @@ const ModSelector: FC<Props> = ({ mods, title, onModSelected, onModRemoved }) =>
                             style={{ gridColumnStart: (modColumn++ % numberOfModColumns) + 1 }}
                         >
                             <Closeable onClose={() => onModRemoved(mod)}>
-                                <ModImage mod={mod} onModClick={(): void => onModSelected(mod)} />
+                                <ModImage
+                                    mod={mod}
+                                    disabled={isModDisabled(mod)}
+                                    onModClick={() => onModSelected(mod)}
+                                />
                             </Closeable>
                         </div>
+                    ))}
+                </div>
+                <div className={styles.divider} />
+                <div className={styles.selected}>
+                    {selectedMods.map((mod, index) => (
+                        <Closeable key={index} onClose={() => onModRemoved(mod)}>
+                            <ModImage mod={mod} onModClick={() => onModRemoved(mod)} />
+                        </Closeable>
                     ))}
                 </div>
             </Modal>

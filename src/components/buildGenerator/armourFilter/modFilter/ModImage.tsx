@@ -1,13 +1,15 @@
 import React, { FC } from 'react';
+import clsx from 'clsx';
 
 import { Mod } from 'state/items/commonItemTypes';
 import BungieImage from 'components/bungieImage/BungieImage';
-import { useClickAndEnterKey } from 'hooks/useClickAndEnterKey';
+import useClickAndEnterKeyDown from 'hooks/useClickAndEnterKeyDown';
 import styles from './ModImage.module.scss';
 
 interface Props {
     mod: Mod;
-    onModClick(): void;
+    disabled?: boolean;
+    onModClick?(): void;
 }
 
 const createTitle = (mod: Mod): string => {
@@ -17,8 +19,12 @@ const createTitle = (mod: Mod): string => {
 
     return mod.name;
 };
-const ModImage: FC<Props> = ({ mod, onModClick }) => {
-    const [onClick, onEnter] = useClickAndEnterKey(onModClick);
+const ModImage: FC<Props> = ({ mod, disabled, onModClick }) => {
+    const [onClick, onEnter] = useClickAndEnterKeyDown(() => {
+        if (!disabled && onModClick) {
+            onModClick();
+        }
+    });
 
     return (
         <div
@@ -28,7 +34,11 @@ const ModImage: FC<Props> = ({ mod, onModClick }) => {
             onKeyPress={onEnter}
             tabIndex={0}
         >
-            <BungieImage className={styles.mod} url={mod.iconPath} title={mod.name} />
+            <BungieImage
+                className={clsx(styles.mod, disabled && styles.disabled)}
+                url={mod.iconPath}
+                title={mod.name}
+            />
             {mod.energyType && (
                 <BungieImage
                     className={styles.energy}

@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from 'react';
 
 import styles from './DestinyIconImageButton.module.scss';
-import { useClickAndEnterKey } from 'hooks/useClickAndEnterKey';
+import useClickAndEnterKeyDown from 'hooks/useClickAndEnterKeyDown';
 
 interface Props {
     url: ReactNode;
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const DestinyIconImageButton: FC<Props> = ({ url, disabled, title, onClick }) => {
-    const [onClickHandler, onEnter] = useClickAndEnterKey(onClick);
+    const [onClickHandler, onEnter] = useClickAndEnterKeyDown(onClick);
     const className = disabled ? `${styles.destinyIcon} ${styles.disabled}` : styles.destinyIcon;
     return (
         <div

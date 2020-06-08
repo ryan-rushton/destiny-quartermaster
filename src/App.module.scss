@@ -16,8 +16,7 @@
     text-align: center;
 
     :focus {
-        outline: 1px ridge $qm-grey-2;
-        outline-offset: 1px;
+        outline-width: 3px;
     }
 }
 

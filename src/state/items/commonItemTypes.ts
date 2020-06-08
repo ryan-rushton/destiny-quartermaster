@@ -124,7 +124,10 @@ export interface Stats {
     [key: string]: Stat;
 }
 
+export type EnergyType = 'Any' | 'Arc' | 'Solar' | 'Void';
+
 export interface EnergyCost {
+    type: EnergyType;
     name: string;
     iconPath: string;
     description: string;

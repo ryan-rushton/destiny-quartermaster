@@ -7,9 +7,10 @@ import {
     DestinyInventoryItemDefinition,
     DestinyEnergyTypeDefinition,
     DestinyEnergyCostEntry,
+    DestinyEnergyType,
 } from 'bungie-api-ts/destiny2';
 
-import { Damage, Stats, Mod, EnergyCost } from './commonItemTypes';
+import { Damage, Stats, Mod, EnergyCost, EnergyType } from './commonItemTypes';
 import { Manifest } from 'state/manifest/manifestTypes';
 
 export const plugCategoryIdToSeason = {
@@ -70,6 +71,20 @@ export const mapDamageTypes = (
     return mappedDamages;
 };
 
+const mapEnergyType = (bungieType: DestinyEnergyType): EnergyType => {
+    switch (bungieType) {
+        case 1:
+            return 'Arc';
+        case 2:
+            return 'Solar';
+        case 3:
+            return 'Void';
+        case 0:
+        default:
+            return 'Any';
+    }
+};
+
 const mapEnergyCost = (
     instance: DestinyEnergyCostEntry,
     energyTypeManifest: Manifest<DestinyEnergyTypeDefinition>,
@@ -84,6 +99,7 @@ const mapEnergyCost = (
     const { name, icon, description } = manifest.displayProperties;
 
     return {
+        type: mapEnergyType(manifest.enumValue),
         name,
         iconPath: statCost?.displayProperties.icon || icon,
         description,

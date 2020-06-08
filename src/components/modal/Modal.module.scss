@@ -19,6 +19,7 @@
     max-height: calc(100vh - 50px);
     max-width: calc(100vw - 50px);
     overflow: scroll;
+    z-index: 101;
 }
 
 .modal {
