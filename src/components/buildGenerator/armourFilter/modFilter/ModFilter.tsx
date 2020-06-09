@@ -44,7 +44,11 @@ const ModFilter: FC<Props> = ({ selectedMods, armourMods, onModSelected, onModRe
             <div className={styles.selected}>
                 {ModSlots.map((slot) =>
                     selectedMods[slot].map((mod, index) => (
-                        <Closeable key={`${slot}-${index}`} onClose={() => onModRemoved(mod, slot)}>
+                        <Closeable
+                            key={`${slot}-${index}`}
+                            position={{ right: 3, top: 3 }}
+                            onClose={() => onModRemoved(mod, slot)}
+                        >
                             <ModImage mod={mod} onModClick={(): void => onModSelected(mod, slot)} />
                         </Closeable>
                     ))

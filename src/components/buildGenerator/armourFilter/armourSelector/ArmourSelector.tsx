@@ -1,6 +1,7 @@
 import React, { FC, useState, ReactNode, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
 
 import { LibraryArmour } from 'state/items/library/libraryTypes';
 import BungieImageButton from 'components/bungieImage/BungieImageButton';
@@ -9,6 +10,7 @@ import styles from './ArmourSelector.module.scss';
 import { CharacterClass } from 'state/items/commonItemTypes';
 import Modal from 'components/modal/Modal';
 import { updateRequiredArmour } from 'state/filter/filterReducer';
+import Closeable from 'components/utils/Closeable';
 
 interface Props {
     libraryArmours: LibraryArmour[];
@@ -16,6 +18,7 @@ interface Props {
     selectedClass: CharacterClass;
     title: string;
     selectedArmour: LibraryArmour | null;
+    canSelectExotic: boolean;
 }
 
 const ArmourSelector: FC<Props> = ({
@@ -24,6 +27,7 @@ const ArmourSelector: FC<Props> = ({
     selectedClass,
     title,
     selectedArmour,
+    canSelectExotic,
 }) => {
     const [open, setOpen] = useState(false);
     const { t } = useTranslation();
@@ -42,8 +46,16 @@ const ArmourSelector: FC<Props> = ({
         ? t('armourFilter.selectRequiredArmour')
         : t('armourFilter.selectCharacter');
 
+    const isDisabled = (armour: LibraryArmour): boolean => {
+        if (armour.exotic && !canSelectExotic) {
+            return true;
+        }
+
+        return false;
+    };
+
     const getOnArmourClick = (armour: LibraryArmour) => (): void => {
-        if (selectedClass) {
+        if (selectedClass && !isDisabled(armour)) {
             dispatch(
                 updateRequiredArmour({
                     armour,
@@ -68,11 +80,18 @@ const ArmourSelector: FC<Props> = ({
                 />
             )}
             {selectedArmour && (
-                <BungieImageButton
-                    url={selectedArmour.iconPath}
-                    title={selectedArmour.name}
-                    onClick={getOnArmourClick(selectedArmour)}
-                />
+                <Closeable closeBackground onClose={getOnArmourClick(selectedArmour)}>
+                    <BungieImageButton
+                        url={selectedArmour.iconPath}
+                        title={selectedArmour.name}
+                        className={styles.selectedArmour}
+                        onClick={(): void => {
+                            if (libraryArmours) {
+                                setOpen(true);
+                            }
+                        }}
+                    />
+                </Closeable>
             )}
             <Modal
                 open={Boolean(open && libraryArmours)}
@@ -88,11 +107,18 @@ const ArmourSelector: FC<Props> = ({
                                 gridColumnStart: (armourColumn++ % numberOfArmourColumns) + 1,
                             }}
                         >
-                            <BungieImageButton
-                                url={armour.iconPath}
-                                title={armour.name}
-                                onClick={getOnArmourClick(armour)}
-                            />
+                            <Closeable
+                                disabled={selectedArmour?.hash !== armour.hash}
+                                closeBackground
+                                onClose={getOnArmourClick(armour)}
+                            >
+                                <BungieImageButton
+                                    url={armour.iconPath}
+                                    title={armour.name}
+                                    className={clsx(isDisabled(armour) && styles.disabled)}
+                                    onClick={getOnArmourClick(armour)}
+                                />
+                            </Closeable>
                         </div>
                     ))}
                 </div>

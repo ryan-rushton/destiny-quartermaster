@@ -9,7 +9,15 @@
     display: grid;
 }
 
+.selectedArmour {
+    border-radius: 2px;
+}
+
 .item {
     margin: 2px;
     border: 1px solid $qm-grey;
+}
+
+.disabled {
+    opacity: 0.4;
 }

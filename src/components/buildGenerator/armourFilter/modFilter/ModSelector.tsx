@@ -40,7 +40,8 @@ const ModSelector: FC<Props> = ({
                 (selected) =>
                     selected.energyType?.type !== 'Any' &&
                     selected.energyType?.type !== mod.energyType?.type
-            ));
+            )) ||
+        selectedMods.reduce((total, mod) => (mod.energyType?.cost || 0) + total, 0) > 10;
 
     const groupedMods = _.groupBy(mods, (mod) => (mod.collectibleHash ? 'equipable' : 'default'));
     const equipableMods = groupedMods.equipable;
@@ -70,7 +71,13 @@ const ModSelector: FC<Props> = ({
                             key={mod.hash}
                             style={{ gridColumnStart: (modColumn++ % numberOfModColumns) + 1 }}
                         >
-                            <Closeable onClose={() => onModRemoved(mod)}>
+                            <Closeable
+                                disabled={
+                                    !selectedMods.some((selected) => selected.hash === mod.hash)
+                                }
+                                position={{ right: 3, top: 3 }}
+                                onClose={() => onModRemoved(mod)}
+                            >
                                 <ModImage
                                     mod={mod}
                                     disabled={isModDisabled(mod)}
@@ -83,7 +90,11 @@ const ModSelector: FC<Props> = ({
                 <div className={styles.divider} />
                 <div className={styles.selected}>
                     {selectedMods.map((mod, index) => (
-                        <Closeable key={index} onClose={() => onModRemoved(mod)}>
+                        <Closeable
+                            key={index}
+                            position={{ right: 3, top: 3 }}
+                            onClose={() => onModRemoved(mod)}
+                        >
                             <ModImage mod={mod} onModClick={() => onModRemoved(mod)} />
                         </Closeable>
                     ))}

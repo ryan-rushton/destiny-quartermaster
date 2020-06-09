@@ -105,7 +105,10 @@ const ArmourFilter: FC = () => {
                         libraryArmours={getArmourItems(slot)}
                         title={t(translations[slot])}
                         selectedClass={selectedClass}
-                        selectedArmour={selectedClass && armourFilter.armour[selectedClass][slot]}
+                        selectedArmour={armourFilter.armour[selectedClass][slot]}
+                        canSelectExotic={Object.values(armourFilter.armour[selectedClass]).every(
+                            (item) => !item?.exotic || item.type === slot
+                        )}
                     />
                 ))}
             </div>
