@@ -1,6 +1,6 @@
 # Currently under construction.
 
-# Destiny Quartermaster [![Build Status](https://travis-ci.org/ryan-rushton/destiny-quartermaster.svg?branch=master)](https://travis-ci.org/ryan-rushton/destiny-quartermaster)
+# Destiny Quartermaster [![Build Status](https://travis-ci.com/ryan-rushton/destiny-quartermaster.svg?branch=master)](https://travis-ci.com/ryan-rushton/destiny-quartermaster)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
