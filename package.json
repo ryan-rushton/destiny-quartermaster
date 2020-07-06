@@ -75,6 +75,6 @@
         "eslint-plugin-react": "^7.20.3",
         "eslint-plugin-react-hooks": "^4.0.5",
         "prettier": "^2.0.5",
-        "typescript-plugin-css-modules": "^2.3.0"
+        "typescript-plugin-css-modules": "^2.4.0"
     }
 }
