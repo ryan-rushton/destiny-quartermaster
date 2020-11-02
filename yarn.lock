@@ -9841,16 +9841,7 @@ postcss@^6.0.14, postcss@^6.0.2:
     source-map "^0.6.1"
     supports-color "^5.4.0"
 
-postcss@^7, postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.14, postcss@^7.0.17, postcss@^7.0.2, postcss@^7.0.27, postcss@^7.0.30, postcss@^7.0.5, postcss@^7.0.6:
-  version "7.0.32"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-7.0.32.tgz#4310d6ee347053da3433db2be492883d62cec59d"
-  integrity sha512-03eXong5NLnNCD05xscnGKGDZ98CyzoqPSMjOe6SuoQY7Z2hIj0Ld1g/O/UQRuOle2aRtiIRDg9tDcTGAkLfKw==
-  dependencies:
-    chalk "^2.4.2"
-    source-map "^0.6.1"
-    supports-color "^6.1.0"
-
-postcss@^7.0.26, postcss@^7.0.32:
+postcss@^7, postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.14, postcss@^7.0.17, postcss@^7.0.2, postcss@^7.0.26, postcss@^7.0.27, postcss@^7.0.30, postcss@^7.0.32, postcss@^7.0.5, postcss@^7.0.6:
   version "7.0.35"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-7.0.35.tgz#d2be00b998f7f211d8a276974079f2e92b970e24"
   integrity sha512-3QT8bBJeX/S5zKTTjTCIjRF3If4avAT6kqxcASlTWEtAFCb9NH0OUxNDfgZSWdP5fJnBYCMEWkIFfWeugjzYMg==
@@ -12284,10 +12275,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript-plugin-css-modules@^2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/typescript-plugin-css-modules/-/typescript-plugin-css-modules-2.7.0.tgz#778a74694296f41aa327110f9b41aa7b57d1ae0a"
-  integrity sha512-nNnbccNDs/i1ob4uX3FcgJdBQ17bmKulMwpLSMPsihgzCF6Ul0whnHq4WHkqnoLhFArbCVj6o4avgFJu57UoTQ==
+typescript-plugin-css-modules@^2.8.0:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/typescript-plugin-css-modules/-/typescript-plugin-css-modules-2.8.0.tgz#87c8825d77663407ef3091c72335b88b78387636"
+  integrity sha512-zx/MZNKvP8TogSBKuMOr/+gfknhfq15D87UGeMhrDdm051MmrnxlOIrFPzWZ1usN7GQMjYzp5w0eGGrGzlZrxQ==
   dependencies:
     dotenv "^8.2.0"
     icss-utils "^4.1.1"
@@ -12300,6 +12291,7 @@ typescript-plugin-css-modules@^2.7.0:
     reserved-words "^0.1.2"
     sass "^1.26.5"
     stylus "^0.54.7"
+    tsconfig-paths "^3.9.0"
 
 typescript@^4.0.5:
   version "4.0.5"
