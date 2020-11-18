@@ -19,7 +19,7 @@
         "@types/uuid": "^8.3.0",
         "bungie-api-ts": "^4.3.0",
         "clsx": "^1.1.1",
-        "dexie": "^3.0.2",
+        "dexie": "^3.0.3",
         "i18next": "^19.8.4",
         "i18next-browser-languagedetector": "^6.0.1",
         "i18next-http-backend": "^1.0.21",
