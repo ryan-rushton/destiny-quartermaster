@@ -17,7 +17,7 @@
         "@types/react-redux": "^7.1.12",
         "@types/react-router-dom": "^5.1.6",
         "@types/uuid": "^8.3.0",
-        "bungie-api-ts": "^4.5.0",
+        "bungie-api-ts": "^4.7.0",
         "clsx": "^1.1.1",
         "dexie": "^3.0.3",
         "i18next": "^19.8.4",
