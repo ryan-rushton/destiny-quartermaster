@@ -1,13 +1,13 @@
 import { useEffect, MutableRefObject } from 'react';
 
 const refocus = (
-    event: KeyboardEvent,
-    trapRef: MutableRefObject<HTMLElement | null>,
-    refocusRef: MutableRefObject<HTMLElement | null>
+  event: KeyboardEvent,
+  trapRef: MutableRefObject<HTMLElement | null>,
+  refocusRef: MutableRefObject<HTMLElement | null>
 ) => {
-    if (event.key === 'Tab' && !trapRef.current?.contains(document.activeElement)) {
-        refocusRef.current?.focus();
-    }
+  if (event.key === 'Tab' && !trapRef.current?.contains(document.activeElement)) {
+    refocusRef.current?.focus();
+  }
 };
 
 /**
@@ -18,18 +18,18 @@ const refocus = (
  * @param enabled Whether this global event is currently enabled.
  */
 const useFocusTrap = (
-    trapRef: MutableRefObject<HTMLElement | null>,
-    refocusRef: MutableRefObject<HTMLElement | null>,
-    enabled: boolean
+  trapRef: MutableRefObject<HTMLElement | null>,
+  refocusRef: MutableRefObject<HTMLElement | null>,
+  enabled: boolean
 ) => {
-    useEffect(() => {
-        if (enabled) {
-            const handler = (event: KeyboardEvent) => refocus(event, trapRef, refocusRef);
-            document.addEventListener('keydown', handler, true);
+  useEffect(() => {
+    if (enabled) {
+      const handler = (event: KeyboardEvent) => refocus(event, trapRef, refocusRef);
+      document.addEventListener('keydown', handler, true);
 
-            return document.removeEventListener('keydown', handler);
-        }
-    }, [trapRef, refocusRef, enabled]);
+      return document.removeEventListener('keydown', handler);
+    }
+  }, [trapRef, refocusRef, enabled]);
 };
 
 export default useFocusTrap;

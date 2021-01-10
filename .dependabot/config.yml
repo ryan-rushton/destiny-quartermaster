@@ -10,7 +10,3 @@ update_configs:
       - match:
           dependency_type: "production"
           update_type: "semver:patch"
-    ignored_updates:
-      - match:
-          dependency_name: "node-sass"
-          version_requirement: "5.x"

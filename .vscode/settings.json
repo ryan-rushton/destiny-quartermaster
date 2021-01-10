@@ -1,24 +1,24 @@
 {
-    "cSpell.words": [
-        "BUNGIE",
-        "Playstation",
-        "Setup",
-        "closeable",
-        "clsx",
-        "devtools",
-        "dexie",
-        "equipable",
-        "fontawesome",
-        "fortawesome",
-        "groupv",
-        "mods",
-        "overridden",
-        "redux",
-        "reduxjs",
-        "rushton",
-        "stat",
-        "toolkit"
-    ],
-    "eslint.enable": true,
-    "typescript.tsdk": "node_modules/typescript/lib"
+  "cSpell.words": [
+    "BUNGIE",
+    "Playstation",
+    "Setup",
+    "closeable",
+    "clsx",
+    "devtools",
+    "dexie",
+    "equipable",
+    "fontawesome",
+    "fortawesome",
+    "groupv",
+    "mods",
+    "overridden",
+    "redux",
+    "reduxjs",
+    "rushton",
+    "stat",
+    "toolkit"
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.tabSize": 2
 }

@@ -1,19 +1,19 @@
 @import '../../styleVariables.scss';
 
 .container {
-    position: relative;
+  position: relative;
 }
 
 .close {
-    color: $qm-grey-5;
-    cursor: pointer;
-    font-size: 0.8em;
-    padding: 0 3px;
-    position: absolute;
-    z-index: 2;
+  color: $qm-grey-5;
+  cursor: pointer;
+  font-size: 0.8em;
+  padding: 0 3px;
+  position: absolute;
+  z-index: 2;
 }
 
 .closeBackground {
-    background-color: $qm-mod-grey;
-    border-bottom-left-radius: 2px;
+  background-color: $qm-mod-grey;
+  border-bottom-left-radius: 2px;
 }

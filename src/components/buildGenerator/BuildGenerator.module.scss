@@ -1,50 +1,50 @@
 @import '../../styleVariables.scss';
 
 .buildGenerator {
-    display: grid;
-    grid-template-columns: 100%;
-    width: 100%;
+  display: grid;
+  grid-template-columns: 100%;
+  width: 100%;
 
-    @include styles-for(desktops) {
-        grid-template-columns: 25% 75%;
-    }
+  @include styles-for(desktops) {
+    grid-template-columns: 25% 75%;
+  }
 }
 
 .categorySelector {
-    font-size: x-large;
-    font-weight: 600;
-    grid-column-start: 1;
+  font-size: x-large;
+  font-weight: 600;
+  grid-column-start: 1;
 }
 
 .categoryButtons {
-    display: flex;
-    padding: 6px 20px;
-    flex-direction: column;
-    width: 260px;
+  display: flex;
+  padding: 6px 20px;
+  flex-direction: column;
+  width: 260px;
 }
 
 .categoryButton {
-    text-align: left;
+  text-align: left;
 
-    &:hover {
-        background-color: $qm-grey-4;
-        cursor: pointer;
-    }
+  &:hover {
+    background-color: $qm-grey-4;
+    cursor: pointer;
+  }
 
-    &:focus {
-        background-color: $qm-grey-4;
-        outline: none;
-    }
+  &:focus {
+    background-color: $qm-grey-4;
+    outline: none;
+  }
 }
 
 .selected {
-    color: $qm-blue;
+  color: $qm-blue;
 }
 
 .categoryFilter {
-    grid-column-start: 1;
+  grid-column-start: 1;
 
-    @include styles-for(desktops) {
-        grid-column-start: 2;
-    }
+  @include styles-for(desktops) {
+    grid-column-start: 2;
+  }
 }

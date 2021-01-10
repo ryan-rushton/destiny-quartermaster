@@ -10,34 +10,32 @@ import BuildGenerator from './buildGenerator/BuildGenerator';
 import LoadingMask from 'components/loadingMask/LoadingMask';
 
 const Quartermaster: FC = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const manifest = useSelector((store: RootState) => store.manifest.manifest);
-    const userMembership = useSelector((store: RootState) => store.user.userMembership);
-    const selectedProfile = useSelector((store: RootState) => store.app.selectedProfile);
-    const itemsHaveLoaded = useSelector((store: RootState) =>
-        Boolean(store.inventory && store.library)
-    );
+  const manifest = useSelector((store: RootState) => store.manifest.manifest);
+  const userMembership = useSelector((store: RootState) => store.user.userMembership);
+  const selectedProfile = useSelector((store: RootState) => store.app.selectedProfile);
+  const itemsHaveLoaded = useSelector((store: RootState) => Boolean(store.inventory && store.library));
 
-    if (!manifest) {
-        dispatch(fetchManifest());
-    }
+  if (!manifest) {
+    dispatch(fetchManifest());
+  }
 
-    if (!userMembership) {
-        dispatch(fetchUserMembershipData());
-    }
+  if (!userMembership) {
+    dispatch(fetchUserMembershipData());
+  }
 
-    if (selectedProfile && !itemsHaveLoaded) {
-        dispatch(fetchProfileData(selectedProfile.id, selectedProfile.membershipType));
-    }
+  if (selectedProfile && !itemsHaveLoaded) {
+    dispatch(fetchProfileData(selectedProfile.id, selectedProfile.membershipType));
+  }
 
-    return (
-        <div>
-            <LoadingMask isLoading={!itemsHaveLoaded} />
-            {!selectedProfile && <AccountSelection />}
-            {itemsHaveLoaded && <BuildGenerator />}
-        </div>
-    );
+  return (
+    <div>
+      {!selectedProfile && <AccountSelection />}
+      {selectedProfile && <LoadingMask isLoading={!itemsHaveLoaded} />}
+      {itemsHaveLoaded && <BuildGenerator />}
+    </div>
+  );
 };
 
 export default withAuth(Quartermaster);

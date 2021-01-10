@@ -9,46 +9,46 @@ import useClickAndEnterKeyDown from 'hooks/useClickAndEnterKeyDown';
 import useGlobalEscKeyDown from 'hooks/useGlobalEscapeKeyDown';
 
 interface Props {
-    open: boolean;
-    title?: string;
-    onClose(): void;
+  open: boolean;
+  title?: string;
+  onClose(): void;
 }
 
 const Modal: FC<Props> = ({ open, title, onClose, children }) => {
-    const modalRef = useRef(null);
-    const closeRef = useRef(null);
+  const modalRef = useRef(null);
+  const closeRef = useRef(null);
 
-    const [onCloseClick, onCloseEnter] = useClickAndEnterKeyDown(onClose);
-    useClickOutside(modalRef, open, onClose);
-    useGlobalEscKeyDown(open, onClose);
-    useFocusTrap(modalRef, closeRef, open);
+  const [onCloseClick, onCloseEnter] = useClickAndEnterKeyDown(onClose);
+  useClickOutside(modalRef, open, onClose);
+  useGlobalEscKeyDown(open, onClose);
+  useFocusTrap(modalRef, closeRef, open);
 
-    if (!open) {
-        return null;
-    }
+  if (!open) {
+    return null;
+  }
 
-    return (
-        <div className={styles.mask}>
-            <div className={styles.container}>
-                <div className={styles.modal} ref={modalRef}>
-                    <div className={styles.header}>
-                        <div className={styles.title}>{title}</div>
-                        <div
-                            className={styles.close}
-                            role="button"
-                            tabIndex={0}
-                            onClick={onCloseClick}
-                            onKeyDown={onCloseEnter}
-                            ref={closeRef}
-                        >
-                            <FontAwesomeIcon icon={faTimes} />
-                        </div>
-                    </div>
-                    <div className={styles.content}>{children}</div>
-                </div>
+  return (
+    <div className={styles.mask}>
+      <div className={styles.container}>
+        <div className={styles.modal} ref={modalRef}>
+          <div className={styles.header}>
+            <div className={styles.title}>{title}</div>
+            <div
+              className={styles.close}
+              role="button"
+              tabIndex={0}
+              onClick={onCloseClick}
+              onKeyDown={onCloseEnter}
+              ref={closeRef}
+            >
+              <FontAwesomeIcon icon={faTimes} />
             </div>
+          </div>
+          <div className={styles.content}>{children}</div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Modal;

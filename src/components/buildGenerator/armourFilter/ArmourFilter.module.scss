@@ -1,27 +1,27 @@
 @import '../../../styleVariables.scss';
 
 .armourFilter {
-    text-align: left;
-    width: 100%;
+  text-align: left;
+  width: 100%;
 }
 
 .sectionTitle {
-    font-size: 1.3em;
-    font-weight: bold;
-    margin: 6px 0;
+  font-size: 1.3em;
+  font-weight: bold;
+  margin: 6px 0;
 }
 
 .statsFilter {
-    width: 100%;
+  width: 100%;
 }
 
 .stat {
-    margin-right: 6px;
+  margin-right: 6px;
 }
 
 .statInput {
-    border: 1px solid $qm-grey-2;
-    border-radius: 2px;
-    text-align: end;
-    width: 40px;
+  border: 1px solid $qm-grey-2;
+  border-radius: 2px;
+  text-align: end;
+  width: 40px;
 }

@@ -1,7 +1,0 @@
-language: node_js
-# only run build on master, all other branches should go through a PR which also triggers a build
-branches:
-  only:
-    - master
-node_js:
-  - node

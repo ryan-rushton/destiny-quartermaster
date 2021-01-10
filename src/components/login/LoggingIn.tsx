@@ -9,28 +9,26 @@ import { mapAuthToken } from 'state/auth/authMappers';
 import { RootState, StoreDispatch } from 'rootReducer';
 
 const getCodeFromQueryParam = (): string | undefined => {
-    const { location } = window;
-    const { code } = parse(location.search);
-    const extractedCode = Array.isArray(code) ? code[0] : code;
-    return extractedCode || undefined;
+  const { location } = window;
+  const { code } = parse(location.search);
+  const extractedCode = Array.isArray(code) ? code[0] : code;
+  return extractedCode || undefined;
 };
 
 const LoggingIn: FC = () => {
-    const isLoggedIn = useSelector((state: RootState) => Boolean(state.authToken));
-    const dispatch: StoreDispatch = useDispatch();
+  const isLoggedIn = useSelector((state: RootState) => Boolean(state.authToken));
+  const dispatch: StoreDispatch = useDispatch();
 
-    if (isLoggedIn) {
-        return <Redirect to="/" />;
-    }
+  if (isLoggedIn) {
+    return <Redirect to="/" />;
+  }
 
-    const code = getCodeFromQueryParam();
-    if (code) {
-        getOAuthToken(code).then(
-            (token) => token && dispatch(saveToken(Date.now(), mapAuthToken(token)))
-        );
-        return <div>{'Logging in'}</div>;
-    }
-    return <Redirect to="/login" />;
+  const code = getCodeFromQueryParam();
+  if (code) {
+    getOAuthToken(code).then((token) => token && dispatch(saveToken(Date.now(), mapAuthToken(token))));
+    return <div>{'Logging in'}</div>;
+  }
+  return <Redirect to="/login" />;
 };
 
 export default LoggingIn;

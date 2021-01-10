@@ -1,19 +1,19 @@
 @import '../../../../styleVariables.scss';
 
 .title {
-    font-size: 1.3em;
-    font-weight: bold;
-    margin: 6px 0;
+  font-size: 1.3em;
+  font-weight: bold;
+  margin: 6px 0;
 }
 
 .selected {
-    background-color: $qm-grey-3;
-    border-radius: 2px;
-    border: 1px solid $qm-grey;
-    display: flex;
-    flex-direction: row;
-    height: 52px;
-    margin: 3px 0 6px 0;
-    min-width: 52px;
-    width: fit-content;
+  background-color: $qm-grey-3;
+  border-radius: 2px;
+  border: 1px solid $qm-grey;
+  display: flex;
+  flex-direction: row;
+  height: 52px;
+  margin: 3px 0 6px 0;
+  min-width: 52px;
+  width: fit-content;
 }

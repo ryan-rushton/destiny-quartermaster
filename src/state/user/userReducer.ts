@@ -11,19 +11,19 @@ import { mapCharactersFromProfileData } from '../characters/characterReducer';
 import { mapInventoryFromInventoryData } from '../items/inventory/inventoryReducer';
 import { buildLibrary } from '../items/library/libraryReducer';
 import {
-    WeaponItemCategories,
-    ArmourItemCategories,
-    GeneralItemCategoryHashes,
-    WeaponModCategories,
-    ArmourModCategories,
-    GhostModCategories,
+  WeaponItemCategories,
+  ArmourItemCategories,
+  GeneralItemCategoryHashes,
+  WeaponModCategories,
+  ArmourModCategories,
+  GhostModCategories,
 } from '../items/commonItemTypes';
 import {
-    getInventoryItemManifestByCategory,
-    getCompleteStatManifest,
-    getCompleteDamageTypeManifest,
-    getCompletePlugSetManifest,
-    getCompleteEnergyTypeManifest,
+  getInventoryItemManifestByCategory,
+  getCompleteStatManifest,
+  getCompleteDamageTypeManifest,
+  getCompletePlugSetManifest,
+  getCompleteEnergyTypeManifest,
 } from '../manifest/manifestStorage';
 import { setLoadingProfile } from 'state/appReducer';
 
@@ -32,24 +32,24 @@ type SaveProfileAction = PayloadAction<DestinyProfileResponse>;
 type LoadingProfileAction = PayloadAction<boolean>;
 
 interface UserState {
-    userMembership: UserMembership | null;
+  userMembership: UserMembership | null;
 }
 
-const saveUserMembershipReducer: CaseReducer<UserState, SaveUserMembershipAction> = (
-    state,
-    action
-) => ({ ...state, userMembership: action.payload });
+const saveUserMembershipReducer: CaseReducer<UserState, SaveUserMembershipAction> = (state, action) => ({
+  ...state,
+  userMembership: action.payload,
+});
 
 const initialState: UserState = {
-    userMembership: null as UserMembership | null,
+  userMembership: null as UserMembership | null,
 };
 
 const { actions, reducer } = createSlice({
-    name: 'user',
-    initialState,
-    reducers: {
-        saveUserMembership: saveUserMembershipReducer,
-    },
+  name: 'user',
+  initialState,
+  reducers: {
+    saveUserMembership: saveUserMembershipReducer,
+  },
 });
 
 export const { saveUserMembership } = actions;
@@ -59,77 +59,71 @@ export const { saveUserMembership } = actions;
  */
 
 export const fetchUserMembershipData = () => {
-    return async (dispatch: StoreDispatch): Promise<SaveUserMembershipAction | void> => {
-        const token = await dispatch(getValidToken());
-        if (token) {
-            const userMembership = await getMembershipDataForCurrentUser(token.accessToken);
-            dispatch(saveUserMembership(mapUserMembership(userMembership)));
-        }
-    };
+  return async (dispatch: StoreDispatch): Promise<SaveUserMembershipAction | void> => {
+    const token = await dispatch(getValidToken());
+    if (token) {
+      const userMembership = await getMembershipDataForCurrentUser(token.accessToken);
+      dispatch(saveUserMembership(mapUserMembership(userMembership)));
+    }
+  };
 };
 
 export const fetchProfileData = (
-    id: string,
-    membershipType: number
+  id: string,
+  membershipType: number
 ): ThunkAction<Promise<void>, RootState, unknown, Action<string>> => {
-    return async (dispatch, getState): Promise<void> => {
-        if (!getState().app.loadingProfile) {
-            const token = await dispatch(getValidToken());
-            if (token) {
-                dispatch(setLoadingProfile(true));
+  return async (dispatch, getState): Promise<void> => {
+    if (!getState().app.loadingProfile) {
+      const token = await dispatch(getValidToken());
+      if (token) {
+        dispatch(setLoadingProfile(true));
 
-                const profile = await getProfile(id, membershipType, token.accessToken);
-                dispatch(mapCharactersFromProfileData(profile.characters));
+        const profile = await getProfile(id, membershipType, token.accessToken);
+        dispatch(mapCharactersFromProfileData(profile.characters));
 
-                const allCategories = [
-                    WeaponItemCategories.Weapons,
-                    ArmourItemCategories.Armour,
-                    ...GeneralItemCategoryHashes,
-                    WeaponModCategories.WeaponMods,
-                    ArmourModCategories.ArmourMods,
-                    GhostModCategories.GhostMods,
-                ];
-                const [
-                    itemsManifest,
-                    statsManifest,
-                    damageTypeManifests,
-                    plugSetDefinition,
-                    energyTypeManifest,
-                ] = await Promise.all([
-                    getInventoryItemManifestByCategory(allCategories),
-                    getCompleteStatManifest(),
-                    getCompleteDamageTypeManifest(),
-                    getCompletePlugSetManifest(),
-                    getCompleteEnergyTypeManifest(),
-                ]);
+        const allCategories = [
+          WeaponItemCategories.Weapons,
+          ArmourItemCategories.Armour,
+          ...GeneralItemCategoryHashes,
+          WeaponModCategories.WeaponMods,
+          ArmourModCategories.ArmourMods,
+          GhostModCategories.GhostMods,
+        ];
+        const [
+          itemsManifest,
+          statsManifest,
+          damageTypeManifests,
+          plugSetDefinition,
+          energyTypeManifest,
+        ] = await Promise.all([
+          getInventoryItemManifestByCategory(allCategories),
+          getCompleteStatManifest(),
+          getCompleteDamageTypeManifest(),
+          getCompletePlugSetManifest(),
+          getCompleteEnergyTypeManifest(),
+        ]);
 
-                dispatch(
-                    buildLibrary(
-                        itemsManifest,
-                        statsManifest,
-                        damageTypeManifests,
-                        plugSetDefinition,
-                        energyTypeManifest
-                    )
-                );
+        dispatch(
+          buildLibrary(itemsManifest, statsManifest, damageTypeManifests, plugSetDefinition, energyTypeManifest)
+        );
 
-                dispatch(
-                    mapInventoryFromInventoryData(
-                        itemsManifest,
-                        statsManifest,
-                        damageTypeManifests,
-                        energyTypeManifest,
-                        profile.profileInventory,
-                        profile.characterEquipment,
-                        profile.characterInventories,
-                        profile.itemComponents
-                    )
-                );
+        dispatch(
+          mapInventoryFromInventoryData(
+            itemsManifest,
+            statsManifest,
+            damageTypeManifests,
+            energyTypeManifest,
+            profile.profileInventory,
+            profile.characterEquipment,
+            profile.characterInventories,
+            profile.itemComponents
+          )
+        );
 
-                dispatch(setLoadingProfile(false));
-            }
-        }
-    };
+        dispatch(setLoadingProfile(false));
+      }
+    }
+  };
 };
 
 export default reducer;

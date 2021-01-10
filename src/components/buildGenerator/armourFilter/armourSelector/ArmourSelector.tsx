@@ -13,118 +13,112 @@ import { updateRequiredArmour } from 'state/filter/filterReducer';
 import Closeable from 'components/utils/Closeable';
 
 interface Props {
-    libraryArmours: LibraryArmour[];
-    defaultImage: ReactNode;
-    selectedClass: CharacterClass;
-    title: string;
-    selectedArmour: LibraryArmour | null;
-    canSelectExotic: boolean;
+  libraryArmours: LibraryArmour[];
+  defaultImage: ReactNode;
+  selectedClass: CharacterClass;
+  title: string;
+  selectedArmour: LibraryArmour | null;
+  canSelectExotic: boolean;
 }
 
 const ArmourSelector: FC<Props> = ({
-    libraryArmours,
-    defaultImage,
-    selectedClass,
-    title,
-    selectedArmour,
-    canSelectExotic,
+  libraryArmours,
+  defaultImage,
+  selectedClass,
+  title,
+  selectedArmour,
+  canSelectExotic,
 }) => {
-    const [open, setOpen] = useState(false);
-    const { t } = useTranslation();
-    const dispatch = useDispatch();
-    const ref = useRef(null);
+  const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const ref = useRef(null);
 
-    const numberOfArmourColumns = 8;
-    let armourColumn = 0;
-    let gridTemplateColumns = '';
+  const numberOfArmourColumns = 8;
+  let armourColumn = 0;
+  let gridTemplateColumns = '';
 
-    for (let i = 0; i < numberOfArmourColumns; i++) {
-        gridTemplateColumns += '58px ';
+  for (let i = 0; i < numberOfArmourColumns; i++) {
+    gridTemplateColumns += '58px ';
+  }
+
+  const buttonTitle = libraryArmours ? t('armourFilter.selectRequiredArmour') : t('armourFilter.selectCharacter');
+
+  const isDisabled = (armour: LibraryArmour): boolean => {
+    if (armour.exotic && !canSelectExotic) {
+      return true;
     }
 
-    const buttonTitle = libraryArmours
-        ? t('armourFilter.selectRequiredArmour')
-        : t('armourFilter.selectCharacter');
+    return false;
+  };
 
-    const isDisabled = (armour: LibraryArmour): boolean => {
-        if (armour.exotic && !canSelectExotic) {
-            return true;
-        }
+  const getOnArmourClick = (armour: LibraryArmour) => (): void => {
+    if (selectedClass && !isDisabled(armour)) {
+      dispatch(
+        updateRequiredArmour({
+          armour,
+          characterClass: selectedClass,
+        })
+      );
+    }
+  };
 
-        return false;
-    };
-
-    const getOnArmourClick = (armour: LibraryArmour) => (): void => {
-        if (selectedClass && !isDisabled(armour)) {
-            dispatch(
-                updateRequiredArmour({
-                    armour,
-                    characterClass: selectedClass,
-                })
-            );
-        }
-    };
-
-    return (
-        <div ref={ref} className={styles.armourSelector}>
-            {!selectedArmour && (
-                <DestinyIconImageButton
-                    url={defaultImage}
-                    disabled={!libraryArmours}
-                    title={buttonTitle}
-                    onClick={(): void => {
-                        if (libraryArmours) {
-                            setOpen(true);
-                        }
-                    }}
-                />
-            )}
-            {selectedArmour && (
-                <Closeable closeBackground onClose={getOnArmourClick(selectedArmour)}>
-                    <BungieImageButton
-                        url={selectedArmour.iconPath}
-                        title={selectedArmour.name}
-                        className={styles.selectedArmour}
-                        onClick={(): void => {
-                            if (libraryArmours) {
-                                setOpen(true);
-                            }
-                        }}
-                    />
-                </Closeable>
-            )}
-            <Modal
-                open={Boolean(open && libraryArmours)}
-                title={title}
-                onClose={() => setOpen(false)}
+  return (
+    <div ref={ref} className={styles.armourSelector}>
+      {!selectedArmour && (
+        <DestinyIconImageButton
+          url={defaultImage}
+          disabled={!libraryArmours}
+          title={buttonTitle}
+          onClick={(): void => {
+            if (libraryArmours) {
+              setOpen(true);
+            }
+          }}
+        />
+      )}
+      {selectedArmour && (
+        <Closeable closeBackground onClose={getOnArmourClick(selectedArmour)}>
+          <BungieImageButton
+            url={selectedArmour.iconPath}
+            title={selectedArmour.name}
+            className={styles.selectedArmour}
+            onClick={(): void => {
+              if (libraryArmours) {
+                setOpen(true);
+              }
+            }}
+          />
+        </Closeable>
+      )}
+      <Modal open={Boolean(open && libraryArmours)} title={title} onClose={() => setOpen(false)}>
+        <div className={styles.armourPanel} style={{ gridTemplateColumns }}>
+          {libraryArmours.map((armour) => (
+            <div
+              key={armour.hash}
+              className={styles.item}
+              style={{
+                gridColumnStart: (armourColumn++ % numberOfArmourColumns) + 1,
+              }}
             >
-                <div className={styles.armourPanel} style={{ gridTemplateColumns }}>
-                    {libraryArmours.map((armour) => (
-                        <div
-                            key={armour.hash}
-                            className={styles.item}
-                            style={{
-                                gridColumnStart: (armourColumn++ % numberOfArmourColumns) + 1,
-                            }}
-                        >
-                            <Closeable
-                                disabled={selectedArmour?.hash !== armour.hash}
-                                closeBackground
-                                onClose={getOnArmourClick(armour)}
-                            >
-                                <BungieImageButton
-                                    url={armour.iconPath}
-                                    title={armour.name}
-                                    className={clsx(isDisabled(armour) && styles.disabled)}
-                                    onClick={getOnArmourClick(armour)}
-                                />
-                            </Closeable>
-                        </div>
-                    ))}
-                </div>
-            </Modal>
+              <Closeable
+                disabled={selectedArmour?.hash !== armour.hash}
+                closeBackground
+                onClose={getOnArmourClick(armour)}
+              >
+                <BungieImageButton
+                  url={armour.iconPath}
+                  title={armour.name}
+                  className={clsx(isDisabled(armour) && styles.disabled)}
+                  onClick={getOnArmourClick(armour)}
+                />
+              </Closeable>
+            </div>
+          ))}
         </div>
-    );
+      </Modal>
+    </div>
+  );
 };
 
 export default ArmourSelector;

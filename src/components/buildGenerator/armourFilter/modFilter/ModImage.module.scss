@@ -1,25 +1,25 @@
 .wrapper {
-    position: relative;
-    height: 52px;
-    width: 52px;
+  position: relative;
+  height: 52px;
+  width: 52px;
 
-    &:focus {
-        outline-offset: -3px;
-    }
+  &:focus {
+    outline-offset: -3px;
+  }
 }
 
 .mod {
-    position: relative;
-    height: 52px;
-    width: 52px;
+  position: relative;
+  height: 52px;
+  width: 52px;
 }
 
 .disabled {
-    opacity: 0.4;
+  opacity: 0.4;
 }
 
 .energy {
-    position: absolute;
-    top: 0;
-    left: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
 }

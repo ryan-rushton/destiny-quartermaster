@@ -8,5 +8,5 @@ const BUNGIE_URL = 'https://www.bungie.net';
  * @param relativePath relative path to fetch
  */
 export const getCommonJsonAsset = (relativePath: string): Promise<JsonObject> => {
-    return get(`${BUNGIE_URL}${relativePath}`);
+  return get(`${BUNGIE_URL}${relativePath}`);
 };

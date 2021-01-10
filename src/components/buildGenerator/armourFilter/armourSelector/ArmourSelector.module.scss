@@ -1,23 +1,23 @@
 @import '../../../../styleVariables.scss';
 
 .armourSelector {
-    display: inline-block;
-    margin-right: 6px;
+  display: inline-block;
+  margin-right: 6px;
 }
 
 .armourPanel {
-    display: grid;
+  display: grid;
 }
 
 .selectedArmour {
-    border-radius: 2px;
+  border-radius: 2px;
 }
 
 .item {
-    margin: 2px;
-    border: 1px solid $qm-grey;
+  margin: 2px;
+  border: 1px solid $qm-grey;
 }
 
 .disabled {
-    opacity: 0.4;
+  opacity: 0.4;
 }

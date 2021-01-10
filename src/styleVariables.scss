@@ -5,19 +5,19 @@ $large-screen: 1024px; //ipad-pro width (going to treat it as a tablet
 
 // The largest one will always win out
 @mixin styles-for($media) {
-    @if $media == phones {
-        @media only screen and (max-width: $small-screen) {
-            @content;
-        }
-    } @else if $media == tablets {
-        @media only screen and (min-width: $medium-screen + 1) {
-            @content;
-        }
-    } @else if $media == desktops {
-        @media only screen and (min-width: $large-screen + 1) {
-            @content;
-        }
+  @if $media == phones {
+    @media only screen and (max-width: $small-screen) {
+      @content;
     }
+  } @else if $media == tablets {
+    @media only screen and (min-width: $medium-screen + 1) {
+      @content;
+    }
+  } @else if $media == desktops {
+    @media only screen and (min-width: $large-screen + 1) {
+      @content;
+    }
+  }
 }
 
 // colours

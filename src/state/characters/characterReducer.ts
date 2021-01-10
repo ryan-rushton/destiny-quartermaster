@@ -5,9 +5,9 @@ import { Character } from './characterTypes';
 import { StoreDispatch } from 'rootReducer';
 import { mapCharacters } from './characterMappers';
 import {
-    saveSelectedCharacterToLocalStorage,
-    getSelectedCharacterFromLocalStorage,
-    removeSelectedCharacterFromLocalStorage,
+  saveSelectedCharacterToLocalStorage,
+  getSelectedCharacterFromLocalStorage,
+  removeSelectedCharacterFromLocalStorage,
 } from './characterStorage';
 
 type SelectedCharacterState = string | null;
@@ -16,68 +16,62 @@ type SaveCharactersAction = PayloadAction<Character[]>;
 type SetSelectedCharacter = PayloadAction<SelectedCharacterState>;
 
 interface CharactersState {
-    characters: {
-        [id: string]: Character;
-    };
-    selected: SelectedCharacterState;
+  characters: {
+    [id: string]: Character;
+  };
+  selected: SelectedCharacterState;
 }
 
-const saveCharactersReducer: CaseReducer<CharactersState, SaveCharactersAction> = (
-    state,
-    action
-) => {
-    const characters = {};
+const saveCharactersReducer: CaseReducer<CharactersState, SaveCharactersAction> = (state, action) => {
+  const characters = {};
 
-    for (const character of action.payload) {
-        characters[character.id] = character;
-    }
+  for (const character of action.payload) {
+    characters[character.id] = character;
+  }
 
-    const selected = getSelectedCharacterFromLocalStorage();
+  const selected = getSelectedCharacterFromLocalStorage();
 
-    if (Object.keys(characters).some((id: string): boolean => id === selected)) {
-        return { ...state, characters, selected };
-    }
+  if (Object.keys(characters).some((id: string): boolean => id === selected)) {
+    return { ...state, characters, selected };
+  }
 
-    return { ...state, characters };
+  return { ...state, characters };
 };
 
-const setSelectedCharacterReducer: CaseReducer<CharactersState, SetSelectedCharacter> = (
-    state,
-    action
-) => {
-    const selected = action.payload;
-    if (selected) {
-        saveSelectedCharacterToLocalStorage(selected);
-    } else {
-        removeSelectedCharacterFromLocalStorage();
-    }
-    return { ...state, selected };
+const setSelectedCharacterReducer: CaseReducer<CharactersState, SetSelectedCharacter> = (state, action) => {
+  const selected = action.payload;
+  if (selected) {
+    saveSelectedCharacterToLocalStorage(selected);
+  } else {
+    removeSelectedCharacterFromLocalStorage();
+  }
+  return { ...state, selected };
 };
 
 const initialState = {
-    selected: null as SelectedCharacterState,
+  selected: null as SelectedCharacterState,
 } as CharactersState;
 
 const { actions, reducer } = createSlice({
-    name: 'characters',
-    initialState,
-    reducers: {
-        saveCharacters: saveCharactersReducer,
-        setSelectedCharacter: setSelectedCharacterReducer,
-    },
+  name: 'characters',
+  initialState,
+  reducers: {
+    saveCharacters: saveCharactersReducer,
+    setSelectedCharacter: setSelectedCharacterReducer,
+  },
 });
 
 export const { saveCharacters, setSelectedCharacter } = actions;
 
 export const mapCharactersFromProfileData = (
-    characterResponse: DictionaryComponentResponse<DestinyCharacterComponent>
+  characterResponse: DictionaryComponentResponse<DestinyCharacterComponent>
 ) => {
-    return async (dispatch: StoreDispatch): Promise<SaveCharactersAction | void> => {
-        if (characterResponse.data) {
-            const characters = await mapCharacters(Object.values(characterResponse.data));
-            return dispatch(saveCharacters(characters));
-        }
-    };
+  return async (dispatch: StoreDispatch): Promise<SaveCharactersAction | void> => {
+    if (characterResponse.data) {
+      const characters = await mapCharacters(Object.values(characterResponse.data));
+      return dispatch(saveCharacters(characters));
+    }
+  };
 };
 
 export default reducer;

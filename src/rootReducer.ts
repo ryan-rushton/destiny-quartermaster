@@ -13,64 +13,64 @@ import { getTokenFromLocalStorage } from 'state/auth/authStorage';
 import { getLastUsedProfileFromLocalStorage } from 'state/user/userStorage';
 
 const rootReducer = combineReducers({
-    app: appReducer,
-    authToken: authReducer,
-    characters: characterReducer,
-    filter: filterReducer,
-    manifest: manifestReducer,
-    inventory: inventoryReducer,
-    library: libraryReducer,
-    user: userReducer,
+  app: appReducer,
+  authToken: authReducer,
+  characters: characterReducer,
+  filter: filterReducer,
+  manifest: manifestReducer,
+  inventory: inventoryReducer,
+  library: libraryReducer,
+  user: userReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
 
 const middleware = [
-    ...getDefaultMiddleware({
-        immutableCheck: false,
-        serializableCheck: false,
-    }),
+  ...getDefaultMiddleware({
+    immutableCheck: false,
+    serializableCheck: false,
+  }),
 ];
 
 const store = configureStore({
-    reducer: rootReducer,
-    middleware,
-    devTools: {
-        actionSanitizer: <A extends Action<unknown>>(action: A): A => {
-            const message = 'This action has been sanitized to improve performance';
-            if (action.type === 'library/saveLibrary') {
-                return { ...action, payload: message };
-            } else if (action.type === 'inventory/saveInventory') {
-                return { ...action, payload: message };
-            }
+  reducer: rootReducer,
+  middleware,
+  devTools: {
+    actionSanitizer: <A extends Action<unknown>>(action: A): A => {
+      const message = 'This action has been sanitized to improve performance';
+      if (action.type === 'library/saveLibrary') {
+        return { ...action, payload: message };
+      } else if (action.type === 'inventory/saveInventory') {
+        return { ...action, payload: message };
+      }
 
-            return action;
-        },
-        // eslint-disable-next-line
-        stateSanitizer: (state: any): any => {
-            let sanitised = state;
-            if (sanitised?.library) {
-                sanitised = {
-                    ...sanitised,
-                    library: 'The library has been sanitised for redux dev tools performance.',
-                };
-            }
-            if (sanitised?.inventory) {
-                sanitised = {
-                    ...sanitised,
-                    inventory: 'The inventory has been sanitised for redux dev tools performance.',
-                };
-            }
+      return action;
+    },
+    // eslint-disable-next-line
+    stateSanitizer: (state: any): any => {
+      let sanitised = state;
+      if (sanitised?.library) {
+        sanitised = {
+          ...sanitised,
+          library: 'The library has been sanitised for redux dev tools performance.',
+        };
+      }
+      if (sanitised?.inventory) {
+        sanitised = {
+          ...sanitised,
+          inventory: 'The inventory has been sanitised for redux dev tools performance.',
+        };
+      }
 
-            return sanitised;
-        },
+      return sanitised;
     },
-    preloadedState: {
-        authToken: getTokenFromLocalStorage(),
-        app: {
-            selectedProfile: getLastUsedProfileFromLocalStorage(),
-        },
+  },
+  preloadedState: {
+    authToken: getTokenFromLocalStorage(),
+    app: {
+      selectedProfile: getLastUsedProfileFromLocalStorage(),
     },
+  },
 });
 
 export type StoreDispatch = typeof store.dispatch;
