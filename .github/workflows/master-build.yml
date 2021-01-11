@@ -1,10 +1,13 @@
-# Build for status checks on PR's
-name: PR Build
+# This is just a copy of the PR Build atm but it will become the beta deply eventually.
+name: Master Build
 
-on: [pull_request]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
-  pr-build:
+  master-build:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Node

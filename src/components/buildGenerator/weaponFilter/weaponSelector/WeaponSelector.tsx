@@ -6,7 +6,7 @@ interface Props {
   items: LibraryWeapon[];
 }
 
-const WeaponSelector: FC<Props> = ({ items }) => {
+const WeaponSelector: FC<Props> = () => {
   return <div />;
 };
 

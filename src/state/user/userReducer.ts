@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction, CaseReducer, ThunkAction, Action } from '@reduxjs/toolkit';
-import { DestinyProfileResponse } from 'bungie-api-ts/destiny2';
 
 import { getValidToken } from 'state/auth/authReducer';
 import { RootState, StoreDispatch } from '../../rootReducer';
@@ -28,8 +27,6 @@ import {
 import { setLoadingProfile } from 'state/appReducer';
 
 type SaveUserMembershipAction = PayloadAction<UserMembership>;
-type SaveProfileAction = PayloadAction<DestinyProfileResponse>;
-type LoadingProfileAction = PayloadAction<boolean>;
 
 interface UserState {
   userMembership: UserMembership | null;

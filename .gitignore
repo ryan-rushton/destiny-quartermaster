@@ -24,3 +24,5 @@ yarn-error.log*
 
 generated-api
 !generated-api/README.md
+
+.eslintcache
