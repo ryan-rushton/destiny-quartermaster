@@ -16,10 +16,8 @@ import {
   Mod,
   ArmourSocketCategories,
   GhostShellSocketCategories,
-  ArmourModCategories,
   WeaponModCategories,
   ArmourSlot,
-  ModSlot,
 } from '../commonItemTypes';
 import { Library, LibraryItem, LibraryArmour } from './libraryTypes';
 import { mapDamageTypes, mapInventoryStats, mapMod, mapArmourSeason } from '../commonItemMappers';
@@ -83,7 +81,10 @@ class LibraryMapper {
             const plugDef = this.itemsManifest[randomisedPlugDef.plugItemHash];
 
             if (plugDef) {
-              modSet.push(mapMod(this.statsManifest, this.energyTypeManifest, plugDef, false));
+              const mod = mapMod(this.statsManifest, this.energyTypeManifest, plugDef, false);
+              if (mod) {
+                modSet.push(mod);
+              }
             }
           }
           if (modSet.length) {
@@ -95,11 +96,11 @@ class LibraryMapper {
           }
         } else if (plug) {
           const mod = mapMod(this.statsManifest, this.energyTypeManifest, plug, false);
-          if (categoriesByHash[perkCategory]?.socketIndexes.includes(index)) {
+          if (mod && categoriesByHash[perkCategory]?.socketIndexes.includes(index)) {
             perks.push([mod]);
-          } else if (cosmeticCategory && categoriesByHash[cosmeticCategory]?.socketIndexes.includes(index)) {
+          } else if (mod && cosmeticCategory && categoriesByHash[cosmeticCategory]?.socketIndexes.includes(index)) {
             cosmetics.push(mod);
-          } else if (categoriesByHash[modCategory]?.socketIndexes.includes(index)) {
+          } else if (mod && categoriesByHash[modCategory]?.socketIndexes.includes(index)) {
             mods.push(mod);
           }
         }
@@ -147,15 +148,7 @@ class LibraryMapper {
       ghosts: {},
       mods: {
         weapons: [],
-        armour: {
-          general: [],
-          helmet: [],
-          arms: [],
-          chest: [],
-          legs: [],
-          classItem: [],
-          seasonal: [],
-        },
+        armour: {},
       },
     };
 
@@ -239,30 +232,22 @@ class LibraryMapper {
           library.ghosts[manifestEntry.hash] = ghost;
         } else if (isArmour2Mod(manifestEntry)) {
           const mod = mapMod(this.statsManifest, this.energyTypeManifest, manifestEntry, false);
+          if (mod) {
+            if (!(mod.plugCategoryHash in library.mods.armour)) {
+              library.mods.armour[mod.plugCategoryHash] = [];
+            }
 
-          let armourSlot: ModSlot | null = null;
-
-          if (categories?.includes(ArmourModCategories.Helmets)) {
-            armourSlot = 'helmet';
-          } else if (categories?.includes(ArmourModCategories.Arms)) {
-            armourSlot = 'arms';
-          } else if (categories?.includes(ArmourModCategories.Chest)) {
-            armourSlot = 'chest';
-          } else if (categories?.includes(ArmourModCategories.Legs)) {
-            armourSlot = 'legs';
-          } else if (categories?.includes(ArmourModCategories.ClassItems)) {
-            armourSlot = 'classItem';
-          }
-
-          if (armourSlot) {
-            library.mods.armour[armourSlot].push(mod);
+            library.mods.armour[mod.plugCategoryHash].push(mod);
           }
         } else if (
           categories?.includes(WeaponModCategories.WeaponMods) &&
           !categories?.includes(WeaponModCategories.Ornaments) &&
           manifestEntry.plug?.plugCategoryIdentifier?.startsWith('v400')
         ) {
-          library.mods.weapons.push(mapMod(this.statsManifest, this.energyTypeManifest, manifestEntry, false));
+          const mod = mapMod(this.statsManifest, this.energyTypeManifest, manifestEntry, false);
+          if (mod) {
+            library.mods.weapons.push(mod);
+          }
         }
       }
     }

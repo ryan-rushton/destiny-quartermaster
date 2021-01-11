@@ -93,9 +93,15 @@ class InventoryMapper {
         const manifestEntry = this.itemsManifest[plug.plugItemHash];
 
         if (manifestEntry && categoryDefs?.socketIndexes.includes(socketIndex)) {
-          mods.push(
-            mapMod(this.statsManifest, this.energyTypeManifest, manifestEntry, manifestEntry.hash === enabledPlugHash)
+          const mod = mapMod(
+            this.statsManifest,
+            this.energyTypeManifest,
+            manifestEntry,
+            manifestEntry.hash === enabledPlugHash
           );
+          if (mod) {
+            mods.push(mod);
+          }
         }
       }
     }
@@ -125,11 +131,11 @@ class InventoryMapper {
           perks.push(reusableMods);
         } else if (plug) {
           const mod = mapMod(this.statsManifest, this.energyTypeManifest, plug, socket.isEnabled);
-          if (categoriesByHash[Perks]?.socketIndexes.includes(index)) {
+          if (mod && categoriesByHash[Perks]?.socketIndexes.includes(index)) {
             perks.push([mod]);
-          } else if (categoriesByHash[Cosmetics]?.socketIndexes.includes(index)) {
+          } else if (mod && categoriesByHash[Cosmetics]?.socketIndexes.includes(index)) {
             cosmetics.push(mod);
-          } else if (categoriesByHash[Mods]?.socketIndexes.includes(index)) {
+          } else if (mod && categoriesByHash[Mods]?.socketIndexes.includes(index)) {
             mods.push(mod);
           }
         }
@@ -164,13 +170,13 @@ class InventoryMapper {
           perks.push(reusableMods);
         } else if (plug) {
           const mod = mapMod(this.statsManifest, this.energyTypeManifest, plug, socket.isEnabled);
-          if (categoriesByHash[Perks]?.socketIndexes.includes(index)) {
+          if (mod && categoriesByHash[Perks]?.socketIndexes.includes(index)) {
             perks.push([mod]);
-          } else if (categoriesByHash[Cosmetics]?.socketIndexes.includes(index)) {
+          } else if (mod && categoriesByHash[Cosmetics]?.socketIndexes.includes(index)) {
             cosmetics.push(mod);
-          } else if (categoriesByHash[Tier]?.socketIndexes.includes(index)) {
+          } else if (mod && categoriesByHash[Tier]?.socketIndexes.includes(index)) {
             tier.push(mod);
-          } else if (categoriesByHash[Mods]?.socketIndexes.includes(index)) {
+          } else if (mod && categoriesByHash[Mods]?.socketIndexes.includes(index)) {
             mods.push(mod);
           }
         }
@@ -203,9 +209,9 @@ class InventoryMapper {
           perks.push(reusableMods);
         } else if (plug) {
           const mod = mapMod(this.statsManifest, this.energyTypeManifest, plug, socket.isEnabled);
-          if (categoriesByHash[Perks]?.socketIndexes.includes(index)) {
+          if (mod && categoriesByHash[Perks]?.socketIndexes.includes(index)) {
             perks.push([mod]);
-          } else if (categoriesByHash[Mods]?.socketIndexes.includes(index)) {
+          } else if (mod && categoriesByHash[Mods]?.socketIndexes.includes(index)) {
             mods.push(mod);
           }
         }

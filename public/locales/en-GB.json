@@ -22,7 +22,8 @@
         "chestMods": "Chest Mods",
         "bootMods": "Boot Mods",
         "classItemMods": "Class Item Mods",
-        "seasonalMods": "Seasonal Mods",
-        "generalMods": "General Mods"
+        "combatMods": "Combat Mods",
+        "generalMods": "General Mods",
+        "raidMods": "Raid Mods"
     }
 }

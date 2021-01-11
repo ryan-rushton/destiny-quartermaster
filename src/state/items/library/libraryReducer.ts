@@ -11,7 +11,7 @@ import { StoreDispatch } from 'rootReducer';
 import { Library } from './libraryTypes';
 import LibraryMapper from './LibraryMapper';
 import { Manifest } from 'state/manifest/manifestTypes';
-import { CharacterClass, ArmourSlots, ModSlots } from '../commonItemTypes';
+import { CharacterClass, ArmourSlots } from '../commonItemTypes';
 import { compareLibraryArmour } from './libraryUtils';
 import { armourModCompare } from 'state/itemUtils';
 
@@ -29,8 +29,8 @@ const saveLibraryReducer: CaseReducer<LibraryState, SaveLibraryAction> = (state,
     }
   }
 
-  for (const s of ModSlots) {
-    library.mods.armour[s].sort(armourModCompare);
+  for (const mods of Object.values(library.mods.armour)) {
+    mods.sort(armourModCompare);
   }
 
   return library;

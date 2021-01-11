@@ -1,0 +1,35 @@
+@import '../../../../styleVariables.scss';
+
+.modSelector {
+  display: inline-block;
+}
+
+.button {
+  background-color: $qm-mod-grey;
+  border-radius: 2px;
+  margin-right: 6px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.modPanel {
+  display: grid;
+}
+
+.divider {
+  height: 2px;
+  border-radius: 1px;
+  background-color: $qm-grey;
+  margin: 6px 0;
+}
+
+.selected {
+  border-radius: 2px;
+  display: flex;
+  flex-direction: row;
+  height: 52px;
+  margin: 3px 0 6px 0;
+  min-width: 52px;
+  width: fit-content;
+}

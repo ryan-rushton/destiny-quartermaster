@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
 
-import { CharacterClass, Mod, ArmourSlot, ModSlot } from '../items/commonItemTypes';
+import { CharacterClass, Mod, ArmourSlot } from '../items/commonItemTypes';
 import { ArmourStat } from './filterTypes';
 import { LibraryArmour } from 'state/items/library/libraryTypes';
 import { armourModCompare } from 'state/itemUtils';
 
 export type ModFilterState = {
-  [key in ModSlot]: Mod[];
+  [plugCategoryHash: number]: Mod[] | undefined;
 };
 
 interface ArmourFilterState {
@@ -29,15 +29,7 @@ const armourSlotState: { [key in ArmourSlot]: LibraryArmour | null } = {
   classItem: null,
 };
 
-const modSlotState: ModFilterState = {
-  general: [],
-  helmet: [],
-  arms: [],
-  chest: [],
-  legs: [],
-  classItem: [],
-  seasonal: [],
-};
+const modSlotState: ModFilterState = {};
 
 const initialState: ArmourFilterState = {
   stats: {
@@ -56,7 +48,7 @@ const initialState: ArmourFilterState = {
   },
 };
 
-type UpdateArmourMods = PayloadAction<{ mod: Mod; slot: ModSlot }>;
+type UpdateArmourMods = PayloadAction<{ mod: Mod; plugCategoryHash: number }>;
 type UpdateRequiredArmour = PayloadAction<{
   armour: LibraryArmour;
   characterClass: CharacterClass;
@@ -70,16 +62,27 @@ const saveStatFilterReducer: CaseReducer<ArmourFilterState, SaveStatFilterAction
 };
 
 const addArmourModReducer: CaseReducer<ArmourFilterState, UpdateArmourMods> = (state, action) => {
-  const { mod, slot } = action.payload;
-  state.mods[slot].push(mod);
-  state.mods[slot].sort(armourModCompare);
+  const { mod, plugCategoryHash } = action.payload;
+  const mods = state.mods[plugCategoryHash] || [];
+
+  if (!state.mods[plugCategoryHash]) {
+    state.mods[plugCategoryHash] = mods;
+  }
+
+  mods.push(mod);
+  mods.sort(armourModCompare);
   return state;
 };
 
 const removeArmourModReducer: CaseReducer<ArmourFilterState, UpdateArmourMods> = (state, action) => {
-  const { mod, slot } = action.payload;
-  const index = state.mods[slot].findIndex((ex) => ex.hash === mod.hash);
-  state.mods[slot].splice(index, 1);
+  const { mod, plugCategoryHash } = action.payload;
+  const mods = state.mods[plugCategoryHash];
+
+  if (mods) {
+    const index = mods.findIndex((ex) => ex.hash === mod.hash);
+    mods.splice(index, 1);
+  }
+
   return state;
 };
 
