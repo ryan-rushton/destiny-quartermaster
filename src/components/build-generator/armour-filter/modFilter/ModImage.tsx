@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 
 import { Mod } from 'state/items/commonItemTypes';
-import BungieImage from 'components/bungieImage/BungieImage';
+import BungieImage from 'components/bungie-image/BungieImage';
 import useClickAndEnterKeyDown from 'hooks/useClickAndEnterKeyDown';
 import styles from './ModImage.module.scss';
 

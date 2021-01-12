@@ -101,10 +101,25 @@ const mapEnergyCost = (
 export const mapMod = (
   statsManifest: Manifest<DestinyStatDefinition>,
   energyTypeManifest: Manifest<DestinyEnergyTypeDefinition>,
-  plug: DestinyInventoryItemDefinition,
+  item: DestinyInventoryItemDefinition,
   enabled: boolean
-): Mod => {
-  const { displayProperties, hash, itemCategoryHashes, collectibleHash } = plug;
+): Mod | undefined => {
+  const {
+    displayProperties,
+    hash,
+    itemCategoryHashes,
+    plug,
+    investmentStats,
+    itemTypeDisplayName,
+    collectibleHash,
+  } = item;
+
+  // If the item has no plug it is not a mod.
+  // If the item has no collectibleHash but has insertionMaterialRequirementHash it is deprecated.
+  if (!plug || (!collectibleHash && plug.insertionMaterialRequirementHash)) {
+    return;
+  }
+
   return {
     name: displayProperties.name,
     description: displayProperties.description,
@@ -112,9 +127,12 @@ export const mapMod = (
     hash,
     enabled,
     categories: itemCategoryHashes,
-    stats: mapInventoryStats(statsManifest, plug.investmentStats),
+    stats: mapInventoryStats(statsManifest, investmentStats),
+    insertionMaterialRequirementHash: plug.insertionMaterialRequirementHash,
+    energyType: plug.energyCost && mapEnergyCost(plug.energyCost, energyTypeManifest, statsManifest),
+    plugCategoryHash: plug.plugCategoryHash,
+    plugCategoryName: itemTypeDisplayName,
     collectibleHash,
-    energyType: plug?.plug?.energyCost && mapEnergyCost(plug.plug.energyCost, energyTypeManifest, statsManifest),
   };
 };
 

@@ -6,13 +6,13 @@ import { ArmourStats } from '../../../state/filter/filterTypes';
 import styles from './ArmourFilter.module.scss';
 import { saveStatFilter, addArmourMod, removeArmourMod } from '../../../state/filter/filterReducer';
 import { RootState } from 'rootReducer';
-import { Mod, ArmourSlot, ModSlot, ArmourSlots } from 'state/items/commonItemTypes';
+import { Mod, ArmourSlot, ArmourSlots } from 'state/items/commonItemTypes';
 import ArmourSelector from './armourSelector/ArmourSelector';
-import { ReactComponent as HelmetIcon } from 'destiny-icons/armor_types/helmet.svg';
-import { ReactComponent as ArmsIcon } from 'destiny-icons/armor_types/gloves.svg';
-import { ReactComponent as ChestIcon } from 'destiny-icons/armor_types/chest.svg';
-import { ReactComponent as LegsIcon } from 'destiny-icons/armor_types/boots.svg';
-import { ReactComponent as ClassIcon } from 'destiny-icons/armor_types/class.svg';
+import { ReactComponent as HelmetIcon } from 'submodules/destiny-icons/armor_types/helmet.svg';
+import { ReactComponent as ArmsIcon } from 'submodules/destiny-icons/armor_types/gloves.svg';
+import { ReactComponent as ChestIcon } from 'submodules/destiny-icons/armor_types/chest.svg';
+import { ReactComponent as LegsIcon } from 'submodules/destiny-icons/armor_types/boots.svg';
+import { ReactComponent as ClassIcon } from 'submodules/destiny-icons/armor_types/class.svg';
 import { LibraryArmour } from 'state/items/library/libraryTypes';
 import ModFilter from './modFilter/ModFilter';
 
@@ -48,12 +48,12 @@ const ArmourFilter: FC = () => {
     return null;
   }
 
-  const addMod = (mod: Mod, slot: ModSlot): void => {
-    dispatch(addArmourMod({ mod, slot }));
+  const addMod = (mod: Mod, plugCategoryHash: number): void => {
+    dispatch(addArmourMod({ mod, plugCategoryHash }));
   };
 
-  const removeMod = (mod: Mod, slot: ModSlot): void => {
-    dispatch(removeArmourMod({ mod, slot }));
+  const removeMod = (mod: Mod, plugCategoryHash: number): void => {
+    dispatch(removeArmourMod({ mod, plugCategoryHash }));
   };
 
   const getArmourItems = (type: ArmourSlot): LibraryArmour[] => (selectedClass && armour?.[selectedClass][type]) || [];
@@ -71,7 +71,7 @@ const ArmourFilter: FC = () => {
                   className={styles.statInput}
                   type="text"
                   name={stat}
-                  value={armourFilter.stats[stat] || ''}
+                  value={armourFilter.stats[stat] || undefined}
                   onChange={(event: ChangeEvent<HTMLInputElement>): void => {
                     dispatch(
                       saveStatFilter({

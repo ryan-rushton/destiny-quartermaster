@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 
 import { LibraryArmour } from 'state/items/library/libraryTypes';
-import BungieImageButton from 'components/bungieImage/BungieImageButton';
-import DestinyIconImageButton from 'components/bungieImage/DestinyIconImageButton';
+import BungieImageButton from 'components/bungie-image/BungieImageButton';
+import DestinyIconImageButton from 'components/bungie-image/DestinyIconImageButton';
 import styles from './ArmourSelector.module.scss';
 import { CharacterClass } from 'state/items/commonItemTypes';
 import Modal from 'components/modal/Modal';

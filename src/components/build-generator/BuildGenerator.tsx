@@ -4,8 +4,8 @@ import clsx from 'clsx';
 
 import { RootState } from 'rootReducer';
 import styles from './BuildGenerator.module.scss';
-import ArmourFilter from './armourFilter/ArmourFilter';
-import CharacterSelect from 'components/characterSelect/CharacterSelect';
+import ArmourFilter from './armour-filter/ArmourFilter';
+import CharacterSelect from 'components/character-select/CharacterSelect';
 
 enum Category {
   Armour = 'armour',

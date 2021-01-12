@@ -6,8 +6,8 @@ import { fetchUserMembershipData, fetchProfileData } from '../state/user/userRed
 import { RootState } from 'rootReducer';
 import withAuth from './withAuth';
 import AccountSelection from './user/AccountSelection';
-import BuildGenerator from './buildGenerator/BuildGenerator';
-import LoadingMask from 'components/loadingMask/LoadingMask';
+import BuildGenerator from './build-generator/BuildGenerator';
+import LoadingMask from 'components/loading-mask/LoadingMask';
 
 const Quartermaster: FC = () => {
   const dispatch = useDispatch();

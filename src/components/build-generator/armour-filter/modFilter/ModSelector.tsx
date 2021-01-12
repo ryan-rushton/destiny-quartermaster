@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Mod } from 'state/items/commonItemTypes';
 import styles from './ModSelector.module.scss';
-import BungieImageButton from 'components/bungieImage/BungieImageButton';
+import BungieImageButton from 'components/bungie-image/BungieImageButton';
 import ModImage from './ModImage';
 import Modal from 'components/modal/Modal';
 import Closeable from 'components/utils/Closeable';
@@ -45,8 +45,13 @@ const ModSelector: FC<Props> = ({
       )) ||
     selectedMods.reduce((total, mod) => (mod.energyType?.cost || 0) + total, 0) > 10;
 
-  const groupedMods = _.groupBy(mods, (mod) => (mod.collectibleHash ? 'equipable' : 'default'));
+  const groupedMods = _.groupBy(mods, (mod) => (mod.insertionMaterialRequirementHash ? 'equipable' : 'default'));
   const equipableMods = groupedMods.equipable;
+
+  if (!equipableMods) {
+    return null;
+  }
+
   const defaultMod = (groupedMods.default?.length && groupedMods.default[0]) || equipableMods[0];
 
   const numberOfModColumns = 8;
