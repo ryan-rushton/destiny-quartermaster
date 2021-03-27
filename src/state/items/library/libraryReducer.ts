@@ -1,19 +1,18 @@
-import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
+import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
-  DestinyInventoryItemDefinition,
-  DestinyStatDefinition,
   DestinyDamageTypeDefinition,
-  DestinyPlugSetDefinition,
   DestinyEnergyTypeDefinition,
+  DestinyInventoryItemDefinition,
+  DestinyPlugSetDefinition,
+  DestinyStatDefinition,
 } from 'bungie-api-ts/destiny2';
-
 import { StoreDispatch } from 'rootReducer';
-import { Library } from './libraryTypes';
-import LibraryMapper from './LibraryMapper';
-import { Manifest } from 'state/manifest/manifestTypes';
-import { CharacterClass, ArmourSlots } from '../commonItemTypes';
-import { compareLibraryArmour } from './libraryUtils';
 import { armourModCompare } from 'state/itemUtils';
+import { Manifest } from 'state/manifest/manifestTypes';
+import { ArmourSlots, CharacterClass } from '../commonItemTypes';
+import LibraryMapper from './LibraryMapper';
+import { Library } from './libraryTypes';
+import { compareLibraryArmour } from './libraryUtils';
 
 type SaveLibraryAction = PayloadAction<Library>;
 type LibraryState = Library | null;

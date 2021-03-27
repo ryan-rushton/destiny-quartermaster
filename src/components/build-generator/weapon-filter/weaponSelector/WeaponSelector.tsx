@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-
 import { LibraryWeapon } from 'state/items/library/libraryTypes';
 
 interface Props {

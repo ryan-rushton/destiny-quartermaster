@@ -1,9 +1,8 @@
 import { DestinyCharacterComponent } from 'bungie-api-ts/destiny2';
-
-import { CharacterClass } from '../items/commonItemTypes';
 import { getClassManifest, getGenderManifest, getRaceManifest } from 'state/manifest/manifestStorage';
-import { Character } from './characterTypes';
 import { getFullImagePath } from 'util/imageUtils';
+import { CharacterClass } from '../items/commonItemTypes';
+import { Character } from './characterTypes';
 
 const classHashMap: { [hash: number]: CharacterClass } = {
   671679327: 'hunter',

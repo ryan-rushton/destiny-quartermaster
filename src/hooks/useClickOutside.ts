@@ -1,4 +1,4 @@
-import { useEffect, MutableRefObject } from 'react';
+import { MutableRefObject, useEffect } from 'react';
 
 const handleClick = (event: MouseEvent, ref: MutableRefObject<HTMLElement | null>, callback: () => void): void => {
   if (ref.current && event.target instanceof Element && !ref.current.contains(event.target)) {

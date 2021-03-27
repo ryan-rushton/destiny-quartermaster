@@ -1,28 +1,27 @@
-import _ from 'lodash';
 import {
-  DestinyInventoryItemDefinition,
-  DestinyStatDefinition,
   DestinyDamageTypeDefinition,
+  DestinyEnergyTypeDefinition,
+  DestinyInventoryItemDefinition,
   DestinyItemSocketBlockDefinition,
   DestinyPlugSetDefinition,
-  DestinyEnergyTypeDefinition,
+  DestinyStatDefinition,
 } from 'bungie-api-ts/destiny2';
-
-import {
-  WeaponItemCategories,
-  ArmourItemCategories,
-  GeneralItemCategories,
-  WeaponSocketCategories,
-  Mod,
-  ArmourSocketCategories,
-  GhostShellSocketCategories,
-  WeaponModCategories,
-  ArmourSlot,
-} from '../commonItemTypes';
-import { Library, LibraryItem, LibraryArmour } from './libraryTypes';
-import { mapDamageTypes, mapInventoryStats, mapMod, mapArmourSeason } from '../commonItemMappers';
-import { isArmour2, isArmour2Mod } from './libraryUtils';
+import _ from 'lodash';
 import { Manifest } from 'state/manifest/manifestTypes';
+import { mapArmourSeason, mapDamageTypes, mapInventoryStats, mapMod } from '../commonItemMappers';
+import {
+  ArmourItemCategories,
+  ArmourSlot,
+  ArmourSocketCategories,
+  GeneralItemCategories,
+  GhostShellSocketCategories,
+  Mod,
+  WeaponItemCategories,
+  WeaponModCategories,
+  WeaponSocketCategories,
+} from '../commonItemTypes';
+import { Library, LibraryArmour, LibraryItem } from './libraryTypes';
+import { isArmour2, isArmour2Mod } from './libraryUtils';
 
 class LibraryMapper {
   itemsManifest: Manifest<DestinyInventoryItemDefinition>;

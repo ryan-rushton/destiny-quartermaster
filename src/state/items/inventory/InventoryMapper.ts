@@ -1,39 +1,38 @@
-import _ from 'lodash';
 import {
-  DestinyInventoryComponent,
-  DestinyItemComponent,
-  DestinyInventoryItemDefinition,
-  DestinyItemInstanceComponent,
-  DestinyItemStatsComponent,
-  DestinyItemSocketsComponent,
-  DestinyStatDefinition,
   DestinyDamageTypeDefinition,
-  DestinyItemSocketCategoryDefinition,
-  DestinyItemReusablePlugsComponent,
-  DestinyItemSocketState,
-  DestinyStat,
   DestinyEnergyTypeDefinition,
+  DestinyInventoryComponent,
+  DestinyInventoryItemDefinition,
+  DestinyItemComponent,
+  DestinyItemInstanceComponent,
+  DestinyItemReusablePlugsComponent,
+  DestinyItemSocketCategoryDefinition,
+  DestinyItemSocketsComponent,
+  DestinyItemSocketState,
+  DestinyItemStatsComponent,
+  DestinyStat,
+  DestinyStatDefinition,
 } from 'bungie-api-ts/destiny2';
-
-import { Inventory, InventoryItem } from './inventoryTypes';
-import {
-  WeaponItemCategories,
-  ArmourItemCategories,
-  GeneralItemCategories,
-  WeaponItemCategoryHashes,
-  ArmourItemCategoryHashes,
-  GeneralItemCategoryHashes,
-  Stats,
-  Mod,
-  WeaponSocketCategories,
-  ArmourSocketCategories,
-  GhostShellSocketCategories,
-  Stat,
-  ArmourSlot,
-} from '../commonItemTypes';
-import { mapDamageTypes, mapInventoryStats, mapMod } from '../commonItemMappers';
+import _ from 'lodash';
 import { Manifest } from 'state/manifest/manifestTypes';
 import { preloadImage } from 'util/imageUtils';
+import { mapDamageTypes, mapInventoryStats, mapMod } from '../commonItemMappers';
+import {
+  ArmourItemCategories,
+  ArmourItemCategoryHashes,
+  ArmourSlot,
+  ArmourSocketCategories,
+  GeneralItemCategories,
+  GeneralItemCategoryHashes,
+  GhostShellSocketCategories,
+  Mod,
+  Stat,
+  Stats,
+  WeaponItemCategories,
+  WeaponItemCategoryHashes,
+  WeaponSocketCategories,
+} from '../commonItemTypes';
+import { Inventory, InventoryItem } from './inventoryTypes';
 
 class InventoryMapper {
   itemsManifest: Manifest<DestinyInventoryItemDefinition>;

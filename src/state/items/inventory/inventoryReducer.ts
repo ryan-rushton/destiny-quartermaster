@@ -1,19 +1,18 @@
-import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
+import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
-  DestinyInventoryComponent,
-  DictionaryComponentResponse,
-  SingleComponentResponse,
-  DestinyItemComponentSetOfint64,
-  DestinyInventoryItemDefinition,
-  DestinyStatDefinition,
   DestinyDamageTypeDefinition,
   DestinyEnergyTypeDefinition,
+  DestinyInventoryComponent,
+  DestinyInventoryItemDefinition,
+  DestinyItemComponentSetOfint64,
+  DestinyStatDefinition,
+  DictionaryComponentResponse,
+  SingleComponentResponse,
 } from 'bungie-api-ts/destiny2';
-
-import { Inventory } from './inventoryTypes';
 import { StoreDispatch } from 'rootReducer';
-import InventoryMapper from './InventoryMapper';
 import { Manifest } from 'state/manifest/manifestTypes';
+import InventoryMapper from './InventoryMapper';
+import { Inventory } from './inventoryTypes';
 
 type SaveInventoryAction = PayloadAction<Inventory>;
 type InventoryState = Inventory | null;

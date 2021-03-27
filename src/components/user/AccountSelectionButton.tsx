@@ -1,9 +1,8 @@
-import React, { FC } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faXbox, faPlaystation, faSteam, faWindows } from '@fortawesome/free-brands-svg-icons';
+import { faPlaystation, faSteam, faWindows, faXbox } from '@fortawesome/free-brands-svg-icons';
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { FC } from 'react';
 import { Account, GamePlatform, isCrossSavePrimary } from '../../state/user/userTypes';
 import styles from './AccountSelectionButton.module.scss';
 

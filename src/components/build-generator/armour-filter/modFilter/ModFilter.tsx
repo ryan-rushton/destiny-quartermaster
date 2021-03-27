@@ -1,13 +1,12 @@
+import Closeable from 'components/utils/Closeable';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { ModFilterState } from 'state/filter/filterReducer';
+import { Mod } from 'state/items/commonItemTypes';
+import { LibraryArmourModState } from 'state/items/library/libraryTypes';
+import styles from './ModFilter.module.scss';
 import ModImage from './ModImage';
 import ModSelector from './ModSelector';
-import styles from './ModFilter.module.scss';
-import { LibraryArmourModState } from 'state/items/library/libraryTypes';
-import { Mod } from 'state/items/commonItemTypes';
-import { ModFilterState } from 'state/filter/filterReducer';
-import Closeable from 'components/utils/Closeable';
 
 interface Props {
   selectedMods: ModFilterState;

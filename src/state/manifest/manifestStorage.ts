@@ -1,17 +1,16 @@
-import _ from 'lodash';
-import Dexie from 'dexie';
 import {
   DestinyClassDefinition,
+  DestinyDamageTypeDefinition,
+  DestinyEnergyTypeDefinition,
   DestinyGenderDefinition,
   DestinyInventoryItemDefinition,
+  DestinyPlugSetDefinition,
   DestinyRaceDefinition,
   DestinyStatDefinition,
-  DestinyDamageTypeDefinition,
-  DestinyPlugSetDefinition,
-  DestinyEnergyTypeDefinition,
 } from 'bungie-api-ts/destiny2';
-
+import Dexie from 'dexie';
 import { JsonObject } from 'lib/bungie_api/rest';
+import _ from 'lodash';
 import { DefinitionManifests, DefinitionManifestsEnum, Manifest } from './manifestTypes';
 
 // DB Setup ---------------

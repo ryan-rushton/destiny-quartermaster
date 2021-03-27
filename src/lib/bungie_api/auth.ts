@@ -1,5 +1,4 @@
 import _ from 'lodash';
-
 import { post } from './rest';
 
 export interface JsonAuthToken {

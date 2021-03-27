@@ -1,16 +1,15 @@
-import React, { FC, useState, ReactNode, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
-
-import { LibraryArmour } from 'state/items/library/libraryTypes';
 import BungieImageButton from 'components/bungie-image/BungieImageButton';
 import DestinyIconImageButton from 'components/bungie-image/DestinyIconImageButton';
-import styles from './ArmourSelector.module.scss';
-import { CharacterClass } from 'state/items/commonItemTypes';
 import Modal from 'components/modal/Modal';
-import { updateRequiredArmour } from 'state/filter/filterReducer';
 import Closeable from 'components/utils/Closeable';
+import React, { FC, ReactNode, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import { updateRequiredArmour } from 'state/filter/filterReducer';
+import { CharacterClass } from 'state/items/commonItemTypes';
+import { LibraryArmour } from 'state/items/library/libraryTypes';
+import styles from './ArmourSelector.module.scss';
 
 interface Props {
   libraryArmours: LibraryArmour[];

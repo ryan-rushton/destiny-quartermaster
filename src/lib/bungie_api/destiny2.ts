@@ -1,5 +1,4 @@
 import { DestinyManifest, DestinyProfileResponse } from 'bungie-api-ts/destiny2';
-
 import { bungieApiGet } from './bungieApi';
 
 export interface DestinyManifestComplete extends DestinyManifest {

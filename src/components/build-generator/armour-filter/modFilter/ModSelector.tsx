@@ -1,13 +1,12 @@
-import React, { FC, useState, useRef, MutableRefObject } from 'react';
-import _ from 'lodash';
-import { useTranslation } from 'react-i18next';
-
-import { Mod } from 'state/items/commonItemTypes';
-import styles from './ModSelector.module.scss';
 import BungieImageButton from 'components/bungie-image/BungieImageButton';
-import ModImage from './ModImage';
 import Modal from 'components/modal/Modal';
 import Closeable from 'components/utils/Closeable';
+import _ from 'lodash';
+import React, { FC, MutableRefObject, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Mod } from 'state/items/commonItemTypes';
+import ModImage from './ModImage';
+import styles from './ModSelector.module.scss';
 
 interface Props {
   mods: Mod[];

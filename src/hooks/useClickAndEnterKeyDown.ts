@@ -1,4 +1,4 @@
-import { useCallback, KeyboardEvent } from 'react';
+import { KeyboardEvent, useCallback } from 'react';
 
 /**
  * Provides memoized functions that will activate onClick and on Enter Keydown.

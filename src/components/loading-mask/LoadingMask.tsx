@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-
 import styles from './LoadingMask.module.scss';
 
 const SIZE = 44;

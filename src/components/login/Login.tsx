@@ -1,9 +1,8 @@
 import React, { ReactElement } from 'react';
-import { v4 as uuid } from 'uuid';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-
 import { RootState } from 'rootReducer';
+import { v4 as uuid } from 'uuid';
 
 const Login = (): ReactElement => {
   const isLoggedIn = useSelector((state: RootState) => Boolean(state.authToken));

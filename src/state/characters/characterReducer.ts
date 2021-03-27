@@ -1,14 +1,13 @@
-import { PayloadAction, createSlice, CaseReducer } from '@reduxjs/toolkit';
-import { DictionaryComponentResponse, DestinyCharacterComponent } from 'bungie-api-ts/destiny2';
-
-import { Character } from './characterTypes';
+import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { DestinyCharacterComponent, DictionaryComponentResponse } from 'bungie-api-ts/destiny2';
 import { StoreDispatch } from 'rootReducer';
 import { mapCharacters } from './characterMappers';
 import {
-  saveSelectedCharacterToLocalStorage,
   getSelectedCharacterFromLocalStorage,
   removeSelectedCharacterFromLocalStorage,
+  saveSelectedCharacterToLocalStorage,
 } from './characterStorage';
+import { Character } from './characterTypes';
 
 type SelectedCharacterState = string | null;
 

@@ -1,9 +1,8 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
-
-import { Mod } from 'state/items/commonItemTypes';
 import BungieImage from 'components/bungie-image/BungieImage';
 import useClickAndEnterKeyDown from 'hooks/useClickAndEnterKeyDown';
+import React, { FC } from 'react';
+import { Mod } from 'state/items/commonItemTypes';
 import styles from './ModImage.module.scss';
 
 interface Props {
