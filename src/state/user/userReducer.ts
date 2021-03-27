@@ -1,30 +1,29 @@
-import { createSlice, PayloadAction, CaseReducer, ThunkAction, Action } from '@reduxjs/toolkit';
-
-import { getValidToken } from 'state/auth/authReducer';
-import { RootState, StoreDispatch } from '../../rootReducer';
+import { Action, CaseReducer, createSlice, PayloadAction, ThunkAction } from '@reduxjs/toolkit';
 import { getProfile } from 'lib/bungie_api/destiny2';
 import { getMembershipDataForCurrentUser } from 'lib/bungie_api/user';
-import { mapUserMembership } from './userMappers';
-import { UserMembership } from './userTypes';
+import { setLoadingProfile } from 'state/appReducer';
+import { getValidToken } from 'state/auth/authReducer';
+import { RootState, StoreDispatch } from '../../rootReducer';
 import { mapCharactersFromProfileData } from '../characters/characterReducer';
+import {
+  ArmourItemCategories,
+  ArmourModCategories,
+  GeneralItemCategoryHashes,
+  GhostModCategories,
+  WeaponItemCategories,
+  WeaponModCategories,
+} from '../items/commonItemTypes';
 import { mapInventoryFromInventoryData } from '../items/inventory/inventoryReducer';
 import { buildLibrary } from '../items/library/libraryReducer';
 import {
-  WeaponItemCategories,
-  ArmourItemCategories,
-  GeneralItemCategoryHashes,
-  WeaponModCategories,
-  ArmourModCategories,
-  GhostModCategories,
-} from '../items/commonItemTypes';
-import {
-  getInventoryItemManifestByCategory,
-  getCompleteStatManifest,
   getCompleteDamageTypeManifest,
-  getCompletePlugSetManifest,
   getCompleteEnergyTypeManifest,
+  getCompletePlugSetManifest,
+  getCompleteStatManifest,
+  getInventoryItemManifestByCategory,
 } from '../manifest/manifestStorage';
-import { setLoadingProfile } from 'state/appReducer';
+import { mapUserMembership } from './userMappers';
+import { UserMembership } from './userTypes';
 
 type SaveUserMembershipAction = PayloadAction<UserMembership>;
 

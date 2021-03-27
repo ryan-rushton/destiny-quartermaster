@@ -1,6 +1,5 @@
-import _ from 'lodash';
 import { ServerResponse } from 'bungie-api-ts/common';
-
+import _ from 'lodash';
 import { get } from './rest';
 
 const BUNGIE_URL = 'https://www.bungie.net/Platform';

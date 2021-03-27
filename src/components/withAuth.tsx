@@ -1,7 +1,6 @@
-import React, { FC, ComponentType } from 'react';
+import React, { ComponentType, FC } from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-
 import { RootState } from 'rootReducer';
 
 const withAuth = <T,>(WrappedComponent: ComponentType<T>): FC<T> => {

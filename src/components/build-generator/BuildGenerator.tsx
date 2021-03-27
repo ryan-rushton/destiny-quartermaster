@@ -1,11 +1,10 @@
-import React, { FC, useState, KeyboardEvent } from 'react';
-import { useSelector } from 'react-redux';
 import clsx from 'clsx';
-
-import { RootState } from 'rootReducer';
-import styles from './BuildGenerator.module.scss';
-import ArmourFilter from './armour-filter/ArmourFilter';
 import CharacterSelect from 'components/character-select/CharacterSelect';
+import React, { FC, KeyboardEvent, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'rootReducer';
+import ArmourFilter from './armour-filter/ArmourFilter';
+import styles from './BuildGenerator.module.scss';
 
 enum Category {
   Armour = 'armour',

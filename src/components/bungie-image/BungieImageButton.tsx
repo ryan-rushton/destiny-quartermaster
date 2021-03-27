@@ -1,9 +1,8 @@
-import React, { FC } from 'react';
 import clsx from 'clsx';
-
+import useClickAndEnterKeyDown from 'hooks/useClickAndEnterKeyDown';
+import React, { FC } from 'react';
 import { getFullImagePath } from 'util/imageUtils';
 import styles from './BungieImage.module.scss';
-import useClickAndEnterKeyDown from 'hooks/useClickAndEnterKeyDown';
 
 interface Props {
   url: string;

@@ -1,19 +1,18 @@
-import React, { FC, ChangeEvent, ReactNode } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { ChangeEvent, FC, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'rootReducer';
+import { ArmourSlot, ArmourSlots, Mod } from 'state/items/commonItemTypes';
+import { LibraryArmour } from 'state/items/library/libraryTypes';
+import { ReactComponent as LegsIcon } from 'submodules/destiny-icons/armor_types/boots.svg';
+import { ReactComponent as ChestIcon } from 'submodules/destiny-icons/armor_types/chest.svg';
+import { ReactComponent as ClassIcon } from 'submodules/destiny-icons/armor_types/class.svg';
+import { ReactComponent as ArmsIcon } from 'submodules/destiny-icons/armor_types/gloves.svg';
+import { ReactComponent as HelmetIcon } from 'submodules/destiny-icons/armor_types/helmet.svg';
+import { addArmourMod, removeArmourMod, saveStatFilter } from '../../../state/filter/filterReducer';
 import { ArmourStats } from '../../../state/filter/filterTypes';
 import styles from './ArmourFilter.module.scss';
-import { saveStatFilter, addArmourMod, removeArmourMod } from '../../../state/filter/filterReducer';
-import { RootState } from 'rootReducer';
-import { Mod, ArmourSlot, ArmourSlots } from 'state/items/commonItemTypes';
 import ArmourSelector from './armourSelector/ArmourSelector';
-import { ReactComponent as HelmetIcon } from 'submodules/destiny-icons/armor_types/helmet.svg';
-import { ReactComponent as ArmsIcon } from 'submodules/destiny-icons/armor_types/gloves.svg';
-import { ReactComponent as ChestIcon } from 'submodules/destiny-icons/armor_types/chest.svg';
-import { ReactComponent as LegsIcon } from 'submodules/destiny-icons/armor_types/boots.svg';
-import { ReactComponent as ClassIcon } from 'submodules/destiny-icons/armor_types/class.svg';
-import { LibraryArmour } from 'state/items/library/libraryTypes';
 import ModFilter from './modFilter/ModFilter';
 
 const translations: { [key in ArmourSlot]: string } = {

@@ -1,16 +1,15 @@
-import { PayloadAction, createSlice, CaseReducer } from '@reduxjs/toolkit';
-
-import { getValidToken } from 'state/auth/authReducer';
-import { getManifest, DestinyManifestComplete } from 'lib/bungie_api/destiny2';
-import { StoreDispatch } from 'rootReducer';
-import { DefinitionManifests } from './manifestTypes';
+import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getCommonJsonAsset } from 'lib/bungie_api/common';
+import { DestinyManifestComplete, getManifest } from 'lib/bungie_api/destiny2';
+import { StoreDispatch } from 'rootReducer';
+import { getValidToken } from 'state/auth/authReducer';
 import {
-  getManifestVersionInLocalStorage,
-  putManifestVersionInLocalStorage,
   freshSaveOfAllDefinitionManifests,
+  getManifestVersionInLocalStorage,
   ManifestResponseWrapper,
+  putManifestVersionInLocalStorage,
 } from './manifestStorage';
+import { DefinitionManifests } from './manifestTypes';
 
 type DestinyManifestState = DestinyManifestComplete | null;
 type SaveManifestAction = PayloadAction<DestinyManifestState>;

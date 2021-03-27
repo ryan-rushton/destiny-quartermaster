@@ -1,15 +1,14 @@
-import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
-
+import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { refreshOAuthToken } from 'lib/bungie_api/auth';
 import { StoreDispatch } from 'rootReducer';
+import { mapAuthToken } from './authMappers';
 import {
-  getTokenTimeFromLocalStorage,
-  getTokenFromLocalStorage,
   deleteAuthTokenFromLocalStorage,
+  getTokenFromLocalStorage,
+  getTokenTimeFromLocalStorage,
   putTokenInLocalStorage,
 } from './authStorage';
 import { AuthToken } from './authTypes';
-import { mapAuthToken } from './authMappers';
-import { refreshOAuthToken } from 'lib/bungie_api/auth';
 
 type AuthState = AuthToken | null;
 type SaveAuthAction = PayloadAction<AuthState>;

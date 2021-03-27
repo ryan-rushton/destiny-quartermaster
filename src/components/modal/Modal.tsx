@@ -1,12 +1,11 @@
-import React, { FC, useRef } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-
-import styles from './Modal.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import useClickAndEnterKeyDown from 'hooks/useClickAndEnterKeyDown';
 import useClickOutside from 'hooks/useClickOutside';
 import useFocusTrap from 'hooks/useFocusTrap';
-import useClickAndEnterKeyDown from 'hooks/useClickAndEnterKeyDown';
 import useGlobalEscKeyDown from 'hooks/useGlobalEscapeKeyDown';
+import React, { FC, useRef } from 'react';
+import styles from './Modal.module.scss';
 
 interface Props {
   open: boolean;

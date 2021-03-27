@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
-import { combineReducers, configureStore, getDefaultMiddleware, Action } from '@reduxjs/toolkit';
-
-import authReducer from 'state/auth/authReducer';
-import manifestReducer from 'state/manifest/manifestReducer';
+import { Action, combineReducers, configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import appReducer from 'state/appReducer';
-import filterReducer from 'state/filter/filterReducer';
+import authReducer from 'state/auth/authReducer';
+import { getTokenFromLocalStorage } from 'state/auth/authStorage';
 import characterReducer from 'state/characters/characterReducer';
+import filterReducer from 'state/filter/filterReducer';
 import inventoryReducer from 'state/items/inventory/inventoryReducer';
 import libraryReducer from 'state/items/library/libraryReducer';
+import manifestReducer from 'state/manifest/manifestReducer';
 import userReducer from 'state/user/userReducer';
-import { getTokenFromLocalStorage } from 'state/auth/authStorage';
 import { getLastUsedProfileFromLocalStorage } from 'state/user/userStorage';
 
 const rootReducer = combineReducers({

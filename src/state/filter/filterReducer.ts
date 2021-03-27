@@ -1,9 +1,8 @@
-import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
-
-import { CharacterClass, Mod, ArmourSlot } from '../items/commonItemTypes';
-import { ArmourStat } from './filterTypes';
+import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { LibraryArmour } from 'state/items/library/libraryTypes';
 import { armourModCompare } from 'state/itemUtils';
+import { ArmourSlot, CharacterClass, Mod } from '../items/commonItemTypes';
+import { ArmourStat } from './filterTypes';
 
 export type ModFilterState = {
   [plugCategoryHash: number]: Mod[] | undefined;

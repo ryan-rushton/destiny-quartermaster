@@ -1,4 +1,4 @@
-import { useEffect, MutableRefObject } from 'react';
+import { MutableRefObject, useEffect } from 'react';
 
 const refocus = (
   event: KeyboardEvent,

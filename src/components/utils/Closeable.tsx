@@ -1,10 +1,9 @@
-import React, { FC } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
-
-import styles from './Closeable.module.scss';
 import useClickAndEnterKeyDown from 'hooks/useClickAndEnterKeyDown';
+import React, { FC } from 'react';
+import styles from './Closeable.module.scss';
 
 interface Props {
   disabled?: boolean;

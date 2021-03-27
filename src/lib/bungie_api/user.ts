@@ -1,5 +1,4 @@
 import { UserMembershipData } from 'bungie-api-ts/user';
-
 import { bungieApiGet } from './bungieApi';
 
 export const getMembershipDataForCurrentUser = async (accessToken: string): Promise<UserMembershipData> => {

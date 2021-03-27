@@ -1,7 +1,6 @@
-import { GroupUserInfoCard, BungieMembershipType } from 'bungie-api-ts/groupv2';
+import { BungieMembershipType, GroupUserInfoCard } from 'bungie-api-ts/groupv2';
 import { UserMembershipData } from 'bungie-api-ts/user';
-
-import { UserMembership, Account, CrossSavePrimaryAccount, GamePlatform } from './userTypes';
+import { Account, CrossSavePrimaryAccount, GamePlatform, UserMembership } from './userTypes';
 
 const mapGamePlatformEnum = (bungieMembershipTypeEnum: BungieMembershipType): GamePlatform => {
   switch (bungieMembershipTypeEnum) {

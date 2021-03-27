@@ -1,11 +1,10 @@
-import React, { FC, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import clsx from 'clsx';
-
+import React, { FC, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'rootReducer';
-import styles from './CharacterSelect.module.scss';
-import { Character } from '../../state/characters/characterTypes';
 import { setSelectedCharacter } from 'state/characters/characterReducer';
+import { Character } from '../../state/characters/characterTypes';
+import styles from './CharacterSelect.module.scss';
 
 interface EmblemProps {
   character: Character;

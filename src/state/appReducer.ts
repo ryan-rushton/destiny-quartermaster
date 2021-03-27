@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, CaseReducer } from '@reduxjs/toolkit';
+import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type SetLoadingAction = PayloadAction<boolean>;
 

@@ -1,11 +1,10 @@
-import React, { FC } from 'react';
-import { Switch, Route, withRouter } from 'react-router-dom';
-
-import Login from 'components/login/Login';
-import NavBar from 'components/navbar/NavBar';
 import styles from 'App.module.scss';
 import LoggingIn from 'components/login/LoggingIn';
+import Login from 'components/login/Login';
+import NavBar from 'components/navbar/NavBar';
 import Quartermaster from 'components/Quartermaster';
+import React, { FC } from 'react';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
 const App: FC = () => {
   return (

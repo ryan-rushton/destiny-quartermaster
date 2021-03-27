@@ -1,12 +1,11 @@
-import React, { FC } from 'react';
-import { Redirect } from 'react-router-dom';
-import { parse } from 'query-string';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { saveToken } from 'state/auth/authReducer';
 import { getOAuthToken } from 'lib/bungie_api/auth';
-import { mapAuthToken } from 'state/auth/authMappers';
+import { parse } from 'query-string';
+import React, { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { RootState, StoreDispatch } from 'rootReducer';
+import { mapAuthToken } from 'state/auth/authMappers';
+import { saveToken } from 'state/auth/authReducer';
 
 const getCodeFromQueryParam = (): string | undefined => {
   const { location } = window;

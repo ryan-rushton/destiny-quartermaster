@@ -1,9 +1,8 @@
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
-
 import { RootState } from 'rootReducer';
-import WeaponSelector from './weaponSelector/WeaponSelector';
 import { isDefined } from 'util/filters';
+import WeaponSelector from './weaponSelector/WeaponSelector';
 
 const WeaponFilter: FC = () => {
   const weapons = useSelector((state: RootState) => state.library?.weapons);

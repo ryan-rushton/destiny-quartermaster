@@ -1,17 +1,16 @@
-import _ from 'lodash';
 import {
-  DestinyStatDefinition,
-  DestinyDamageTypeDefinition,
   DamageType,
-  DestinyItemInvestmentStatDefinition,
-  DestinyInventoryItemDefinition,
-  DestinyEnergyTypeDefinition,
+  DestinyDamageTypeDefinition,
   DestinyEnergyCostEntry,
   DestinyEnergyType,
+  DestinyEnergyTypeDefinition,
+  DestinyInventoryItemDefinition,
+  DestinyItemInvestmentStatDefinition,
+  DestinyStatDefinition,
 } from 'bungie-api-ts/destiny2';
-
-import { Damage, Stats, Mod, EnergyCost, EnergyType } from './commonItemTypes';
+import _ from 'lodash';
 import { Manifest } from 'state/manifest/manifestTypes';
+import { Damage, EnergyCost, EnergyType, Mod, Stats } from './commonItemTypes';
 
 export const EmptyModSocketsToSeason = {
   3625698764: 4,
