@@ -30,29 +30,31 @@ const { actions, reducer } = createSlice({
 
 export const { saveInventory } = actions;
 
-export const mapInventoryFromInventoryData = (
-  itemsManifest: Manifest<DestinyInventoryItemDefinition>,
-  statsManifest: Manifest<DestinyStatDefinition>,
-  damageTypeManifests: Manifest<DestinyDamageTypeDefinition>,
-  energyTypeManifest: Manifest<DestinyEnergyTypeDefinition>,
-  profileInventory: SingleComponentResponse<DestinyInventoryComponent>,
-  characterEquipment: DictionaryComponentResponse<DestinyInventoryComponent>,
-  characterInventoryData: DictionaryComponentResponse<DestinyInventoryComponent>,
-  itemComponents: DestinyItemComponentSetOfint64
-) => (dispatch: StoreDispatch): void => {
-  const { instances, sockets, stats, reusablePlugs } = itemComponents;
+export const mapInventoryFromInventoryData =
+  (
+    itemsManifest: Manifest<DestinyInventoryItemDefinition>,
+    statsManifest: Manifest<DestinyStatDefinition>,
+    damageTypeManifests: Manifest<DestinyDamageTypeDefinition>,
+    energyTypeManifest: Manifest<DestinyEnergyTypeDefinition>,
+    profileInventory: SingleComponentResponse<DestinyInventoryComponent>,
+    characterEquipment: DictionaryComponentResponse<DestinyInventoryComponent>,
+    characterInventoryData: DictionaryComponentResponse<DestinyInventoryComponent>,
+    itemComponents: DestinyItemComponentSetOfint64
+  ) =>
+  (dispatch: StoreDispatch): void => {
+    const { instances, sockets, stats, reusablePlugs } = itemComponents;
 
-  const inventory = new InventoryMapper(itemsManifest, statsManifest, damageTypeManifests, energyTypeManifest).map(
-    profileInventory.data,
-    characterEquipment.data,
-    characterInventoryData.data,
-    instances.data,
-    stats.data,
-    sockets.data,
-    reusablePlugs.data
-  );
+    const inventory = new InventoryMapper(itemsManifest, statsManifest, damageTypeManifests, energyTypeManifest).map(
+      profileInventory.data,
+      characterEquipment.data,
+      characterInventoryData.data,
+      instances.data,
+      stats.data,
+      sockets.data,
+      reusablePlugs.data
+    );
 
-  dispatch(saveInventory(inventory));
-};
+    dispatch(saveInventory(inventory));
+  };
 
 export default reducer;

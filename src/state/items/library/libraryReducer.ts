@@ -45,22 +45,24 @@ const { actions, reducer } = createSlice({
 
 export const { saveLibrary } = actions;
 
-export const buildLibrary = (
-  itemsManifest: Manifest<DestinyInventoryItemDefinition>,
-  statsManifest: Manifest<DestinyStatDefinition>,
-  damageTypeManifests: Manifest<DestinyDamageTypeDefinition>,
-  plugSetsManifest: Manifest<DestinyPlugSetDefinition>,
-  energyTypeManifest: Manifest<DestinyEnergyTypeDefinition>
-) => (dispatch: StoreDispatch): void => {
-  const library = new LibraryMapper(
-    itemsManifest,
-    statsManifest,
-    damageTypeManifests,
-    plugSetsManifest,
-    energyTypeManifest
-  ).map();
+export const buildLibrary =
+  (
+    itemsManifest: Manifest<DestinyInventoryItemDefinition>,
+    statsManifest: Manifest<DestinyStatDefinition>,
+    damageTypeManifests: Manifest<DestinyDamageTypeDefinition>,
+    plugSetsManifest: Manifest<DestinyPlugSetDefinition>,
+    energyTypeManifest: Manifest<DestinyEnergyTypeDefinition>
+  ) =>
+  (dispatch: StoreDispatch): void => {
+    const library = new LibraryMapper(
+      itemsManifest,
+      statsManifest,
+      damageTypeManifests,
+      plugSetsManifest,
+      energyTypeManifest
+    ).map();
 
-  dispatch(saveLibrary(library));
-};
+    dispatch(saveLibrary(library));
+  };
 
 export default reducer;

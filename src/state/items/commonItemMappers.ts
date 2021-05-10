@@ -103,15 +103,8 @@ export const mapMod = (
   item: DestinyInventoryItemDefinition,
   enabled: boolean
 ): Mod | undefined => {
-  const {
-    displayProperties,
-    hash,
-    itemCategoryHashes,
-    plug,
-    investmentStats,
-    itemTypeDisplayName,
-    collectibleHash,
-  } = item;
+  const { displayProperties, hash, itemCategoryHashes, plug, investmentStats, itemTypeDisplayName, collectibleHash } =
+    item;
 
   // If the item has no plug it is not a mod.
   // If the item has no collectibleHash but has insertionMaterialRequirementHash it is deprecated.

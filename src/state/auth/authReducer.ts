@@ -37,10 +37,12 @@ export const isTokenValid = (tokenTime: number, savedTokenTime: number, startOfA
   return tokenTime - timeAlive > 120;
 };
 
-export const saveToken = (startAuth: number, token: AuthToken | null) => (dispatch: StoreDispatch): void => {
-  putTokenInLocalStorage(token, startAuth);
-  dispatch(saveAuthToken(token));
-};
+export const saveToken =
+  (startAuth: number, token: AuthToken | null) =>
+  (dispatch: StoreDispatch): void => {
+    putTokenInLocalStorage(token, startAuth);
+    dispatch(saveAuthToken(token));
+  };
 
 const renewToken = async (
   dispatch: StoreDispatch,
@@ -66,22 +68,24 @@ const renewToken = async (
  *
  * @param codeFromQueryParam the code query parameter from the url which is present after authorisation.
  */
-export const getValidToken = () => async (dispatch: StoreDispatch): Promise<AuthToken | undefined> => {
-  const savedToken = getTokenFromLocalStorage();
-  const savedTime = getTokenTimeFromLocalStorage();
-  const startAuth = Date.now();
+export const getValidToken =
+  () =>
+  async (dispatch: StoreDispatch): Promise<AuthToken | undefined> => {
+    const savedToken = getTokenFromLocalStorage();
+    const savedTime = getTokenTimeFromLocalStorage();
+    const startAuth = Date.now();
 
-  if (savedToken && savedTime) {
-    console.info(`Auth token expires at ${new Date(savedToken.expiresIn * 1000 + savedTime)}`);
-    if (isTokenValid(savedToken.expiresIn, savedTime, startAuth)) {
-      return savedToken;
+    if (savedToken && savedTime) {
+      console.info(`Auth token expires at ${new Date(savedToken.expiresIn * 1000 + savedTime)}`);
+      if (isTokenValid(savedToken.expiresIn, savedTime, startAuth)) {
+        return savedToken;
+      } else {
+        return await renewToken(dispatch, savedToken, savedTime, startAuth);
+      }
     } else {
-      return await renewToken(dispatch, savedToken, savedTime, startAuth);
+      deleteAuthTokenFromLocalStorage();
+      dispatch(saveAuthToken(null));
     }
-  } else {
-    deleteAuthTokenFromLocalStorage();
-    dispatch(saveAuthToken(null));
-  }
-};
+  };
 
 export default reducer;

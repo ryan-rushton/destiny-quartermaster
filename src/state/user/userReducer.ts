@@ -85,19 +85,14 @@ export const fetchProfileData = (
           ArmourModCategories.ArmourMods,
           GhostModCategories.GhostMods,
         ];
-        const [
-          itemsManifest,
-          statsManifest,
-          damageTypeManifests,
-          plugSetDefinition,
-          energyTypeManifest,
-        ] = await Promise.all([
-          getInventoryItemManifestByCategory(allCategories),
-          getCompleteStatManifest(),
-          getCompleteDamageTypeManifest(),
-          getCompletePlugSetManifest(),
-          getCompleteEnergyTypeManifest(),
-        ]);
+        const [itemsManifest, statsManifest, damageTypeManifests, plugSetDefinition, energyTypeManifest] =
+          await Promise.all([
+            getInventoryItemManifestByCategory(allCategories),
+            getCompleteStatManifest(),
+            getCompleteDamageTypeManifest(),
+            getCompletePlugSetManifest(),
+            getCompleteEnergyTypeManifest(),
+          ]);
 
         dispatch(
           buildLibrary(itemsManifest, statsManifest, damageTypeManifests, plugSetDefinition, energyTypeManifest)

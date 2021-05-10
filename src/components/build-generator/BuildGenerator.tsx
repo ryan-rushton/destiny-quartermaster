@@ -19,11 +19,13 @@ interface CategoryButtonProps {
 }
 
 const CategoryButton: FC<CategoryButtonProps> = ({ text, selected, onClick }) => {
-  const getOnEnter = (callback: () => void) => (event: KeyboardEvent<HTMLDivElement>): void => {
-    if (event.key === 'Enter') {
-      callback();
-    }
-  };
+  const getOnEnter =
+    (callback: () => void) =>
+    (event: KeyboardEvent<HTMLDivElement>): void => {
+      if (event.key === 'Enter') {
+        callback();
+      }
+    };
 
   return (
     <div
