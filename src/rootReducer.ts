@@ -67,6 +67,7 @@ const store = configureStore({
   preloadedState: {
     authToken: getTokenFromLocalStorage(),
     app: {
+      loadingProfile: false,
       selectedProfile: getLastUsedProfileFromLocalStorage(),
     },
   },
