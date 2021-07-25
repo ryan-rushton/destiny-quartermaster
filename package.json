@@ -12,7 +12,7 @@
         "bungie-api-ts": "4.9.0",
         "clsx": "1.1.1",
         "dexie": "3.0.3",
-        "i18next": "20.3.4",
+        "i18next": "20.3.5",
         "i18next-browser-languagedetector": "6.1.2",
         "i18next-http-backend": "1.2.8",
         "lodash": "4.17.21",
