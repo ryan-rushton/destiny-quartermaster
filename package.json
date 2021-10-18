@@ -7,7 +7,7 @@
         "@fortawesome/free-brands-svg-icons": "5.15.4",
         "@fortawesome/free-regular-svg-icons": "5.15.4",
         "@fortawesome/free-solid-svg-icons": "5.15.4",
-        "@fortawesome/react-fontawesome": "0.1.15",
+        "@fortawesome/react-fontawesome": "0.1.16",
         "@reduxjs/toolkit": "1.6.2",
         "bungie-api-ts": "4.11.0",
         "clsx": "1.1.1",
