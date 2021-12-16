@@ -2,7 +2,7 @@ import { getOAuthToken } from 'lib/bungie_api/auth';
 import { parse } from 'query-string';
 import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { RootState, StoreDispatch } from 'rootReducer';
 import { mapAuthToken } from 'state/auth/authMappers';
 import { saveToken } from 'state/auth/authReducer';
@@ -19,7 +19,7 @@ const LoggingIn: FC = () => {
   const dispatch: StoreDispatch = useDispatch();
 
   if (isLoggedIn) {
-    return <Redirect to="/" />;
+    return <Navigate to="/" />;
   }
 
   const code = getCodeFromQueryParam();
@@ -27,7 +27,7 @@ const LoggingIn: FC = () => {
     getOAuthToken(code).then((token) => token && dispatch(saveToken(Date.now(), mapAuthToken(token))));
     return <div>{'Logging in'}</div>;
   }
-  return <Redirect to="/login" />;
+  return <Navigate to="/login" />;
 };
 
 export default LoggingIn;

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { RootState } from 'rootReducer';
 import { v4 as uuid } from 'uuid';
 
@@ -8,7 +8,7 @@ const Login = (): ReactElement => {
   const isLoggedIn = useSelector((state: RootState) => Boolean(state.authToken));
 
   if (isLoggedIn) {
-    return <Redirect to="/" />;
+    return <Navigate to="/" />;
   }
 
   const authState = uuid();
