@@ -4,27 +4,21 @@ import Login from 'components/login/Login';
 import NavBar from 'components/navbar/NavBar';
 import Quartermaster from 'components/Quartermaster';
 import React, { FC } from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 const App: FC = () => {
   return (
     <div className={styles.app}>
       <NavBar />
       <div className={styles.body}>
-        <Switch>
-          <Route exact path="/">
-            <Quartermaster />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/redirect">
-            <LoggingIn />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/" element={<Quartermaster />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/redirect" element={<LoggingIn />} />
+        </Routes>
       </div>
     </div>
   );
 };
 
-export default withRouter(App);
+export default App;

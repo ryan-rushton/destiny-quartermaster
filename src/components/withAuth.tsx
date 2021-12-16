@@ -1,6 +1,6 @@
 import React, { ComponentType, FC } from 'react';
 import { useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { RootState } from 'rootReducer';
 
 const withAuth = <T,>(WrappedComponent: ComponentType<T>): FC<T> => {
@@ -8,7 +8,7 @@ const withAuth = <T,>(WrappedComponent: ComponentType<T>): FC<T> => {
     const isLoggedIn = useSelector((state: RootState) => Boolean(state.authToken));
 
     if (!isLoggedIn) {
-      return <Redirect to="/login" />;
+      return <Navigate to="/login" />;
     }
 
     return <WrappedComponent {...props} />;
